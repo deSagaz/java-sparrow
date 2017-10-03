@@ -1,7 +1,5 @@
 # The Ionic Super Starter 🎮
 
-_Note: the Ionic Super Starter requires Ionic CLI 3._
-
 <img src="super2.png" width="400" />
 
 The Ionic Super Starter is a batteries-included starter project for Ionic apps complete with pre-built pages, providers, and best practices for Ionic development.
@@ -21,11 +19,13 @@ One of the big advances in Ionic was moving from a rigid route-based navigation 
 
 ## <a name="getting-started"></a>Getting Started
 
-To test this starter out, install the latest version of the Ionic CLI and run:
+This project was developed in Typescript. You will first need to install [Node.js](https://nodejs.org/en/), which will include the package manager `npm`. If you run `npm install` in the `javasparrow-client` folder, you will install the Ionic CLI and all other dependencies of the project. Pretty neat, right?
 
-```bash
-ionic start mySuperApp super
-```
+If you have never used the Angular framework before, kudos to Maximilian for developing [this excellent course](https://www.udemy.com/the-complete-guide-to-angular-2/). Using an IDE rather than a plain text editor will make your life easier (despite the excellent error handling of Angular). [Webstorm](https://www.jetbrains.com/webstorm/) worked wonders.
+
+### Development server
+
+Once installed, run `ionic serve` for a dev server. Navigate to `http://localhost:8100/`. The app will automatically reload if you change any of the source files. You're now ready to make changes and see them reflected live in your browser.
 
 ## Pages
 
