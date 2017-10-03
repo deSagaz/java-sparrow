@@ -1,2 +1,2 @@
-# java-sparrow
-Asses your javascript with sparrow-swiftness
+#  Java Sparrow
+Assess your javascript knowledge with sparrow-swiftness
