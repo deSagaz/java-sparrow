@@ -12,8 +12,9 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:        #000;
-$background-color:  #fff;
+$text-color:        #fff;
+/*$background-color:  #fff;*/
+$background-color: #000022;
 
 
 // Named Color Variables
@@ -62,7 +63,7 @@ $colors: (
 // default are overridden.
 
 @import "ionic.theme.default";
-
+$toolbar-background:#29B6F6;
 
 // Ionicons
 // --------------------------------------------------
@@ -70,8 +71,6 @@ $colors: (
 // http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
-
-
 // Fonts
 // --------------------------------------------------
 
