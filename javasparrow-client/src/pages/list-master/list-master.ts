@@ -13,7 +13,7 @@ export class ListMasterPage {
   currentItems: Item[];
 
   constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
-    this.unlocked = false;
+  
     this.currentItems = this.items.query();
   }
 
