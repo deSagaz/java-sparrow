@@ -28,8 +28,6 @@ SECRET_KEY = 'v$-m(en96-2mtcfk2x-4^rl8y*df-0rui=k)rlmzye%saudmm7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.33.10"]
-
 SITE_ID = 1  # For allauth
 
 # Application definition
