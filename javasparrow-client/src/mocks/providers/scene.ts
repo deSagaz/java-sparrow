@@ -1,92 +1,92 @@
 import { Injectable } from '@angular/core';
 
-import { Item } from '../../models/item';
+import { Scene } from '../../models/scene';
 
 @Injectable()
-export class Items {
-  items: Item[] = [];
+export class Scenes {
+  scenes: Scene[] = [];
 
-  defaultItem: any = {
-    "name": "Burt Bear",
+  defaultScene: any = {
+    "name": "Bear",
     "profilePic": "assets/img/speakers/bear.jpg",
     "about": "Burt is a Bear.",
   };
 
 
   constructor() {
-    let items = [
+    let scenes = [
       {
-        "name": "Burt Bear",
+        "name": "Bear",
         "profilePic": "assets/img/speakers/bear.jpg",
         "about": "Burt is a Bear.",
         "unlocked": true
       },
       {
-        "name": "Charlie Cheetah",
+        "name": "Cheetah",
         "profilePic": "assets/img/speakers/cheetah.jpg",
         "about": "Charlie is a Cheetah.",
         "unlocked": true
       },
       {
-        "name": "Donald Duck",
+        "name": "Duck",
         "profilePic": "assets/img/speakers/duck.jpg",
         "about": "Donald is a Duck.",
         "unlocked": false
       },
       {
-        "name": "Eva Eagle",
+        "name": "Eagle",
         "profilePic": "assets/img/speakers/eagle.jpg",
         "about": "Eva is an Eagle.",
         "unlocked": true
       },
       {
-        "name": "Ellie Elephant",
+        "name": "Elephant",
         "profilePic": "assets/img/speakers/elephant.jpg",
         "about": "Ellie is an Elephant.",
         "unlocked": false
       },
       {
-        "name": "Molly Mouse",
+        "name": "Mouse",
         "profilePic": "assets/img/speakers/mouse.jpg",
         "about": "Molly is a Mouse.",
         "unlocked": true
       },
       {
-        "name": "Paul Puppy",
+        "name": "Puppy",
         "profilePic": "assets/img/speakers/puppy.jpg",
         "about": "Paul is a Puppy.",
         "unlocked": true
       }
     ];
 
-    for (let item of items) {
-      this.items.push(new Item(item));
+    for (let scene of scenes) {
+      this.scenes.push(new Scene(scene));
     }
   }
 
   query(params?: any) {
     if (!params) {
-      return this.items;
+      return this.scenes;
     }
 
-    return this.items.filter((item) => {
+    return this.scenes.filter((scene) => {
       for (let key in params) {
-        let field = item[key];
+        let field = scene[key];
         if (typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0) {
-          return item;
+          return scene;
         } else if (field == params[key]) {
-          return item;
+          return scene;
         }
       }
       return null;
     });
   }
 
-  add(item: Item) {
-    this.items.push(item);
+  add(scene: Scene) {
+    this.scenes.push(scene);
   }
 
-  delete(item: Item) {
-    this.items.splice(this.items.indexOf(item), 1);
+  delete(scene: Scene) {
+    this.scenes.splice(this.scenes.indexOf(scene), 1);
   }
 }

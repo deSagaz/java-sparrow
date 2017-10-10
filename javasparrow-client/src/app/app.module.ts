@@ -10,7 +10,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
-import { Items } from '../mocks/providers/items';
+import { Stories } from '../mocks/providers/story';
+import { Scenes } from '../mocks/providers/scene';
 import { Settings } from '../providers/providers';
 import { User } from '../providers/providers';
 import { Api } from '../providers/providers';
@@ -60,7 +61,8 @@ export function provideSettings(storage: Storage) {
   ],
   providers: [
     Api,
-    Items,
+    Stories,
+    Scenes,
     User,
     Camera,
     GoogleMaps,

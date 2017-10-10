@@ -40,10 +40,11 @@ export class MyApp {
     { title: 'Login', component: 'LoginPage' },
     { title: 'Signup', component: 'SignupPage' },
     { title: 'Map', component: 'MapPage' },
-    { title: 'Master Detail', component: 'ListMasterPage' },
+    { title: 'Stories list', component: 'StoriesPage' },
     { title: 'Menu', component: 'MenuPage' },
     { title: 'Settings', component: 'SettingsPage' },
-    { title: 'Search', component: 'SearchPage' }
+    { title: 'Search', component: 'SearchPage' },
+    { title: 'Scenes', component: 'ScenesPage' }
   ]
 
   constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {

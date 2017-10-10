@@ -7,7 +7,7 @@
  * The Items service manages creating instances of Item, so go ahead and rename
  * that something that fits your app as well.
  */
-export class Item {
+export class Story {
 
   constructor(fields: any) {
     // Quick and dirty extend/assign fields to this model
