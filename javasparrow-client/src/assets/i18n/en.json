@@ -5,6 +5,7 @@
   "EMAIL": "Email",
   "USERNAME": "Username",
   "PASSWORD": "Password",
+  "PASSWORD_REPEAT": "Repeat password",
   "LOGIN": "Sign in",
   "SIGNUP": "Sign up",
 
