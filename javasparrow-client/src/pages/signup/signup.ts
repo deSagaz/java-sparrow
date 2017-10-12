@@ -21,10 +21,10 @@ export class SignupPage {
   // };
 
   account: { username: string, email: string, password1: string, password2: string } = {
-    username: 'test',
-    email: 'test@example.com',
-    password1: 'testtest!',
-    password2: 'testtest!'
+    "username": "test",
+    "email": "test@example.com",
+    "password1": "testtest!",
+    "password2": "testtest!"
   };
 
   // Our translated text strings
