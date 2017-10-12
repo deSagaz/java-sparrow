@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here. Story, scene, sequence, sequence child classes
 
 class Story(models.Model):
     """
@@ -30,7 +29,6 @@ class Scene(models.Model):
     name = models.CharField(max_length=30)
 
 
-
 class Sequence(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified
@@ -38,10 +36,11 @@ class Sequence(models.Model):
     scene       A ManyToOne/ForeignKey that relates the Sequence(s?) to a single Scene?
     name        A CharField that indicates the name of the Scene
     """
-    abstract = True  #Abstracted to be able to make child classes.
+    abstract = True  # Abstracted to be able to make child classes.
     order = models.IntegerField
     scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
+
 
 class Exercise(Sequence):
     """
@@ -57,13 +56,15 @@ class Exercise(Sequence):
     answer = models.TextField
     image = models.ImageField  # Can edit/set width_field and height_field if necessary
 
+
 class Video(Sequence):
     """
     url         An URLField that is supposed to provide an URL to a video
     vidfile     A FileField that is supposed to ...? to be able to show the video.
     """
     url = models.URLField
-    vidfile = models.FileField # Add (upload_to = 'link to location') if we need to save it locally. I think.
+    vidfile = models.FileField  # Add (upload_to = 'link to location') if we need to save it locally. I think.
+
 
 class AnimText(Sequence):
     """
@@ -71,4 +72,4 @@ class AnimText(Sequence):
     image       An ImageField that contains the image to be animated
     """
     text = models.TextField
-    image = models.ImageField # Can edit/set width_field and height_field if necessary
+    image = models.ImageField  # Can edit/set width_field and height_field if necessary
