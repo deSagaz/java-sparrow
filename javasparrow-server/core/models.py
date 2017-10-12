@@ -24,7 +24,7 @@ class Scene(models.Model):
     story       A ManyToOne/ForeignKey that relates the Scene(s?) to a single Story?
     name        A CharField that indicates the name of the Scene
     """
-    order = models.IntegerField()
+    order = models.IntegerField(default=-1)
     story = models.ForeignKey(Story, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=30)
 
@@ -37,7 +37,7 @@ class Sequence(models.Model):
     name        A CharField that indicates the name of the Scene
     """
     abstract = True  # Abstracted to be able to make child classes.
-    order = models.IntegerField()
+    order = models.IntegerField(default=-1)
     scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=30)
 
