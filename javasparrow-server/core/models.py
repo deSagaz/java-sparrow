@@ -8,7 +8,11 @@ class Story(models.Model):
     number      An IntegerField that indicates this story's number
     name        A CharField that indicates the name of the Story
     """
+    name = models.CharField(max_length=64)
+    description = models.CharField(max_length=512)
 
+    class Meta:
+        verbose_name_plural = "Stories"
 
 
 class Scene(models.Model):
