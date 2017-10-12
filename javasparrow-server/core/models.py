@@ -5,8 +5,8 @@ from django.db import models
 class Story(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified
-    number      An IntegerField that indicates this story's number
     name        A CharField that indicates the name of the Story
+    description A CharField offering a short description of the Story
     """
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=512)
