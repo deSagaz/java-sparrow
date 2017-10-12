@@ -24,8 +24,8 @@ class Scene(models.Model):
     story       A ManyToOne/ForeignKey that relates the Scene(s?) to a single Story?
     name        A CharField that indicates the name of the Scene
     """
-    order = models.IntegerField
-    story = models.ForeignKey(Story, on_delete=models.CASCADE)
+    order = models.IntegerField()
+    story = models.ForeignKey(Story, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=30)
 
 
@@ -37,8 +37,8 @@ class Sequence(models.Model):
     name        A CharField that indicates the name of the Scene
     """
     abstract = True  # Abstracted to be able to make child classes.
-    order = models.IntegerField
-    scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
+    order = models.IntegerField()
+    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=30)
 
 
@@ -52,9 +52,9 @@ class Exercise(Sequence):
                 Couldn't really figure this one out, the 'choices' field suggests the variable would take on the value
                 of 1 of the possible choices, so this isn't really suitable. Maybe Ionic has something for this?
     """
-    question = models.TextField
-    answer = models.TextField
-    image = models.ImageField  # Can edit/set width_field and height_field if necessary
+    question = models.TextField()
+    answer = models.TextField()
+    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
 
 
 class Video(Sequence):
@@ -62,8 +62,8 @@ class Video(Sequence):
     url         An URLField that is supposed to provide an URL to a video
     vidfile     A FileField that is supposed to ...? to be able to show the video.
     """
-    url = models.URLField
-    vidfile = models.FileField  # Add (upload_to = 'link to location') if we need to save it locally. I think.
+    url = models.URLField(null=True, blank=True)
+    vidfile = models.FileField(null=True, blank=True)  # Add (upload_to = 'link to location') if we need to save it locally. I think.
 
 
 class AnimText(Sequence):
@@ -71,5 +71,5 @@ class AnimText(Sequence):
     text        A TextField that contains the text to be shown
     image       An ImageField that contains the image to be animated
     """
-    text = models.TextField
-    image = models.ImageField  # Can edit/set width_field and height_field if necessary
+    text = models.TextField()
+    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
