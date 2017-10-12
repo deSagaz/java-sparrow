@@ -44,17 +44,11 @@ class Sequence(models.Model):
 
 class Exercise(Sequence):
     """
-    question    A TextField that holds the text for a question/assignment that will be posed to the player.
-    answer      A TextField that holds the text for the right answer to a question/assignment.
     image       An ImageField that is to be displayed in the background during the exercise
-    choices     A TextField with Field.choices that holds the varying answers for a question with multiple choices.
-                Can be blank (if not a multiple-choice question)
-                Couldn't really figure this one out, the 'choices' field suggests the variable would take on the value
-                of 1 of the possible choices, so this isn't really suitable. Maybe Ionic has something for this?
+    description A CharField that offers a description of the current exercise
     """
-    question = models.TextField()
-    answer = models.TextField()
     image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
+    description = models.CharField(max_length=512, blank=True)
 
 
 class Video(Sequence):
@@ -73,3 +67,27 @@ class AnimText(Sequence):
     """
     text = models.TextField()
     image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
+
+class Question(models.Model):
+    """
+    id          An IntegerField that holds the id with which it can be identified
+    qdescription A CharField that holds the text for the actual question
+    exercise    A ForeignKey/ManyToOne to let an Exercise have multiple Questions
+                This is to account for differently typed questions, such as a series of correct/incorrect sentences,
+                multiple-choice questions (which would list all options in the description),
+                fill in the blank (which usually consists of multiple blanks)
+    """
+    qdescription = models.CharField(max_length=512, blank=True)
+    exercise = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True, blank=True)
+
+
+class Answer(models.Model):
+    """
+    id          An IntegerField that holds the id with which it can be identified
+    answer      A CharField containing a single answer to a Question
+    question    A ForeignKey/ManyToOne to let a Question have different amounts of answers.
+                Mostly used in the case of multiple correct answers, or to account for different coding styles and the like
+                Also for questions that have multiple required answers, such as fill in the blank with multiple blanks
+    """
+    answer = models.CharField(max_length=256)
+    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True)
