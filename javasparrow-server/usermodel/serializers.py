@@ -3,7 +3,7 @@ from rest_framework import serializers
 from usermodel.models import Experience
 
 
-class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
+class ExperienceSerializer(serializers.ModelSerializer):
     """
     Generates list of all stories.
     """
