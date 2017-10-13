@@ -7,7 +7,7 @@ from core import views
 router = DefaultRouter()
 router.register(r'stories', views.StoryViewSet)
 router.register(r'scenes', views.SceneViewSet)
-router.register(r'scenes', views.SequenceViewSet)
+router.register(r'sequence', views.SequenceViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
