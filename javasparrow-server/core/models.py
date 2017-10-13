@@ -25,8 +25,18 @@ class Scene(models.Model):
     name        A CharField that indicates the name of the Scene
     """
     order = models.IntegerField(default=-1)
-    story = models.ForeignKey(Story, on_delete=models.SET_NULL, null=True, blank=True)
+    story = models.ForeignKey(Story, on_delete=models.SET_NULL, related_name='scenes', null=True, blank=True)
     name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name + " (" + str(self.id) + ")"
+
+    def __unicode__(self):
+        return '%d: %s' % (self.order, self.name)
+
+    class Meta:
+        unique_together = ('story', 'order')
+        ordering = ['order']
 
 
 class Sequence(models.Model):
@@ -38,8 +48,18 @@ class Sequence(models.Model):
     """
     abstract = True  # Abstracted to be able to make child classes.
     order = models.IntegerField(default=-1)
-    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, null=True, blank=True)
+    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='sequences', null=True, blank=True)
     name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name + " (" + str(self.id) + ")"
+
+    def __unicode__(self):
+        return '%d: %s' % (self.order, self.name)
+
+    class Meta:
+        unique_together = ('scene', 'order')
+        ordering = ['order']
 
 
 class Exercise(Sequence):
@@ -78,7 +98,7 @@ class Question(models.Model):
                 fill in the blank (which usually consists of multiple blanks)
     """
     qdescription = models.CharField(max_length=512, blank=True)
-    exercise = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True, blank=True)
+    exercise = models.ForeignKey(Exercise, on_delete=models.SET_NULL, related_name='questions', null=True, blank=True)
 
 
 class Answer(models.Model):
@@ -90,4 +110,4 @@ class Answer(models.Model):
                 Also for questions that have multiple required answers, such as fill in the blank with multiple blanks
     """
     answer = models.CharField(max_length=256)
-    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True)
+    question = models.ForeignKey(Question, on_delete=models.SET_NULL, related_name='answers', null=True, blank=True)
