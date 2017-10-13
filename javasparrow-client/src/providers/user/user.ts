@@ -26,6 +26,7 @@ import { Api } from '../api/api';
 @Injectable()
 export class User {
   _user: any;
+  _token: string;
 
   constructor(public api: Api) { }
 
@@ -34,11 +35,11 @@ export class User {
    * the user entered on the form.
    */
   login(accountInfo: any) {
-    let seq = this.api.post('login', accountInfo).share();
+    let seq = this.api.post('auth/login/', accountInfo).share();
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
-      if (res.status == 'success') {
+      if (res.token) {
         this._loggedIn(res);
       } else {
       }
@@ -58,6 +59,7 @@ export class User {
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
+      console.log(res);
       if (res.status == 'success') {
         this._loggedIn(res);
       }
@@ -80,5 +82,6 @@ export class User {
    */
   _loggedIn(resp) {
     this._user = resp.user;
+    this._token = resp.token;
   }
 }

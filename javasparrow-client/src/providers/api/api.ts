@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from "../../environments/environment";
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
  */
 @Injectable()
 export class Api {
-  url: string = 'https://javasparrow.herokuapp.com';
+  url: string = environment.apiUrl;
 
   constructor(public http: HttpClient) {
   }

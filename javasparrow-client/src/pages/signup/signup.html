@@ -17,7 +17,7 @@
       <!--</ion-item>-->
       <ion-item>
         <ion-label fixed>{{ 'USERNAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username" ></ion-input>
+        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -27,12 +27,12 @@
 
       <ion-item>
         <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password1" name="password1"></ion-input>
+        <ion-input type="password" [(ngModel)]="account.password1" name="password"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>{{ 'PASSWORD_REPEAT' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password2" name="password2"></ion-input>
+        <ion-label fixed>{{ 'PASSWORD_CONFIRM' | translate }}</ion-label>
+        <ion-input type="password" [(ngModel)]="account.password2" name="password_confirm"></ion-input>
       </ion-item>
 
       <div padding>
