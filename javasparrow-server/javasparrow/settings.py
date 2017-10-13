@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
     'authentication.apps.AuthenticationConfig',
+    'usermodel.apps.UsermodelConfig',
 
     'rest_framework',
     'rest_framework.authtoken',
