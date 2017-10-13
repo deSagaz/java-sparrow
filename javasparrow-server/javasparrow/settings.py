@@ -187,3 +187,6 @@ STATICFILES_DIRS = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Prevent mails to be sent
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
