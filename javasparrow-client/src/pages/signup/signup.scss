@@ -6,4 +6,7 @@ page-signup {
     padding-left: 30px;
     padding-top: 8px;
   }
+  ion-label[fixed] {
+    min-width: 150px;
+  }
 }
