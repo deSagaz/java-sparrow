@@ -5,6 +5,7 @@
   "EMAIL": "Email",
   "USERNAME": "Username",
   "PASSWORD": "Password",
+  "PASSWORD_CONFIRM": "Confirm PW",
   "LOGIN": "Sign in",
   "SIGNUP": "Sign up",
 
