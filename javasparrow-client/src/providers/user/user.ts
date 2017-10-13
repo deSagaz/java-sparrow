@@ -40,14 +40,15 @@ export class User {
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
       if (res.token) {
-        this._loggedIn(res);
+        localStorage.setItem('token', JSON.stringify(res.token));
+        this._loggedIn(res.token);
       } else {
       }
     }, err => {
       console.error('ERROR', err);
-      var jsonError = JSON.parse(err.error);
-      var errorKeys = Object.keys(jsonError);
-      var i;
+      let jsonError = JSON.parse(err.error);
+      let errorKeys = Object.keys(jsonError);
+      let i;
       for (i = 0; i < errorKeys.length; i++){
         try {
           document.getElementById(errorKeys[i]).innerHTML = jsonError[errorKeys[i]];
@@ -73,9 +74,9 @@ export class User {
       }
     }, err => {
       console.error('ERROR', err);
-      var jsonError = JSON.parse(err.error);
-      var errorKeys = Object.keys(jsonError);
-      var i;
+      let jsonError = JSON.parse(err.error);
+      let errorKeys = Object.keys(jsonError);
+      let i;
       for (i = 0; i < errorKeys.length; i++){
         try {
           document.getElementById(errorKeys[i]).innerHTML = jsonError[errorKeys[i]];
