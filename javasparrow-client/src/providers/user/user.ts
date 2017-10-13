@@ -45,6 +45,14 @@ export class User {
       }
     }, err => {
       console.error('ERROR', err);
+      var jsonError = JSON.parse(err.error);
+      var errorKeys = Object.keys(jsonError);
+      var i;
+      for (i = 0; i < errorKeys.length; i++){
+        try {
+          document.getElementById(errorKeys[i]).innerHTML = jsonError[errorKeys[i]];
+        }catch(err){}
+      };
     });
 
     return seq;
@@ -65,6 +73,14 @@ export class User {
       }
     }, err => {
       console.error('ERROR', err);
+      var jsonError = JSON.parse(err.error);
+      var errorKeys = Object.keys(jsonError);
+      var i;
+      for (i = 0; i < errorKeys.length; i++){
+        try {
+          document.getElementById(errorKeys[i]).innerHTML = jsonError[errorKeys[i]];
+        }catch(err){}
+      };
     });
 
     return seq;
