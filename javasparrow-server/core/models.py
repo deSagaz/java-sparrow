@@ -28,6 +28,9 @@ class Scene(models.Model):
     story = models.ForeignKey(Story, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name + " (" + str(self.id) + ")"
+
 
 class Sequence(models.Model):
     """
@@ -40,6 +43,9 @@ class Sequence(models.Model):
     order = models.IntegerField(default=-1)
     scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name + " (" + str(self.id) + ")"
 
 
 class Exercise(Sequence):
