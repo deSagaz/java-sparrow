@@ -39,17 +39,104 @@ class Scene(models.Model):
         ordering = ['order']
 
 
-class Sequence(models.Model):
+#class Sequence(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified
     order       An IntegerField that indicates the index (placement) of this Sequence in a Scene
     scene       A ManyToOne/ForeignKey that relates the Sequence(s?) to a single Scene?
     name        A CharField that indicates the name of the Scene
     """
-    abstract = True  # Abstracted to be able to make child classes.
+#    abstract = True  # Abstracted to be able to make child classes.
+#    order = models.IntegerField(default=-1)
+#    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='sequences', null=True, blank=True)
+#    name = models.CharField(max_length=30)
+
+#   def __str__(self):
+#        return self.name + " (" + str(self.id) + ")"
+
+#    def __unicode__(self):
+#        return '%d: %s' % (self.order, self.name)
+
+#    class Meta:
+#        unique_together = ('scene', 'order')
+#        ordering = ['order']
+
+
+#class Exercise(Sequence):
+class Exercise(models.Model):
+    """
+    id          An IntegerField that holds the id with which it can be identified
+    order       An IntegerField that indicates the index (placement) of this Sequence in an Exercise
+    name        A CharField that indicates the name of the Exercise
+    image       An ImageField that is to be displayed in the background during the exercise
+    description A CharField that offers a description of the current exercise
+    scene       A ManyToOne/ForeignKey that relates the Exercise to a single Scene
+    """
+    id = models.AutoField(primary_key=True, default=-1)
     order = models.IntegerField(default=-1)
-    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='sequences', null=True, blank=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, blank=True, null=True)
+    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
+    description = models.CharField(max_length=512, blank=True)
+    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='exercises', null=True, blank=True)
+
+    def __str__(self):
+        return self.name + " (" + str(self.id) + ")"
+
+
+    def __unicode__(self):
+        return '%d: %s' % (self.order, self.name)
+
+
+    class Meta:
+        unique_together = ('scene', 'order')
+        ordering = ['order']
+
+#class Video(Sequence):
+class Video(models.Model):
+    """
+    id          An IntegerField that holds the id with which it can be identified
+    order       An IntegerField that indicates the index (placement) of this Sequence in a Video
+    name        A CharField that indicates the name of the Video
+    url         An URLField that is supposed to provide an URL to a video
+    vidfile     A FileField that is supposed to ...? to be able to show the video.
+    scene       A ManyToOne/ForeignKey that relates the Video to a single Scene
+    """
+    id = models.AutoField(primary_key=True, default=-1)
+    order = models.IntegerField(default=-1)
+    name = models.CharField(max_length=30, null=True, blank=True)
+    url = models.URLField(null=True, blank=True)
+    vidfile = models.FileField(null=True, blank=True)  # Add (upload_to = 'link to location') if we need to save it locally. I think.
+    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='videos', null=True, blank=True)
+
+    def __str__(self):
+        return self.name + " (" + str(self.id) + ")"
+
+
+    def __unicode__(self):
+        return '%d: %s' % (self.order, self.name)
+
+
+    class Meta:
+        unique_together = ('scene', 'order')
+        ordering = ['order']
+
+
+#class AnimText(Sequence):
+class AnimText(models.Model):
+    """
+    id          An IntegerField that holds the id with which it can be identified
+    order       An IntegerField that indicates the index (placement) of this Sequence in an AnimText
+    name        A CharField that indicates the name of the AnimText
+    text        A TextField that contains the text to be shown
+    image       An ImageField that contains the image to be animated
+    scene       A ManyToOne/ForeignKey that relates the AnimText to a single Scene
+    """
+    id = models.AutoField(primary_key=True, default=-1)
+    order = models.IntegerField(default=-1)
+    name = models.CharField(max_length=30, blank=True, null=True)
+    text = models.TextField()
+    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
+    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='animtexts', null=True, blank=True)
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
@@ -62,32 +149,6 @@ class Sequence(models.Model):
         ordering = ['order']
 
 
-class Exercise(Sequence):
-    """
-    image       An ImageField that is to be displayed in the background during the exercise
-    description A CharField that offers a description of the current exercise
-    """
-    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
-    description = models.CharField(max_length=512, blank=True)
-
-
-class Video(Sequence):
-    """
-    url         An URLField that is supposed to provide an URL to a video
-    vidfile     A FileField that is supposed to ...? to be able to show the video.
-    """
-    url = models.URLField(null=True, blank=True)
-    vidfile = models.FileField(null=True, blank=True)  # Add (upload_to = 'link to location') if we need to save it locally. I think.
-
-
-class AnimText(Sequence):
-    """
-    text        A TextField that contains the text to be shown
-    image       An ImageField that contains the image to be animated
-    """
-    text = models.TextField()
-    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
-
 class Question(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified
@@ -97,7 +158,7 @@ class Question(models.Model):
                 multiple-choice questions (which would list all options in the description),
                 fill in the blank (which usually consists of multiple blanks)
     """
-    qdescription = models.CharField(max_length=512, blank=True)
+    qdescription = models.CharField(max_length=512, blank=True, null=True)
     exercise = models.ForeignKey(Exercise, on_delete=models.SET_NULL, related_name='questions', null=True, blank=True)
 
 
@@ -109,5 +170,5 @@ class Answer(models.Model):
                 Mostly used in the case of multiple correct answers, or to account for different coding styles and the like
                 Also for questions that have multiple required answers, such as fill in the blank with multiple blanks
     """
-    answer = models.CharField(max_length=256)
+    answer = models.CharField(max_length=256, null=True, blank=True)
     question = models.ForeignKey(Question, on_delete=models.SET_NULL, related_name='answers', null=True, blank=True)
