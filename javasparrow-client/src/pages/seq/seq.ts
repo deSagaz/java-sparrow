@@ -23,6 +23,14 @@ export class SeqPage {
   // primaryText is used for character dialogue and question texts
   primaryText: string;
 
+  // Anwers are used for multiple choice
+  answer1: string;
+  answer2: string;
+  answer3: string;
+  answer4: string;
+  answer5: string;
+  answer6: string;
+
   // Which components to show?
   showPrimaryText: boolean = true;
   showMultipleChoice: boolean = false;
@@ -89,7 +97,36 @@ export class SeqPage {
   doQuiz() {
     // Load data
     this.primaryText = this.sequence[this.currentEventIndex]['data']['question'];
-    // TODO: Load questions into component
+    if (this.sequence[this.currentEventIndex]['data']['answer1']) {
+      this.answer1 = this.sequence[this.currentEventIndex]['data']['answer1']
+    } else {
+      this.answer1 = "";
+    }
+    if (this.sequence[this.currentEventIndex]['data']['answer2']) {
+      this.answer2 = this.sequence[this.currentEventIndex]['data']['answer2']
+    } else {
+      this.answer2 = "";
+    }
+    if (this.sequence[this.currentEventIndex]['data']['answer3']) {
+      this.answer3 = this.sequence[this.currentEventIndex]['data']['answer3']
+    } else {
+      this.answer3 = "";
+    }
+    if (this.sequence[this.currentEventIndex]['data']['answer4']) {
+      this.answer4 = this.sequence[this.currentEventIndex]['data']['answer4']
+    } else {
+      this.answer4 = "";
+    }
+    if (this.sequence[this.currentEventIndex]['data']['answer5']) {
+      this.answer5 = this.sequence[this.currentEventIndex]['data']['answer5']
+    } else {
+      this.answer5 = "";
+    }
+    if (this.sequence[this.currentEventIndex]['data']['answer6']) {
+      this.answer6 = this.sequence[this.currentEventIndex]['data']['answer6']
+    } else {
+      this.answer6 = "";
+    }
 
     // Set interface
     this.showPrimaryText = true;

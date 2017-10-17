@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /**
  * Generated class for the SeqMultipleChoiceComponent component.
@@ -12,7 +12,12 @@ import { Component } from '@angular/core';
 })
 export class SeqMultipleChoiceComponent {
 
-  text: string;
+  @Input() answer1: string;
+  @Input() answer2: string;
+  @Input() answer3: string;
+  @Input() answer4: string;
+  @Input() answer5: string;
+  @Input() answer6: string;
 
   constructor() {
   }

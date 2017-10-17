@@ -2,7 +2,13 @@
   <img [src]="backgroundImage">
   <div class="overlay">
     <h1 *ngIf="showPrimaryText">{{ primaryText }}</h1>
-    <seq-multiple-choice *ngIf="showMultipleChoice"></seq-multiple-choice>
+    <seq-multiple-choice *ngIf="showMultipleChoice"
+                         [answer1]="answer1"
+                         [answer2]="answer2"
+                         [answer3]="answer3"
+                         [answer4]="answer4"
+                         [answer5]="answer5"
+                         [answer6]="answer6"></seq-multiple-choice>
     <button *ngIf="showNextButton" (click)="next()">Next</button>
   </div>
 </ion-content>
