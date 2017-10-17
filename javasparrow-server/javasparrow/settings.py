@@ -115,10 +115,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sparrow',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': 'sparrow',
+        'PASSWORD': 'sparrow',
         'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
