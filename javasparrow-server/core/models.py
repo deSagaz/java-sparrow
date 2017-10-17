@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 
 
 class Story(models.Model):
@@ -46,10 +47,11 @@ class Sequence(models.Model):
     scene       A ManyToOne/ForeignKey that relates the Sequence(s?) to a single Scene?
     name        A CharField that indicates the name of the Sequence
     """
-    abstract = True  # Abstracted to be able to make child classes.
+    #abstract = True  # Abstracted to be able to make child classes.
     order = models.IntegerField(default=-1)
     scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='sequences', null=True, blank=True)
     name = models.CharField(max_length=30)
+    events = JSONField(default={})
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
@@ -61,7 +63,7 @@ class Sequence(models.Model):
         unique_together = ('scene', 'order')
         ordering = ['order']
 
-
+'''
 class Exercise(Sequence):
     """
     image       An ImageField that is to be displayed in the background during the exercise
@@ -142,3 +144,4 @@ class Answer(models.Model):
     """
     answer = models.CharField(max_length=256)
     question = models.ForeignKey(Question, on_delete=models.SET_NULL, related_name='answers', null=True, blank=True)
+'''

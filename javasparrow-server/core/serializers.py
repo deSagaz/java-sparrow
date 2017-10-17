@@ -3,6 +3,8 @@ from rest_framework import serializers
 from core.models import Story
 from core.models import Scene
 from core.models import Sequence
+
+'''
 from core.models import Exercise
 from core.models import Video
 from core.models import AnimText
@@ -10,6 +12,7 @@ from core.models import Question
 from core.models import Answer
 from core.models import MultChoice
 from core.models import FillBlank
+'''
 
 
 class StorySerializer(serializers.HyperlinkedModelSerializer):
@@ -55,8 +58,9 @@ class SequenceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Sequence
-        fields = ('id', 'order', 'scene', 'name')
+        fields = ('id', 'order', 'scene', 'name', 'events')
 
+'''
 # Obsolete, use specific types of questions now
 class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -131,3 +135,4 @@ class FillBlankSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = FillBlank
         fields = ('id', 'image', 'description', 'multiline', 'answer1', 'answer2', 'answer3')
+'''
