@@ -1,3 +1,10 @@
 <ion-content padding>
-  <seq-multiple-choice></seq-multiple-choice>
+  <div class="img">
+  </div>
+  <div class="overlay">
+    <h1 *ngIf="showPrimaryText">{{ primaryText }}</h1>
+    <seq-multiple-choice *ngIf="showMultipleChoice"></seq-multiple-choice>
+    <button *ngIf="showNextButton" (click)="next()">Next</button>
+  </div>
 </ion-content>
+
