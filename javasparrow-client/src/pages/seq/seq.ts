@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SeqPage {
 
-  api: string = '{"events":[{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answer1":"A dedicated data type","answer2":"An regular JavaScript object","correctAnswer":"2","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"purple","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all..."}}]}';
+  api: string = '{"events":[{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"purple","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"Woops, perhaps Javascript is a bit weird after all..."}}]}';
   sequence: object[];
   currentEventIndex: number;
   currentEventType: string;
@@ -24,12 +24,7 @@ export class SeqPage {
   primaryText: string;
 
   // Anwers are used for multiple choice
-  answer1: string;
-  answer2: string;
-  answer3: string;
-  answer4: string;
-  answer5: string;
-  answer6: string;
+  multipleChoiceAnswers: string[];
 
   // Which components to show?
   showPrimaryText: boolean = true;
@@ -97,36 +92,8 @@ export class SeqPage {
   doQuiz() {
     // Load data
     this.primaryText = this.sequence[this.currentEventIndex]['data']['question'];
-    if (this.sequence[this.currentEventIndex]['data']['answer1']) {
-      this.answer1 = this.sequence[this.currentEventIndex]['data']['answer1']
-    } else {
-      this.answer1 = "";
-    }
-    if (this.sequence[this.currentEventIndex]['data']['answer2']) {
-      this.answer2 = this.sequence[this.currentEventIndex]['data']['answer2']
-    } else {
-      this.answer2 = "";
-    }
-    if (this.sequence[this.currentEventIndex]['data']['answer3']) {
-      this.answer3 = this.sequence[this.currentEventIndex]['data']['answer3']
-    } else {
-      this.answer3 = "";
-    }
-    if (this.sequence[this.currentEventIndex]['data']['answer4']) {
-      this.answer4 = this.sequence[this.currentEventIndex]['data']['answer4']
-    } else {
-      this.answer4 = "";
-    }
-    if (this.sequence[this.currentEventIndex]['data']['answer5']) {
-      this.answer5 = this.sequence[this.currentEventIndex]['data']['answer5']
-    } else {
-      this.answer5 = "";
-    }
-    if (this.sequence[this.currentEventIndex]['data']['answer6']) {
-      this.answer6 = this.sequence[this.currentEventIndex]['data']['answer6']
-    } else {
-      this.answer6 = "";
-    }
+    // Go through each answer in the answer array
+    this.multipleChoiceAnswers = this.sequence[this.currentEventIndex]['data']['answers'];
 
     // Set interface
     this.showPrimaryText = true;

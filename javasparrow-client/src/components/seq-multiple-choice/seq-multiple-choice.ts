@@ -12,12 +12,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class SeqMultipleChoiceComponent {
 
-  @Input() answer1: string;
-  @Input() answer2: string;
-  @Input() answer3: string;
-  @Input() answer4: string;
-  @Input() answer5: string;
-  @Input() answer6: string;
+  @Input() answers: string[];
 
   @Output() answerGiven = new EventEmitter();
 
