@@ -50,8 +50,9 @@ export class SeqPage {
   next() {
     if(this.currentEventIndex == this.sequence.length - 1) {
       console.log("SEQUENCE HAS ENDED"); // DEBUG
+      this.toast.info("Sequence has ended. Please wait. Developers will get you out of here eventually.");
+      // TODO: Return to chapter menu screen and check off level for user.
       return;
-      // sequence has ended. Return to chapter menu screen and check off level for user.
     } else {
       console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG
     }
