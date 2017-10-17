@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 /**
  * Generated class for the SeqMultipleChoiceComponent component.
@@ -19,7 +19,13 @@ export class SeqMultipleChoiceComponent {
   @Input() answer5: string;
   @Input() answer6: string;
 
+  @Output() answerGiven = new EventEmitter();
+
   constructor() {
+  }
+
+  giveAnswer(ans: number) {
+    this.answerGiven.emit(ans);
   }
 
 }

@@ -8,7 +8,8 @@
                          [answer3]="answer3"
                          [answer4]="answer4"
                          [answer5]="answer5"
-                         [answer6]="answer6"></seq-multiple-choice>
+                         [answer6]="answer6"
+                         (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
     <button *ngIf="showNextButton" (click)="next()">Next</button>
   </div>
 </ion-content>

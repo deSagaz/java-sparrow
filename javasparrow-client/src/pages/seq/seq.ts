@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SeqPage {
 
-  api: string = '{"events":[{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answer1":"A dedicated data type","answer2":"An regular JavaScript object","rightAnswerResponse":"Maybe I should be in that big chair!","rightAnswerResponseColor":"purple","wrongAnswer":"Woops, perhaps Javascript is a bit weird after all..."}},{"id":1,"eventType":"quiz","data":{"question":"What is a Javascript array?","answer_1":"A dedicated data type","answer_2":"An regular object"}}]}';
+  api: string = '{"events":[{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answer1":"A dedicated data type","answer2":"An regular JavaScript object","correctAnswer":"2","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"purple","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all..."}}]}';
   sequence: object[];
   currentEventIndex: number;
   currentEventType: string;
@@ -132,6 +132,16 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showMultipleChoice = true;
     this.showNextButton = false;
+  }
+
+  checkMultipleChoiceAnswer(ans: number) {
+    if (ans == this.sequence[this.currentEventIndex]['data']['correctAnswer']) {
+      this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
+    } else {
+      this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
+    }
+    this.showMultipleChoice = false;
+    this.showNextButton = true;
   }
 
 

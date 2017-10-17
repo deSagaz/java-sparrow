@@ -1,14 +1,14 @@
   <ion-grid>
     <ion-row>
-      <ion-col col-12 col-sm-6 col-md-6><button>{{ answer1 }}</button></ion-col>
-      <ion-col col-12 col-sm-6 col-md-6><button>{{ answer2 }}</button></ion-col>
+      <ion-col *ngIf="answer1 != ''"  col-12 col-sm-6 col-md-6><button (click)="giveAnswer(1)">{{ answer1 }}</button></ion-col>
+      <ion-col *ngIf="answer2 != ''"  col-12 col-sm-6 col-md-6><button (click)="giveAnswer(2)">{{ answer2 }}</button></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col *ngIf="answer3 != ''" col-12 col-sm-6 col-md-6><button>{{ answer3 }}</button></ion-col>
-      <ion-col *ngIf="answer4 != ''" col-12 col-sm-6 col-md-6><button>{{ answer4 }}</button></ion-col>
+      <ion-col *ngIf="answer3 != ''" col-12 col-sm-6 col-md-6><button (click)="giveAnswer(3)">{{ answer3 }}</button></ion-col>
+      <ion-col *ngIf="answer4 != ''" col-12 col-sm-6 col-md-6><button (click)="giveAnswer(4)">{{ answer4 }}</button></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col *ngIf="answer5 != ''" col-12 col-sm-6 col-md-6><button>{{ answer5 }}</button></ion-col>
-      <ion-col *ngIf="answer6 != ''" col-12 col-sm-6 col-md-6><button>{{ answer6 }}</button></ion-col>
+      <ion-col *ngIf="answer5 != ''" col-12 col-sm-6 col-md-6><button (click)="giveAnswer(5)">{{ answer5 }}</button></ion-col>
+      <ion-col *ngIf="answer6 != ''" col-12 col-sm-6 col-md-6><button (click)="giveAnswer(6)">{{ answer6 }}</button></ion-col>
     </ion-row>
   </ion-grid>
