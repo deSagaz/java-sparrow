@@ -15,13 +15,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SeqPage {
 
-  api: string = '{"events":[{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"purple","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"Woops, perhaps Javascript is a bit weird after all..."}}]}';
+  api: string = '{"events":[{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object","A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}}]}';
   sequence: object[];
   currentEventIndex: number;
   currentEventType: string;
 
   // primaryText is used for character dialogue and question texts
   primaryText: string;
+  primaryTextColor: string;
+  primaryTextItalic: boolean;
 
   // Anwers are used for multiple choice
   multipleChoiceAnswers: string[];
@@ -60,6 +62,11 @@ export class SeqPage {
     } else if (this.currentEventType == "quiz") {
       this.doQuiz();
     }
+  }
+
+  resetStyle() {
+    this.primaryTextColor = "#17d7d0";
+    this.primaryTextItalic = false;
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -104,8 +111,12 @@ export class SeqPage {
   checkMultipleChoiceAnswer(ans: number) {
     if (ans == this.sequence[this.currentEventIndex]['data']['correctAnswer']) {
       this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
+      this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
+      this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
     } else {
       this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
+      this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor'];
+      this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
     }
     this.showMultipleChoice = false;
     this.showNextButton = true;

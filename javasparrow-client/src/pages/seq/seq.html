@@ -1,7 +1,7 @@
 <ion-content padding>
   <img [src]="backgroundImage">
   <div class="overlay">
-    <h1 *ngIf="showPrimaryText">{{ primaryText }}</h1>
+    <h1 *ngIf="showPrimaryText" [style.color]="primaryTextColor" [ngClass]="{'italic': primaryTextItalic}">{{ primaryText }}</h1>
     <seq-multiple-choice *ngIf="showMultipleChoice"
                          [answers]=multipleChoiceAnswers
                          (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
