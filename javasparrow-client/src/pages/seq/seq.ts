@@ -42,6 +42,8 @@ export class SeqPage {
     console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG
 
     if(this.currentEventIndex == this.sequence.length - 1) {
+      console.log("SEQUENCE HAS ENDED"); // DEBUG
+      return;
       // sequence has ended. Return to chapter menu screen and check off level for user.
     }
     this.currentEventIndex++;
@@ -79,6 +81,7 @@ export class SeqPage {
   doBackgroundChange() {
     // Change background
     this.backgroundImage = this.primaryText = this.sequence[this.currentEventIndex]['data']['image'];
+
     // Immediately run next event
     this.next();
   }
