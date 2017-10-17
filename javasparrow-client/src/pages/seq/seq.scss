@@ -1,14 +1,12 @@
 page-seq {
-  .img {
+  img {
     position: absolute;
     z-index: 10;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    background: url('/assets/img/duckAtDesk.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
     opacity: .3;
   }
   .overlay {
