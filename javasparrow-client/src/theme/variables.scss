@@ -76,3 +76,17 @@ $toolbar-background:#29B6F6;
 
 @import "roboto";
 @import "noto-sans";
+
+// App-wide styles
+// --------------------------------------------------
+
+.toast-danger {
+  > div {
+    background: color($colors, danger) !important;
+  }
+}
+.toast-info{
+  > div {
+    background: color($colors, secondary) !important;
+  }
+}

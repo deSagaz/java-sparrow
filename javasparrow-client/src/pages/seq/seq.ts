@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ToastProvider } from "../../providers/toast/toast";
 
 /**
  * Generated class for the SeqPage page.
@@ -36,7 +37,10 @@ export class SeqPage {
   // Background
   backgroundImage: string = "/assets/img/duckAtDesk.jpg";
 
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider) {
+    this.init(JSON.parse(this.api));
+    this.next();
+  }
 
   init(sequenceObject: object) {
     this.sequence = sequenceObject['events'];
@@ -44,13 +48,14 @@ export class SeqPage {
   }
 
   next() {
-    console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG
-
     if(this.currentEventIndex == this.sequence.length - 1) {
       console.log("SEQUENCE HAS ENDED"); // DEBUG
       return;
       // sequence has ended. Return to chapter menu screen and check off level for user.
+    } else {
+      console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG
     }
+
     this.currentEventIndex++;
     this.currentEventType = this.sequence[this.currentEventIndex]['eventType'];
 
@@ -61,6 +66,10 @@ export class SeqPage {
       this.doBackgroundChange();
     } else if (this.currentEventType == "quiz") {
       this.doQuiz();
+    } else {
+      console.error("Event type unknown: ", this.currentEventType);
+      this.toast.error("Event type unknown. Contact a developer.");
+      this.currentEventIndex--; // Rewind event index
     }
   }
 
@@ -68,15 +77,6 @@ export class SeqPage {
     this.primaryTextColor = "#17d7d0";
     this.primaryTextItalic = false;
   }
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.init(JSON.parse(this.api));
-    this.next();
-  }
-
-  ionViewDidLoad() {
-  }
-
 
   doText() {
     // Load data
@@ -90,7 +90,7 @@ export class SeqPage {
 
   doBackgroundChange() {
     // Change background
-    this.backgroundImage = this.primaryText = this.sequence[this.currentEventIndex]['data']['image'];
+    this.backgroundImage = this.sequence[this.currentEventIndex]['data']['image'];
 
     // Immediately run next event
     this.next();
