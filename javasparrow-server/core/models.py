@@ -44,7 +44,7 @@ class Sequence(models.Model):
     id          An IntegerField that holds the id with which it can be identified
     order       An IntegerField that indicates the index (placement) of this Sequence in a Scene
     scene       A ManyToOne/ForeignKey that relates the Sequence(s?) to a single Scene?
-    name        A CharField that indicates the name of the Scene
+    name        A CharField that indicates the name of the Sequence
     """
     abstract = True  # Abstracted to be able to make child classes.
     order = models.IntegerField(default=-1)
@@ -69,6 +69,37 @@ class Exercise(Sequence):
     """
     image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
     description = models.CharField(max_length=512, blank=True)
+
+class MultChoice(Sequence):
+    """
+    image       An ImageField that is to be displayed in the background during the exercise
+    description A CharField that offers a description of the current exercise
+    options     CharFields that contain the possible answers to the question
+    answer      The correct answer
+    """
+    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
+    description = models.CharField(max_length=512, blank=True)
+    option1 = models.CharField(max_length=256, blank=True)
+    option2 = models.CharField(max_length=256, blank=True)
+    option3 = models.CharField(max_length=256, blank=True)
+    option4 = models.CharField(max_length=256, blank=True)
+    option5 = models.CharField(max_length=256, blank=True)
+    option6 = models.CharField(max_length=256, blank=True)
+    answer = models.CharField(max_length=256, blank=True)
+
+class FillBlank(Sequence):
+    """
+    image       An ImageField that is to be displayed in the background during the exercise
+    description A CharField that offers a description of the current exercise, contains the blank to be filled in
+    multiline   Boolean that indicates whether the question should be multiline -> for front-end
+    answers   Charfields containing possible solutions to the blank
+    """
+    image = models.ImageField(null=True, blank=True)  # Can edit/set width_field and height_field if necessary
+    description = models.CharField(max_length=512, blank=True)
+    multiline = models.BooleanField(default=False)
+    answer1 = models.CharField(max_length=256, blank=True)
+    answer2 = models.CharField(max_length=256, blank=True)
+    answer3 = models.CharField(max_length=256, blank=True)
 
 
 class Video(Sequence):
