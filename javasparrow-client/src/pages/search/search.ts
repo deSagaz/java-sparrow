@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Item } from '../../models/item';
-import { Items } from '../../providers/providers';
+import { Scene } from '../../models/scene';
+import { Scenes } from '../../providers/providers';
+
+//TODO: duplicate search for stories
 
 @IonicPage()
 @Component({
@@ -13,7 +15,7 @@ export class SearchPage {
 
   currentItems: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Scenes) { }
 
   /**
    * Perform a service for the proper items.
@@ -32,7 +34,7 @@ export class SearchPage {
   /**
    * Navigate to the detail page for this item.
    */
-  openItem(item: Item) {
+  openItem(item: Scene) {
     this.navCtrl.push('ItemDetailPage', {
       item: item
     });

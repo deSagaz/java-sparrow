@@ -1,0 +1,19 @@
+<ion-content class="no-scroll">
+  <img [ngClass]="{'backgroundContrast': backgroundContrast}" [src]="backgroundImage | async">
+  <div class="overlay">
+    <h1 *ngIf="showPrimaryText" [style.color]="primaryTextColor" [ngClass]="{'italic': primaryTextItalic}">{{ primaryText }}</h1>
+    <div class="codeWindow" [ngClass]="{'hide': !showCodeWindow}">
+      <ace-editor [(text)]="text" #editor [mode]="'javascript'"></ace-editor>
+      <button (click)="checkCodeChallenge()">Run code</button>
+    </div>
+    <seq-multiple-choice *ngIf="showMultipleChoice"
+                         [answers]=multipleChoiceAnswers
+                         (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
+    <seq-open-ended *ngIf="showOpenEnded"
+                         (answerGiven)="checkOpenEndedAnswer($event)"></seq-open-ended>
+    <ion-fab class="nextButton" *ngIf="showNextButton" right bottom (click)="next()">
+      <button ion-fab color="light">&gt;</button>
+    </ion-fab>
+  </div>
+</ion-content>
+

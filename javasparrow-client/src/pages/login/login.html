@@ -10,24 +10,25 @@
 <ion-content>
   <form (submit)="doLogin()">
     <ion-list>
+      <div id="non_field_errors" class="topMessage"></div>
 
-      <!-- <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
-      </ion-item> -->
-
-      
-      <!-- Want to use a Username instead of an Email? Here you go: -->
+      <!--<ion-item>-->
+        <!--<ion-label fixed>{{ 'USERNAME' | translate }}</ion-label>-->
+        <!--<ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>-->
+      <!--</ion-item>-->
+      <!--<div id="username" class="messages"></div>-->
 
       <ion-item>
-        <ion-label fixed>{{ 'USERNAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
+        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
+        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
       </ion-item>
+      <div id="email" class="messages"></div>
 
       <ion-item>
         <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
         <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
       </ion-item>
+      <div id="password" class="messages"></div>
 
       <div padding>
         <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>

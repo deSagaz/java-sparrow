@@ -5,6 +5,7 @@
   "EMAIL": "Email",
   "USERNAME": "Username",
   "PASSWORD": "Password",
+  "PASSWORD_CONFIRM": "Confirm password",
   "LOGIN": "Sign in",
   "SIGNUP": "Sign up",
 
@@ -49,7 +50,9 @@
   "SIGNUP_ERROR": "Unable to create account. Please check your account information and try again.",
   "SIGNUP_BUTTON": "Sign up",
 
-  "LIST_MASTER_TITLE": "Items",
+  "STORIES_TITLE": "Stories",
+
+  "SCENES_TITLE": "Scenes",
 
   "ITEM_CREATE_TITLE": "New Item",
   "ITEM_CREATE_CHOOSE_IMAGE": "Add Image",
@@ -61,7 +64,7 @@
   "CANCEL_BUTTON": "Cancel",
   "DELETE_BUTTON": "Delete",
 
-  "CARDS_TITLE": "Social",
+  "CARDS_TITLE": "Stories to Play",
 
   "SEARCH_TITLE": "Search",
   "SEARCH_PLACEHOLDER": "Search the items list, e.g. \"Donald Duck\""
