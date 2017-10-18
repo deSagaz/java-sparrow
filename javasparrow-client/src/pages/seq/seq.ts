@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ToastProvider } from "../../providers/toast/toast";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /**
  * Generated class for the SeqPage page.
@@ -16,7 +17,7 @@ import { ToastProvider } from "../../providers/toast/toast";
 })
 export class SeqPage {
 
-  api: string = '{"events":[{"id":29,"eventType":"backgroundChange","data":{"image":"assets/img/duckAtDesk.jpg"}},{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}}]}';
+  api: string = '{"events":[{"id":29,"eventType":"backgroundChange","data":{"image":"assets/img/duckAtDesk.jpg"}},{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"id":0,"eventType":"animation","data":{"frames":["assets/img/tech4learn_duckSlide_1.jpg","assets/img/tech4learn_duckSlide_2.jpg","assets/img/tech4learn_duckSlide_3.jpg","assets/img/tech4learn_duckSlide_4.jpg","assets/img/tech4learn_duckSlide_5.jpg"],"fps":2, "waitStart":3, "waitEnd":3}}]}';
   sequence: object[];
   currentEventIndex: number;
   currentEventType: string;
@@ -35,9 +36,12 @@ export class SeqPage {
   showNextButton: boolean = true;
 
   // Background
-  backgroundImage: string = "";
+  backgroundImage: BehaviorSubject<string>;
+  backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider) {
+    this.backgroundImage = new BehaviorSubject("");
+
     this.init(JSON.parse(this.api));
     this.next();
   }
@@ -67,7 +71,9 @@ export class SeqPage {
       this.doBackgroundChange();
     } else if (this.currentEventType == "quiz") {
       this.doQuiz();
-    } else {
+    } else if (this.currentEventType == "animation") {
+      this.doAnimation(this.sequence[this.currentEventIndex]['data']);
+    }else {
       console.error("Event type unknown: ", this.currentEventType);
       this.toast.error("Event type unknown. Contact a developer.");
       this.currentEventIndex--; // Rewind event index
@@ -91,8 +97,7 @@ export class SeqPage {
 
   doBackgroundChange() {
     // Change background
-    this.backgroundImage = this.sequence[this.currentEventIndex]['data']['image'];
-
+    this.backgroundImage.next(this.sequence[this.currentEventIndex]['data']['image']);
     // Immediately run next event
     this.next();
   }
@@ -107,6 +112,7 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showMultipleChoice = true;
     this.showNextButton = false;
+    this.backgroundContrast = true;
   }
 
   checkMultipleChoiceAnswer(ans: number) {
@@ -121,6 +127,34 @@ export class SeqPage {
     }
     this.showMultipleChoice = false;
     this.showNextButton = true;
+  }
+
+  doAnimation(data: object) {
+    // Set interface
+    this.showPrimaryText = false;
+    this.showMultipleChoice = false;
+    this.showNextButton = false;
+    this.backgroundContrast = false;
+
+    console.log("ANIMATION STARTED");
+    let frames: string[] = data['frames'];
+    let fps: number = data['fps'];
+
+    // Set starting wait time
+    setTimeout(() => {
+      console.log((data['waitStart'] * 1000));
+      frames.forEach((item, index) => {
+        setTimeout(() => {
+          this.backgroundImage.next(item);
+          console.log((1000 / fps) * (index + 1));
+        }, (1000 / fps) * (index));
+      })
+    }, (data['waitStart']*1000));
+
+    // Set ending wait time
+    setTimeout(() => {
+      this.next();
+    }, (data['waitStart']*1000 + ((1000 / fps) * frames.length) +  data['waitEnd']*1000));
   }
 
 
