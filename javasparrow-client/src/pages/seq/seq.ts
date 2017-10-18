@@ -65,7 +65,7 @@ export class SeqPage {
     this.editor.setTheme("monokai");
     this.editor.getEditor().setOptions({
       enableBasicAutocompletion: true,
-      fontSize: "16px",
+      fontSize: "12px",
       enableSnippets: true,
       enableLiveAutocompletion: true
     });
