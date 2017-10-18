@@ -24,10 +24,12 @@ class Scene(models.Model):
     order       An IntegerField that indicates the index (placement) of this Scene in a Story
     story       A ManyToOne/ForeignKey that relates the Scene(s?) to a single Story?
     name        A CharField that indicates the name of the Scene
+    events      List of events for things such as questions
     """
     order = models.IntegerField(default=-1)
     story = models.ForeignKey(Story, on_delete=models.SET_NULL, related_name='scenes', null=True, blank=True)
     name = models.CharField(max_length=30)
+    events = JSONField(default={})
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
@@ -39,7 +41,7 @@ class Scene(models.Model):
         unique_together = ('story', 'order')
         ordering = ['order']
 
-
+'''
 class Sequence(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified
@@ -62,7 +64,7 @@ class Sequence(models.Model):
     class Meta:
         unique_together = ('scene', 'order')
         ordering = ['order']
-
+'''
 '''
 class Exercise(Sequence):
     """

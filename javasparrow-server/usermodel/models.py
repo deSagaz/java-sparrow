@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from core.models import Sequence
+#from core.models import Sequence
 
 
 class Experience(models.Model):
@@ -24,12 +24,13 @@ class Experience(models.Model):
         null=True,
         blank=True
     )
-    sequence = models.ForeignKey(
-        Sequence,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
+    #sequence = models.ForeignKey(
+    #    Sequence,
+    #    on_delete=models.CASCADE,
+    #    null=True,
+    #    blank=True
+    #)
 
     def __str__(self):
-        return self.user.username + " " + self.verb + " \"" + self.sequence.name + "\" (" + str(self.id) + ")"
+        #return self.user.username + " " + self.verb + " \"" + self.sequence.name + "\" (" + str(self.id) + ")"
+        return self.user.username + " " + self.verb + " \"" + "\" (" + str(self.id) + ")"

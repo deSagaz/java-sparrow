@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from core.models import Story
 from core.models import Scene
-from core.models import Sequence
+#from core.models import Sequence
 
 '''
 from core.models import Exercise
@@ -35,16 +35,17 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
     Generates list of all scenes.
     """
     #sequences = serializers.StringRelatedField(many=True)
-    sequences = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='sequence-detail'
-    )
+    #sequences = serializers.HyperlinkedRelatedField(
+    #    many=True,
+    #    read_only=True,
+    #    view_name='sequence-detail'
+    #)
 
     class Meta:
         model = Scene
-        fields = ('id', 'order', 'story', 'name', 'sequences')
+        fields = ('id', 'order', 'story', 'name', 'events')
 
+'''
 class SequenceSerializer(serializers.HyperlinkedModelSerializer):
     """
     Generates list of all sequences.
@@ -59,7 +60,7 @@ class SequenceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Sequence
         fields = ('id', 'order', 'scene', 'name', 'events')
-
+'''
 '''
 # Obsolete, use specific types of questions now
 class ExerciseSerializer(serializers.HyperlinkedModelSerializer):

@@ -4,7 +4,7 @@ from rest_framework import viewsets
 # Create your views here.
 from core.models import Story
 from core.models import Scene
-from core.models import Sequence
+#from core.models import Sequence
 
 '''
 from core.models import Video
@@ -17,7 +17,7 @@ from core.models import FillBlank
 '''
 from core.serializers import StorySerializer
 from core.serializers import SceneSerializer
-from core.serializers import SequenceSerializer
+#from core.serializers import SequenceSerializer
 '''
 from core.serializers import VideoSerializer
 from core.serializers import ExerciseSerializer
@@ -53,6 +53,7 @@ class SceneViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Scene.objects.all()
     serializer_class = SceneSerializer
 
+'''
 class SequenceViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Contains all sequences.
@@ -64,7 +65,7 @@ class SequenceViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Sequence.objects.all()
     serializer_class = SequenceSerializer
-
+'''
 '''
 class ExerciseViewSet(viewsets.ReadOnlyModelViewSet):
     """

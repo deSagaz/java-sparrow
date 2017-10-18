@@ -7,7 +7,7 @@ from core import views
 router = DefaultRouter()
 router.register(r'stories', views.StoryViewSet)
 router.register(r'scenes', views.SceneViewSet)
-router.register(r'sequences', views.SequenceViewSet)
+#router.register(r'sequences', views.SequenceViewSet)
 '''
 router.register(r'videos', views.VideoViewSet)
 router.register(r'animtexts', views.AnimTextViewSet)

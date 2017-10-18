@@ -10,4 +10,5 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Experience
-        fields = ('id', 'user', 'verb', 'sequence')
+        #fields = ('id', 'user', 'verb', 'sequence')
+        fields = ('id', 'user', 'verb')
