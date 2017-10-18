@@ -5,6 +5,10 @@
     <seq-multiple-choice *ngIf="showMultipleChoice"
                          [answers]=multipleChoiceAnswers
                          (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
+    <!--<seq-open-ended *ngIf="showOpenEnded"-->
+                    <!---->
+
+
     <button *ngIf="showNextButton" (click)="next()">Next</button>
   </div>
 </ion-content>
