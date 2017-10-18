@@ -30,8 +30,18 @@ page-seq {
       background-color: crimson;
       color: white;
     }
+    ace-editor {
+      z-index: 2000;
+      height: 60vh;
+      width: 90%;
+      margin: auto;
+      margin-top: 20px;
+    }
   }
   .italic {
     font-style: italic;
+  }
+  .hide {
+    display: none;
   }
 }

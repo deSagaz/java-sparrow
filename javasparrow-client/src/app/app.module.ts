@@ -18,6 +18,7 @@ import { Api } from '../providers/providers';
 import { MyApp } from './app.component';
 import { ComponentsModule } from "../components/components.module";
 import { ToastProvider } from '../providers/toast/toast';
+import { AceEditorModule } from "ng2-ace-editor";
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -56,7 +57,8 @@ export function provideSettings(storage: Storage) {
     }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    ComponentsModule
+    ComponentsModule,
+    AceEditorModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
