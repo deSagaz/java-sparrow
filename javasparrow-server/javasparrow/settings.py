@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
     'authentication.apps.AuthenticationConfig',
+    'usermodel.apps.UsermodelConfig',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -100,12 +101,27 @@ WSGI_APPLICATION = 'javasparrow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
+
+# Database
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+# Since the production server uses postgresql, we will also during development
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sparrow',
+        'USER': 'sparrow',
+        'PASSWORD': 'sparrow',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
     }
 }
+
 
 
 # Password validation
@@ -187,3 +203,6 @@ STATICFILES_DIRS = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Prevent mails to be sent
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
