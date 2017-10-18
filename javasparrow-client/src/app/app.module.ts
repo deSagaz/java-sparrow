@@ -19,6 +19,7 @@ import { MyApp } from './app.component';
 import { ComponentsModule } from "../components/components.module";
 import { ToastProvider } from '../providers/toast/toast';
 import { AceEditorModule } from "ng2-ace-editor";
+import { WebWorkerService } from 'angular2-web-worker';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -76,7 +77,8 @@ export function provideSettings(storage: Storage) {
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    ToastProvider
+    ToastProvider,
+    WebWorkerService
   ]
 })
 export class AppModule { }
