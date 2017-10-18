@@ -33,9 +33,12 @@ page-seq {
     ace-editor {
       z-index: 2000;
       height: 60vh;
-      width: 90%;
+      width: 100%;
       margin: auto;
       margin-top: 20px;
+    }
+    h1 {
+      margin-bottom: 25px;
     }
   }
   .italic {
