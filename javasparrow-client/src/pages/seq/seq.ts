@@ -136,17 +136,17 @@ export class SeqPage {
     this.showNextButton = false;
     this.backgroundContrast = false;
 
-    console.log("ANIMATION STARTED");
+    // console.log("ANIMATION STARTED"); // DEBUG
     let frames: string[] = data['frames'];
     let fps: number = data['fps'];
 
     // Set starting wait time
     setTimeout(() => {
-      console.log((data['waitStart'] * 1000));
+      // console.log((data['waitStart'] * 1000)); // DEBUG
       frames.forEach((item, index) => {
         setTimeout(() => {
           this.backgroundImage.next(item);
-          console.log((1000 / fps) * (index + 1));
+          // console.log((1000 / fps) * (index + 1)); // DEBUG
         }, (1000 / fps) * (index));
       })
     }, (data['waitStart']*1000));
