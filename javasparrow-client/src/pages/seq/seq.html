@@ -5,7 +5,9 @@
     <seq-multiple-choice *ngIf="showMultipleChoice"
                          [answers]=multipleChoiceAnswers
                          (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
-    <button *ngIf="showNextButton" (click)="next()">Next</button>
+    <ion-fab class="nextButton" *ngIf="showNextButton" right bottom (click)="next()">
+      <button ion-fab color="light">🢂</button>
+    </ion-fab>
   </div>
 </ion-content>
 

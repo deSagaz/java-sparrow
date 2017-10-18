@@ -105,6 +105,7 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showMultipleChoice = false;
     this.showNextButton = true;
+    this.backgroundContrast = false;
   }
 
   doBackgroundChange() {
