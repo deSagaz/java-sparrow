@@ -1,14 +1,12 @@
-page-seq-multiple-choice {
-  .img {
+page-seq {
+  img {
     position: absolute;
     z-index: 10;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    background: url('/assets/img/duckAtDesk.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
     opacity: .3;
   }
   .overlay {
@@ -18,6 +16,7 @@ page-seq-multiple-choice {
     bottom: 0;
     margin-bottom: 40px;
     width: 100%;
+    padding: 50px;
     button {
       padding: 20px;
       margin: 10px;
@@ -26,5 +25,7 @@ page-seq-multiple-choice {
       color: white;
     }
   }
-
+  .italic {
+    font-style: italic;
+  }
 }
