@@ -16,7 +16,7 @@ import { ToastProvider } from "../../providers/toast/toast";
 })
 export class SeqPage {
 
-  api: string = '{"events":[{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object","A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}}]}';
+  api: string = '{"events":[{"id":29,"eventType":"backgroundChange","data":{"image":"assets/img/duckAtDesk.jpg"}},{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}}]}';
   sequence: object[];
   currentEventIndex: number;
   currentEventType: string;
@@ -35,7 +35,7 @@ export class SeqPage {
   showNextButton: boolean = true;
 
   // Background
-  backgroundImage: string = "/assets/img/duckAtDesk.jpg";
+  backgroundImage: string = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider) {
     this.init(JSON.parse(this.api));
