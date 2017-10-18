@@ -5,4 +5,5 @@
 
 export const environment = {
   apiUrl: "http://192.168.33.10:8000",
+  imgLoc: "assets/img/"
 };

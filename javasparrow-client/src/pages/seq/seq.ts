@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ToastProvider } from "../../providers/toast/toast";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { environment } from "../../environments/environment";
 
 /**
  * Generated class for the SeqPage page.
@@ -17,7 +18,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 })
 export class SeqPage {
 
-  api: string = '{"events":[{"id":29,"eventType":"backgroundChange","data":{"image":"assets/img/duckAtDesk.jpg"}},{"id":5,"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"id":23,"eventType":"backgroundChange","data":{"image":"assets/img/tech4learn_duckSlam.jpg"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"id":20,"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":"1","correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Woops, perhaps Javascript is a bit weird after all...", "wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"id":0,"eventType":"animation","data":{"frames":["assets/img/tech4learn_duckSlide_1.jpg","assets/img/tech4learn_duckSlide_2.jpg","assets/img/tech4learn_duckSlide_3.jpg","assets/img/tech4learn_duckSlide_4.jpg","assets/img/tech4learn_duckSlide_5.jpg"],"fps":2, "waitStart":3, "waitEnd":3}}]}';
+  api: string = '{"events": [{"eventType":"backgroundChange","data":{"image":"tech4learn_corridor.jpg"}},{"eventType":"text","data":{"content":"My name is Agent Sparrow, well my code name, actually. My real name, doesn’t matter. I am Sparrow, I long ago gave up my identity for the Sky-high intelligence agency. Simply put, I am part of a secret spy agency in charge of keeping the people’s safety.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Sounds super cool, doesn’t it?","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Well it’s less cool when you suspect corruption in the ranks. Secretly I’ve been investigating into this, and I feel like I am getting close.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"But now... I feel a chill down my spine as I head towards my boss’s office for monthly testing.  This is the first time I’ve been asked to do a test with the big man himself, Agent Duck.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckAtDesk.jpg"}},{"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"eventType":"text","data":{"content":"An honour to be invited up here, sir.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Feel free to take a seat. I will be asking you some oral questions, which you will have to answer."}},{"eventType":"text","data":{"content":"An honour to be invited up here, sir.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"I can see a weird glint in his eye. This is more than just a test.  Act normal.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"I am ready","contentColor":"#1ee7e0"}},{"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":1,"correctAnswerResponse":"Hot damn I am good!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"I suck","wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object","A dedicated data type","An regular JavaScript object"],"correctAnswer":1,"correctAnswerResponse":"Maybe I should be in that big chair!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"Nervous little sparrow?","wrongAnswerResponseColor":"white","wrongAnswerResponseItalic":"false"}},{"eventType":"text","data":{"content":"Well done Sparrow, good results as usual. I am impressed, it would be a shame to lose an agent such as you."}},{"eventType":"text","data":{"content":"Yes, it would.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"I suggest, that your current private affairs are put to rest."}},{"eventType":"text","data":{"content":"My private affairs? Are you sending me on a suicide mission? *nervous chuckle*","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"You’ve set yourself on a suicide mission."}},{"eventType":"text","data":{"content":"Well that’s just great…","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"An agent always completes their mission, no matter the cost","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Your Funeral, Sparrow!"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckButtonSlam.jpg"}},{"eventType":"text","data":{"content":"*alarm*","contentColor":"red"}},{"eventType":"animation","data":{"frames":["tech4learn_duckSlide_1.jpg","tech4learn_duckSlide_2.jpg","tech4learn_duckSlide_3.jpg","tech4learn_duckSlide_4.jpg","tech4learn_duckSlide_5.jpg"],"fps":2,"waitStart":1,"waitEnd":1}},{"eventType":"text","data":{"content":"Oh! he’s ducking away from the fight","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Okay, don’t panic.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"This is just another workday for me.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Criminals running away, alarms blaring.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Right, the alarm I need to shut it off before it drives me insane.","contentColor":"#1ee7e0","contentItalic":"true"}}]}';
   sequence: object[];
   currentEventIndex: number;
   currentEventType: string;
@@ -61,6 +62,9 @@ export class SeqPage {
       console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG
     }
 
+    // reset styles to default
+    this.resetStyle();
+
     this.currentEventIndex++;
     this.currentEventType = this.sequence[this.currentEventIndex]['eventType'];
 
@@ -81,13 +85,21 @@ export class SeqPage {
   }
 
   resetStyle() {
-    this.primaryTextColor = "#17d7d0";
+    this.primaryTextColor = "white";
     this.primaryTextItalic = false;
   }
 
   doText() {
     // Load data
     this.primaryText = this.sequence[this.currentEventIndex]['data']['content'];
+
+    // Set styling
+    if (this.sequence[this.currentEventIndex]['data']['contentColor']) {
+      this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['contentColor'];
+    }
+    if (this.sequence[this.currentEventIndex]['data']['contentItalic']) {
+      this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['contentItalic'];
+    }
 
     // Set interface
     this.showPrimaryText = true;
@@ -97,7 +109,7 @@ export class SeqPage {
 
   doBackgroundChange() {
     // Change background
-    this.backgroundImage.next(this.sequence[this.currentEventIndex]['data']['image']);
+    this.backgroundImage.next(environment.imgLoc + this.sequence[this.currentEventIndex]['data']['image']);
     // Immediately run next event
     this.next();
   }
@@ -145,7 +157,7 @@ export class SeqPage {
       // console.log((data['waitStart'] * 1000)); // DEBUG
       frames.forEach((item, index) => {
         setTimeout(() => {
-          this.backgroundImage.next(item);
+          this.backgroundImage.next(environment.imgLoc + item);
           // console.log((1000 / fps) * (index + 1)); // DEBUG
         }, (1000 / fps) * (index));
       })
