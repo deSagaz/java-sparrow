@@ -1,15 +1,13 @@
 <ion-content padding>
-  <img [src]="backgroundImage">
+  <img [ngClass]="{'backgroundContrast': backgroundContrast}" [src]="backgroundImage | async">
   <div class="overlay">
     <h1 *ngIf="showPrimaryText" [style.color]="primaryTextColor" [ngClass]="{'italic': primaryTextItalic}">{{ primaryText }}</h1>
     <seq-multiple-choice *ngIf="showMultipleChoice"
                          [answers]=multipleChoiceAnswers
                          (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
-    <!--<seq-open-ended *ngIf="showOpenEnded"-->
-                    <!---->
-
-
-    <button *ngIf="showNextButton" (click)="next()">Next</button>
+    <ion-fab class="nextButton" *ngIf="showNextButton" right bottom (click)="next()">
+      <button ion-fab color="light">🢂</button>
+    </ion-fab>
   </div>
 </ion-content>
 

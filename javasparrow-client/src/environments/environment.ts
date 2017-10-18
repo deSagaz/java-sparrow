@@ -5,4 +5,5 @@
 
 export const environment = {
   apiUrl: "https://javasparrow.herokuapp.com",
+  imgLoc: "assets/img/"
 };
