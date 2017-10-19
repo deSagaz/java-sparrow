@@ -290,7 +290,7 @@ export class SeqPage {
 
         } else {
           // Show error message
-          this.toast.error("You've made a mistake somewhere - this is not the right solution. Try again.");
+          this.toast.error("You returned '" + result + "'. This is not the right solution. Try again.");
         }
       },
       (error: ErrorEvent) => {
