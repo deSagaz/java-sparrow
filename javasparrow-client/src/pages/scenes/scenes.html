@@ -24,6 +24,7 @@
         <h2>{{item.name}}</h2>
         <p>{{item.about}}</p>
         <div item-end *ngIf="!item.unlocked" class="lock_icon" ></div>
+        <div item-end *ngIf="item.unlocked" class="intel" >{{item.intel}}</div>
         <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->
       </button>
 

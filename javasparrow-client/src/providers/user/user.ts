@@ -41,7 +41,7 @@ export class User {
       // If the API returned a successful response, mark the user as logged in
       if (res.token) {
         localStorage.setItem('token', JSON.stringify(res.token));
-        this._loggedIn(res.token);
+        this._loggedIn(res);
       } else {
       }
     }, err => {

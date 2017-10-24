@@ -10,6 +10,8 @@ export class Scenes {
     "name": "Bear",
     "profilePic": "assets/img/speakers/bear.jpg",
     "about": "Burt is a Bear.",
+    "unlocked": true,
+    "intel": 5
   };
 
 
@@ -19,43 +21,50 @@ export class Scenes {
         "name": "Bear",
         "profilePic": "assets/img/speakers/bear.jpg",
         "about": "Burt is a Bear.",
-        "unlocked": true
+        "unlocked": true,
+        "intel": 10
       },
       {
         "name": "Cheetah",
         "profilePic": "assets/img/speakers/cheetah.jpg",
         "about": "Charlie is a Cheetah.",
-        "unlocked": true
+        "unlocked": true,
+        "intel": 5
       },
       {
         "name": "Duck",
         "profilePic": "assets/img/speakers/duck.jpg",
         "about": "Donald is a Duck.",
-        "unlocked": false
+        "unlocked": false,
+        "intel": 0
       },
       {
         "name": "Eagle",
         "profilePic": "assets/img/speakers/eagle.jpg",
         "about": "Eva is an Eagle.",
-        "unlocked": true
+        "unlocked": true,
+        "intel": 5
       },
       {
         "name": "Elephant",
         "profilePic": "assets/img/speakers/elephant.jpg",
         "about": "Ellie is an Elephant.",
-        "unlocked": false
+        "unlocked": false,
+        "intel": 0
       },
       {
         "name": "Mouse",
         "profilePic": "assets/img/speakers/mouse.jpg",
         "about": "Molly is a Mouse.",
-        "unlocked": true
+        "unlocked": true,
+        "intel": 20
       },
       {
         "name": "Puppy",
         "profilePic": "assets/img/speakers/puppy.jpg",
         "about": "Paul is a Puppy.",
-        "unlocked": true
+        "unlocked": true,
+        "intel": 55
       }
     ];
 
