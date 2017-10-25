@@ -21,7 +21,7 @@ import { ComponentsModule } from "../components/components.module";
 import { ToastProvider } from '../providers/toast/toast';
 import { AceEditorModule } from "ng2-ace-editor";
 import { WebWorkerService } from 'angular2-web-worker';
-// import { DragulaService } from 'ng2-dragula/components/dragula.provider';
+
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.

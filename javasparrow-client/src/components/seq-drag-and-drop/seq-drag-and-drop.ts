@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 /**
@@ -11,7 +11,8 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
   selector: 'seq-drag-and-drop',
   templateUrl: 'seq-drag-and-drop.html'
 })
-export class SeqDragAndDropComponent {
+export class SeqDragAndDropComponent{
+
   public many: Array<string> = ['The', 'possibilities', 'are', 'endless!'];
   public many2: Array<string> = ['Explore', 'them'];
 
@@ -33,5 +34,4 @@ export class SeqDragAndDropComponent {
     let [el, source] = args;
     // do something else
   }
-
 }

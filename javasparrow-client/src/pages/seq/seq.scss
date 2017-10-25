@@ -1,4 +1,5 @@
 page-seq {
+  @import "../../../node_modules/dragula/dist/dragula";
 
   // Hide scrollbar on desktop
   .no-scroll .scroll-content {

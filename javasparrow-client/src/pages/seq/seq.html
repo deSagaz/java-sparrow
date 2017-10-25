@@ -11,6 +11,7 @@
                          (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
     <seq-open-ended *ngIf="showOpenEnded"
                          (answerGiven)="checkOpenEndedAnswer($event)"></seq-open-ended>
+    <!--<seq-drag-and-drop></seq-drag-and-drop>-->
     <ion-fab class="nextButton" *ngIf="showNextButton" right bottom (click)="next()">
       <button ion-fab color="light">&gt;</button>
     </ion-fab>
