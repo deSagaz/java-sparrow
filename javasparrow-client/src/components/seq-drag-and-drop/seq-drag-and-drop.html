@@ -1,22 +1,13 @@
 <!-- Generated template for the SeqDragAndDropComponent component -->
-<!--<div class='wrapper'>-->
-  <!--<div class='container' [dragula]='"another-bag"' [dragulaModel]='many'>-->
-    <!--<div *ngFor='let text of many' [innerHtml]='text'></div>-->
-  <!--</div>-->
-  <!--<div class='container' [dragula]='"another-bag"' [dragulaModel]='many2'>-->
-    <!--<div *ngFor='let text of many2' [innerHtml]='text'></div>-->
-  <!--</div>-->
-<!--</div>-->
 <div class='wrapper'>
   <!--Create two boxes with items according to the two lists from the .ts file.-->
   <!--One list has to be te static code and the other the code that can be dragged to
   answer the question. Which is which has to be indicated for every element.-->
-  <!--todo:innerHTML can't show html tags-->
-  <div class='container' id="c1" [dragula]='"another-bag"' [dragulaModel]='many'>
+  <div class='container' id="c1" [dragula]='"another-bag"' [dragulaModel]='staticCode'>
     <div *ngFor='let text of staticCode' [innerHtml]='text.codeLine' [ngClass]="{'no-drag' : !text.draggable}"></div>
   </div>
-  <div class='container' [dragula]='"another-bag"' [dragulaModel]='many2'>
+  <div class='container' [dragula]='"another-bag"' [dragulaModel]='draggableCode'>
     <div *ngFor='let text of draggableCode' [innerHtml]='text.codeLine' [ngClass]="{'no-drag' : !text.draggable}"></div>
   </div>
-  <button ion-button block (click)="submitCode()">Submit</button>
 </div>
+<button ion-button block (click)="submitCode()">Submit</button>

@@ -17,9 +17,6 @@ export class SeqDragAndDropComponent{
 
   @Output() answer = new EventEmitter();
 
-  //public many: Array<any> = [{name: 'Item A', draggable: false},{name: 'Item B', draggable: false},{name: 'Item C', draggable: false},{name: 'Item D', draggable: false}];
-  //public many2: Array<any> = [{name: 'Item 1', draggable: true},{name: 'Item 2', draggable: true},{name: 'Item 3', draggable: true},{name: 'Item 4', draggable: true}];
-
   constructor(private dragulaService: DragulaService) {
     //We need two lists, one with the static code and one with the draggable code. This for loop adds all static
     //items to a new array and adds the draggable which is needed for Dragula and excludes the draggable items which
@@ -39,21 +36,17 @@ export class SeqDragAndDropComponent{
 
   private onDropModel(args) {
     let [el, target, source] = args;
-    // do something else
   }
 
   private onRemoveModel(args) {
     let [el, source] = args;
-    // do something else
   }
 
+  //The static code is an array with a codeLine and draggable key. To compare the answer we only need the values of
+  //the codeLine keys, so this function maps those to a list and emits that as answer.
   submitCode(){
-    console.log(this.staticCode);
-    console.log(this.draggableCode);
     let ansList = this.staticCode;
-    let ans = [];
-    for(let k in ansList) ans.push(k);//Todo: check if this workd: create list from codeLine
+    let ans = ansList.map(a => a.codeLine);
     this.answer.emit(ans);
-    console.log(ans);
   }
 }
