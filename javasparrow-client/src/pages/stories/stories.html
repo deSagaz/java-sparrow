@@ -16,15 +16,13 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let item of currentStories">
-      <button ion-item (click)="onClick(item)" [ngClass]="{'locked' : !item.unlocked}">
+      <button ion-item (click)="openStory(item)">
         <ion-avatar item-start>
           <img [src]="item.profilePic" />
         </ion-avatar>
         <h2>{{item.name}}</h2>
         <p>{{item.about}}</p>
-        <div item-end *ngIf="!item.unlocked" class="lock_icon" ></div>
-        <div item-end *ngIf="item.unlocked" class="intel" >{{item.intel}}</div>
-        <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->
+        <div item-end class="intel" >{{item.intel}}</div>
       </button>
 
       <ion-item-options>

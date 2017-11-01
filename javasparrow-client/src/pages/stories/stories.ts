@@ -53,9 +53,9 @@ export class StoriesPage {
     });
   }
 
-  onClick(story) {
-    if(story.unlocked){
-      this.openStory(story);
-    };
-  }
+  // onClick(story) {
+  //   if(story.unlocked){
+  //     this.openStory(story);
+  //   };
+  // }
 }

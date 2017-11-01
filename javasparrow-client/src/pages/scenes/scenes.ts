@@ -11,10 +11,14 @@ import { Scenes } from '../../providers/providers';
 })
 export class ScenesPage {
   currentScenes: Scene[];
+  userIntel: Array<any>;
+  totalIntel = 0;
 
   constructor(public navCtrl: NavController, public scenes: Scenes, public modalCtrl: ModalController) {
-
+    //currentScenes is still a list of placeholders set up in scene.ts in the src/mocks/providers/ folder.
     this.currentScenes = this.scenes.query();
+    this.userIntel = this.scenes.getUserIntel();
+    this.totalIntel = this.scenes.getTotalIntel();
   }
 
   /**
@@ -54,7 +58,7 @@ export class ScenesPage {
   }
 
   onClick(scene) {
-    if(scene.unlocked){
+    if(this.totalIntel >= scene.minIntel){
       this.openScene(scene);
     };
   }

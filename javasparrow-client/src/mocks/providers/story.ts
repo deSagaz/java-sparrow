@@ -21,28 +21,24 @@ export class Stories {
         "name": "Burt Bear",
         "profilePic": "assets/img/speakers/bear.jpg",
         "about": "Burt is a Bear.",
-        "unlocked": true,
         "intel": 5
       },
       {
         "name": "Charlie Cheetah",
         "profilePic": "assets/img/speakers/cheetah.jpg",
         "about": "Charlie is a Cheetah.",
-        "unlocked": true,
         "intel": 5
       },
       {
         "name": "Donald Duck",
         "profilePic": "assets/img/speakers/duck.jpg",
         "about": "Donald is a Duck.",
-        "unlocked": false,
         "intel": 0
       },
       {
         "name": "Eva Eagle",
         "profilePic": "assets/img/speakers/eagle.jpg",
         "about": "Eva is an Eagle.",
-        "unlocked": true,
         "intel": 55
       }
     ];
