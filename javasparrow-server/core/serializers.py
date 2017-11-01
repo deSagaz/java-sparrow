@@ -1,7 +1,12 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ParseError
+from django.utils import timezone
+import logging
+from rest_auth.serializers import UserModel
 
 from core.models import Story
 from core.models import Scene
+from core.models import UserIntel
 #from core.models import Sequence
 
 '''
@@ -41,9 +46,30 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
     #    view_name='sequence-detail'
     #)
 
+    userintels = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='userintel-detail'
+    )
+
     class Meta:
         model = Scene
-        fields = ('id', 'order', 'story', 'name', 'events')
+        fields = ('id', 'order', 'story', 'name', 'events', 'userintels')
+
+class UserIntelSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Generates list of all scenes.
+    """
+
+    #user = None
+    #request = self.context.get("request")
+    #if request and hasattr(request, "user"):  # If user exists
+    #    user = request.user
+
+    class Meta:
+        model = UserIntel
+        #fields = ('id', 'user', 'scene', 'intel')
+        fields = ('id', 'scene', 'intelmax', 'userintel', 'eventnr')
 
 '''
 class SequenceSerializer(serializers.HyperlinkedModelSerializer):

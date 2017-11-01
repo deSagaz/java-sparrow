@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.contrib.auth.models import User
 
 
 class Story(models.Model):
@@ -40,6 +41,28 @@ class Scene(models.Model):
     class Meta:
         unique_together = ('story', 'order')
         ordering = ['order']
+
+class UserIntel(models.Model):
+    """
+    id          An IntegerField that holds the id with which it can be identified
+    user        The current logged-in user
+    scene       ForeignKey with a Scene, as a scene has multiple exercises that all need an intel value
+    eventnr     The number of the event this instance is associated with
+    intelmax    The amount of intel that can be earned for this case
+    userintel   The amount of intel the user has earned in this case
+    """
+    #user = models.OneToOneField(User, on_delete=models.CASCADE)
+    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='userintels', null=True, blank=True)
+    eventnr = models.IntegerField(default=0)
+    intelmax = models.IntegerField(default=0)
+    userintel = models.IntegerField(default=0)
+
+    #def __str__(self):
+    #    return self.user + " (" + str(self.id) + "), " + self.intelmax + ", " + self.userintel + ", " + self.scene
+
+    def __str__(self):
+        return "id: " + str(self.id) + ", eventnr: " + str(self.eventnr) + ", intelmax & userintel" + str(self.intelmax) + ", " + str(self.userintel)
+
 
 '''
 class Sequence(models.Model):
