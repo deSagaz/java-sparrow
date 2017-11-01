@@ -3,6 +3,7 @@ import { IonicPage, ModalController, NavController } from 'ionic-angular';
 
 import { Story } from '../../models/story';
 import { Stories } from '../../providers/providers';
+import { Observable } from "rxjs/Observable";
 
 @IonicPage()
 @Component({
@@ -10,38 +11,19 @@ import { Stories } from '../../providers/providers';
   templateUrl: 'stories.html'
 })
 export class StoriesPage {
-  currentStories: Story[];
+
+  currentStories: Observable<Story[]>;
 
   constructor(public navCtrl: NavController, public stories: Stories, public modalCtrl: ModalController) {
 
-    this.currentStories = this.stories.query();
+    this.stories.query();
+    this.currentStories = this.stories.stories;
   }
 
   /**
    * The view loaded, let's query our stories for the list
    */
   ionViewDidLoad() {
-  }
-
-  /**
-   * Prompt the user to add a new story. This shows our StoryCreatePage in a
-   * modal and then adds the new story to our data source if the user created one.
-   */
-  addStory() {
-    let addModal = this.modalCtrl.create('StoryCreatePage');
-    addModal.onDidDismiss(story => {
-      if (story) {
-        this.stories.add(story);
-      }
-    })
-    addModal.present();
-  }
-
-  /**
-   * Delete an story from the list of stories.
-   */
-  deleteStory(story) {
-    this.stories.delete(story);
   }
 
   /**
