@@ -52,9 +52,10 @@ export class ScenesPage {
    * Navigate to the detail page for this scene.
    */
   openScene(scene: Scene) {
-    this.navCtrl.push('ItemDetailPage', {
-      scene: scene
-    });
+    this.navCtrl.push('SeqPage')
+    // this.navCtrl.push('ItemDetailPage', {
+    //   scene: scene
+    // });
   }
 
   onClick(scene) {
