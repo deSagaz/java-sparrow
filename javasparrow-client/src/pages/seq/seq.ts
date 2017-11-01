@@ -23,7 +23,7 @@ import { WebWorkerService } from 'angular2-web-worker';
 })
 export class SeqPage {
 
-  api: string = '{"events": [{"eventType":"backgroundChange","data":{"image":"tech4learn_corridor.jpg"}},{"eventType":"text","data":{"content":"My name is Agent Sparrow, well my code name, actually. My real name, doesn’t matter. I am Sparrow, I long ago gave up my identity for the Sky-high intelligence agency. Simply put, I am part of a secret spy agency in charge of keeping the people’s safety.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Sounds super cool, doesn’t it?","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Well it’s less cool when you suspect corruption in the ranks. Secretly I’ve been investigating into this, and I feel like I am getting close.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"But now... I feel a chill down my spine as I head towards my boss’s office for monthly testing.  This is the first time I’ve been asked to do a test with the big man himself, Agent Duck.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckAtDesk.jpg"}},{"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"eventType":"text","data":{"content":"An honour to be invited up here, sir.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Feel free to take a seat. I will be asking you some oral questions, which you will have to answer."}},{"eventType":"text","data":{"content":"I can see a weird glint in his eye. This is more than just a test.  Act normal.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"I am ready","contentColor":"#1ee7e0"}},{"id":7,"eventType":"drag","data":{"question":"Drag the code pieces from the bottom list to the right places in the upper list to create the Hello World page.","code":["&lt;!DOCTYPE HTML&gt;","&lt;html&gt;","&lt;head&gt;","&lt;title&gt;Hello World Example&lt;/title&gt;","&lt;/head&gt;","&lt;body&gt;","&lt;h1&gt;Hello World&lt;/h1&gt;","&lt;/body&gt;","&lt;/html&gt;"],"draggable_indices":[3,6],"extra":["&lt;/html&gt;","&lt;/html&gt;","&lt;h1&gt;Sparrow&lt;/h1&gt;"],"correctAnswerResponse":"See, I can code!","correctAnswerResponseColor":"#1ee7e0","wrongAnswerResponse":"Woops","wrongAnswerResponseColor":"#1ee7e0"}},{"id":3,"eventType":"open","data":{"question":"How many times will document.write(x) be executed?","code":"var x;\\nfor(x = 0; x < 7; x++)\{\\n    if(x==2 || x==4)\{\\n        x = x+2;\\n    \}\\n    document.write(x);\\n\}","correctAnswer":6,"wrongAnswerResponse": "No","correctAnswerResponse": "Yes","wrongAnswerResponseColor": "#1ee7e0","correctAnswerResponseColor": "#1ee7e0"}},{"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":1,"correctAnswerResponse":"Hot damn I am good!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"I suck","wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"eventType":"text","data":{"content":"Well done Sparrow, good results as usual. I am impressed, it would be a shame to lose an agent such as you."}},{"eventType":"text","data":{"content":"Yes, it would.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"I suggest, that your current private affairs are put to rest."}},{"eventType":"text","data":{"content":"My private affairs? Are you sending me on a suicide mission? *nervous chuckle*","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"You’ve set yourself on a suicide mission."}},{"eventType":"text","data":{"content":"Well that’s just great…","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"An agent always completes their mission, no matter the cost","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Your Funeral, Sparrow!"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckButtonSlam.jpg"}},{"eventType":"text","data":{"content":"*alarm*","contentColor":"red"}},{"eventType":"animation","data":{"frames":["tech4learn_duckSlide_1.jpg","tech4learn_duckSlide_2.jpg","tech4learn_duckSlide_3.jpg","tech4learn_duckSlide_4.jpg","tech4learn_duckSlide_5.jpg"],"fps":2,"waitStart":1,"waitEnd":1}},{"eventType":"text","data":{"content":"Oh! he’s ducking away from the fight","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Okay, don’t panic.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"This is just another workday for me.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Criminals running away, alarms blaring.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Right, the alarm I need to shut it off before it drives me insane.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_lazerHall.jpg"}},{"eventType":"codeChallenge","data":{"question":"Figure out the password to the alarm system.", "answer":6765,"disallowLoops":true, "correctAnswerResponse":"I\'ve cracked the password! Awesome. Self-high-five!", "correctAnswerResponseColor":"#1ee7e0", "correctAnswerResponseItalic":true, "initCode":"Ly8gVGhlIEZpYm9uYWNjaSBzZXF1ZW5jZToNCi8vIEV2ZXJ5IG51bWJlciBhZnRlciB0aGUgZmlyc3QgdHdvIGlzDQovLyB0aGUgc3VtIG9mIHRoZSB0d28gcHJlY2VkaW5nIG9uZXMuDQoNCi8vIFlvdXIgdGFzazogcmV0dXJuIG51bWJlciAyMCBpbiB0aGUNCi8vIHNlcXVlbmNlLCB3aGljaCBzdGFydHMgd2l0aCBbMCwxLDEsMiwuLl0uDQoNCi8vIE5vdGU6IHlvdSBhcmUgbm90IGFsbG93ZWQgdG8gdXNlIGxvb3BzLg0KDQpmdW5jdGlvbiBmaWJvbmFjY2kobikgew0KICAgaWYgKFtTQ1JBTUJMRURdKSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0gaWYgKFtTQ1JBTUJMRURdKSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0gZWxzZSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0NCn0NCg0KcmV0dXJuIFtTQ1JBTUJMRURdOw=="}}]}';
+  api: string = '{"events": [{"eventType":"backgroundChange","data":{"image":"tech4learn_corridor.jpg"}},{"eventType":"text","data":{"content":"My name is Agent Sparrow, well my code name, actually. My real name, doesn’t matter. I am Sparrow, I long ago gave up my identity for the Sky-high intelligence agency. Simply put, I am part of a secret spy agency in charge of keeping the people’s safety.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Sounds super cool, doesn’t it?","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Well it’s less cool when you suspect corruption in the ranks. Secretly I’ve been investigating into this, and I feel like I am getting close.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"But now... I feel a chill down my spine as I head towards my boss’s office for monthly testing.  This is the first time I’ve been asked to do a test with the big man himself, Agent Duck.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckAtDesk.jpg"}},{"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"eventType":"text","data":{"content":"An honour to be invited up here, sir.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Feel free to take a seat. I will be asking you some oral questions, which you will have to answer."}},{"eventType":"text","data":{"content":"I can see a weird glint in his eye. This is more than just a test.  Act normal.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"I am ready","contentColor":"#1ee7e0"}},{"id":7,"eventType":"drag","data":{"question":"Drag the code pieces from the bottom list to the right places in the upper list to create the Hello World page.","code":["&lt;!DOCTYPE HTML&gt;","&lt;html&gt;","&lt;head&gt;","&lt;title&gt;Hello World Example&lt;/title&gt;","&lt;/head&gt;","&lt;body&gt;","&lt;h1&gt;Hello World&lt;/h1&gt;","&lt;/body&gt;","&lt;/html&gt;"],"draggable_indices":[3,6],"extra":["&lt;/html&gt;","&lt;/html&gt;","&lt;h1&gt;Sparrow&lt;/h1&gt;"],"hint":"Which html tags can fit in the existing code.","feedback":"https://www.w3schools.com/html/html_intro.asp","correctAnswerResponse":"See, I can code!","correctAnswerResponseColor":"#1ee7e0","wrongAnswerResponse":"Woops","wrongAnswerResponseColor":"#1ee7e0"}},{"id":3,"eventType":"open","data":{"question":"How many times will document.write(x) be executed?","code":"var x;\\nfor(x = 0; x < 7; x++)\{\\n    if(x==2 || x==4)\{\\n        x = x+2;\\n    \}\\n    document.write(x);\\n\}","correctAnswer":6,"hint":"What is the value of x every loop?","feedback":"If the value of x gets to 2, x is updated both before and after it is written.","wrongAnswerResponse": "No","correctAnswerResponse": "Yes","wrongAnswerResponseColor": "#1ee7e0","correctAnswerResponseColor": "#1ee7e0"}},{"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"hint":"What exactly is a data type?","feedback":"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array","correctAnswer":1,"correctAnswerResponse":"Hot damn I am good!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"I suck","wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"eventType":"text","data":{"content":"Well done Sparrow, good results as usual. I am impressed, it would be a shame to lose an agent such as you."}},{"eventType":"text","data":{"content":"Yes, it would.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"I suggest, that your current private affairs are put to rest."}},{"eventType":"text","data":{"content":"My private affairs? Are you sending me on a suicide mission? *nervous chuckle*","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"You’ve set yourself on a suicide mission."}},{"eventType":"text","data":{"content":"Well that’s just great…","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"An agent always completes their mission, no matter the cost","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Your Funeral, Sparrow!"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckButtonSlam.jpg"}},{"eventType":"text","data":{"content":"*alarm*","contentColor":"red"}},{"eventType":"animation","data":{"frames":["tech4learn_duckSlide_1.jpg","tech4learn_duckSlide_2.jpg","tech4learn_duckSlide_3.jpg","tech4learn_duckSlide_4.jpg","tech4learn_duckSlide_5.jpg"],"fps":2,"waitStart":1,"waitEnd":1}},{"eventType":"text","data":{"content":"Oh! he’s ducking away from the fight","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Okay, don’t panic.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"This is just another workday for me.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Criminals running away, alarms blaring.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Right, the alarm I need to shut it off before it drives me insane.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_lazerHall.jpg"}},{"eventType":"codeChallenge","data":{"question":"Figure out the password to the alarm system.", "answer":6765,"disallowLoops":true,"hint":"You can call the function within the function to create the effect of the for loop.", "correctAnswerResponse":"I\'ve cracked the password! Awesome. Self-high-five!", "correctAnswerResponseColor":"#1ee7e0", "correctAnswerResponseItalic":true, "initCode":"Ly8gVGhlIEZpYm9uYWNjaSBzZXF1ZW5jZToNCi8vIEV2ZXJ5IG51bWJlciBhZnRlciB0aGUgZmlyc3QgdHdvIGlzDQovLyB0aGUgc3VtIG9mIHRoZSB0d28gcHJlY2VkaW5nIG9uZXMuDQoNCi8vIFlvdXIgdGFzazogcmV0dXJuIG51bWJlciAyMCBpbiB0aGUNCi8vIHNlcXVlbmNlLCB3aGljaCBzdGFydHMgd2l0aCBbMCwxLDEsMiwuLl0uDQoNCi8vIE5vdGU6IHlvdSBhcmUgbm90IGFsbG93ZWQgdG8gdXNlIGxvb3BzLg0KDQpmdW5jdGlvbiBmaWJvbmFjY2kobikgew0KICAgaWYgKFtTQ1JBTUJMRURdKSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0gaWYgKFtTQ1JBTUJMRURdKSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0gZWxzZSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0NCn0NCg0KcmV0dXJuIFtTQ1JBTUJMRURdOw=="}}]}';
   sequence: object[];
   currentEventIndex: number;
   currentEventType: string;
@@ -49,6 +49,7 @@ export class SeqPage {
   // Which components to show?
   showPrimaryText: boolean = true;
   showNextButton: boolean = true;
+  showHintButton: boolean = false;
   showMultipleChoice: boolean = false;
   showOpenEnded: boolean = false;
   showCodeWindow: boolean = false;
@@ -122,6 +123,18 @@ export class SeqPage {
     }
   }
 
+  showHint(){
+    let hint = '';
+    // Next button is not shown when a question is asked, but is shown when after the answer is checked. (Not a great solution)
+    //TODO:better solution
+    if (this.showNextButton &&  this.sequence[this.currentEventIndex]['data']['feedback']){
+      hint = this.sequence[this.currentEventIndex]['data']['feedback'];
+    } else{
+      hint = this.sequence[this.currentEventIndex]['data']['hint'];
+    }
+    this.toast.info(hint);
+  }
+
   resetStyle() {
     this.primaryTextColor = "white";
     this.primaryTextItalic = false;
@@ -143,6 +156,7 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showMultipleChoice = false;
     this.showNextButton = true;
+    this.showHintButton = false;
     this.backgroundContrast = false;
   }
 
@@ -163,6 +177,7 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showMultipleChoice = true;
     this.showNextButton = false;
+    this.showHintButton = true;
     this.backgroundContrast = true;
   }
 
@@ -176,6 +191,7 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
       }
+      this.showHintButton = false;
     } else {
       this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
 
@@ -185,6 +201,7 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
       }
+      this.showHintButton = true;
     }
     this.showMultipleChoice = false;
     this.showNextButton = true;
@@ -201,6 +218,7 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showOpenEnded = true;
     this.showNextButton = false;
+    this.showHintButton = true;
     this.backgroundContrast = true;
   }
 
@@ -214,6 +232,7 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
       }
+      this.showHintButton = false;
     } else{
       this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
 
@@ -223,6 +242,7 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
       }
+      this.showHintButton = true;
     }
     this.showOpenEnded = false;
     this.showNextButton = true;
@@ -268,6 +288,7 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showDragAndDrop = true;
     this.showNextButton = false;
+    this.showHintButton = true;
     this.backgroundContrast = true;
   }
 
@@ -276,16 +297,19 @@ export class SeqPage {
     let rightAnswer = this.sequence[this.currentEventIndex]['data']['code'];
     if (ans.length != rightAnswer.length){
       this.wrongAnswerResponse();
+      this.showHintButton = true;
     }else{
       for (let i = 0; i < ans.length; ++i) {
         if (ans[i] !== rightAnswer[i]){
           this.wrongAnswerResponse();
           this.showDragAndDrop = false;
           this.showNextButton = true;
+          this.showHintButton = true;
           return false;
         }
       }
       this.correctAnswerResponse();
+      this.showHintButton = false;
     }
     this.showDragAndDrop = false;
     this.showNextButton = true;
@@ -319,6 +343,7 @@ export class SeqPage {
     this.showPrimaryText = false;
     this.showMultipleChoice = false;
     this.showNextButton = false;
+    this.showHintButton = false;
     this.backgroundContrast = false;
 
     // console.log("ANIMATION STARTED"); // DEBUG
@@ -346,6 +371,7 @@ export class SeqPage {
     // Load interface container
     this.showCodeWindow = true;
     this.showNextButton = false;
+    this.showHintButton = true;
 
     // Set challenge and initial code in editor
     this.primaryText = data['question'];
@@ -385,6 +411,7 @@ export class SeqPage {
           }
           this.showCodeWindow = false;
           this.showNextButton = true;
+          this.showHintButton = false;
 
         } else {
           // Show error message

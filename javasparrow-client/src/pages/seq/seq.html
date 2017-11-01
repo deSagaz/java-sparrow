@@ -19,6 +19,9 @@
     <ion-fab class="nextButton" *ngIf="showNextButton" right bottom (click)="next()">
       <button ion-fab color="light">&gt;</button>
     </ion-fab>
+    <ion-fab class="hintButton" *ngIf="showHintButton" right top (click)="showHint()">
+      <button ion-fab color="light">Help</button>
+    </ion-fab>
   </div>
 </ion-content>
 
