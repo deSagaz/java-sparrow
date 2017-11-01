@@ -33,15 +33,24 @@ export class ScenesPage {
    * Navigate to the detail page for this scene.
    */
   openScene(scene: Scene) {
-    this.navCtrl.push('SeqPage')
+    this.navCtrl.push('SeqPage', {
+        scene: scene
+      })
     // this.navCtrl.push('ItemDetailPage', {
     //   scene: scene
     // });
   }
 
   onClick(scene) {
-    if(this.totalIntel >= scene.minIntel){
+    // Check if downloaded already. If not, download now.
+    if (5 != 5) {
+      this.download(scene);
+    } else if (5 == 5 || this.totalIntel >= scene.minIntel){
       this.openScene(scene);
     }
+  }
+
+  download(scene) {
+    // TODO
   }
 }
