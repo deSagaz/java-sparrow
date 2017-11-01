@@ -36,4 +36,14 @@ export class ToastProvider {
     toast.present();
   }
 
+  showHint(messageText: string) {
+    let hint = this.toastCtrl.create({
+      message: messageText,
+      showCloseButton: true,
+      closeButtonText: 'Ok',
+      position: "top"
+    });
+    hint.present();
+  }
+
 }
