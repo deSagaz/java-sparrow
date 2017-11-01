@@ -15,14 +15,13 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of currentScenes">
+    <ion-item-sliding *ngFor="let item of currentScenes | async">
       <button ion-item (click)="onClick(item)" [ngClass]="{'locked' : totalIntel < item.minIntel}">
       <!-- <button ion-item (click)="openItem(item)"> -->
         <ion-avatar item-start>
-          <img [src]="item.profilePic" />
+          <!--<img [src]="item.profilePic" />-->
         </ion-avatar>
         <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
         <div item-end *ngIf="totalIntel < item.minIntel" class="lock_icon" ></div>
         <div item-end *ngIf="totalIntel >= item.minIntel" class="intel" >{{userIntel[0][item.name]}}</div>
         <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->

@@ -17,15 +17,7 @@ export class Stories {
     this.api.get('/stories', params).subscribe(
       (rawStories: Story[]) => {
         this.stories.next(rawStories);
-        console.log(this.stories.getValue());
     }
     );
   }
-
-  // add(story: Story) {
-  // }
-  //
-  // delete(story: Story) {
-  // }
-
 }
