@@ -10,7 +10,8 @@
                          [answers]=multipleChoiceAnswers
                          (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
     <seq-open-ended *ngIf="showOpenEnded"
-                         (answerGiven)="checkOpenEndedAnswer($event)"></seq-open-ended>
+                    [codeSnippet]=openEndedCode
+                    (answerGiven)="checkOpenEndedAnswer($event)"></seq-open-ended>
     <seq-drag-and-drop *ngIf="showDragAndDrop"
                         [staticCode]=dragAndDropCode
                         [draggableCode]=draggableCode

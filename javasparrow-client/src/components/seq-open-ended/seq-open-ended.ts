@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 
 /**
  * Generated class for the SeqOpenEndedComponent component.
@@ -11,6 +11,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: 'seq-open-ended.html'
 })
 export class SeqOpenEndedComponent {
+
+  @Input() codeSnippet = [];
 
   @Output() answerGiven = new EventEmitter();
 
