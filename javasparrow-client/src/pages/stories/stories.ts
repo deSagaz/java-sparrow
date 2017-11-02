@@ -13,11 +13,15 @@ import { Observable } from "rxjs/Observable";
 export class StoriesPage {
 
   currentStories: Observable<Story[]>;
+  totalIntel: object;
 
   constructor(public navCtrl: NavController, public stories: Stories, public modalCtrl: ModalController) {
 
     this.stories.query();
     this.currentStories = this.stories.stories;
+
+    // TODO: TEMPORARY
+    this.totalIntel = {"1": 0, "2": 120, "3": 25};
   }
 
   /**
