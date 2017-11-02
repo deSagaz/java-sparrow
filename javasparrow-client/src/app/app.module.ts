@@ -11,8 +11,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { DragulaModule, DragulaService } from 'ng2-dragula/ng2-dragula';
 
-import { Stories } from '../mocks/providers/story';
-import { Scenes } from '../mocks/providers/scene';
+import { Stories } from '../providers/providers';
+import { Scenes } from '../providers/providers';
 import { Settings } from '../providers/providers';
 import { User } from '../providers/providers';
 import { Api } from '../providers/providers';

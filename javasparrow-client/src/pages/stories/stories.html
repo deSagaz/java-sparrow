@@ -15,14 +15,14 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of currentStories">
+    <ion-item-sliding *ngFor="let story of currentStories | async">
       <button ion-item (click)="openStory(item)">
         <ion-avatar item-start>
-          <img [src]="item.profilePic" />
+          <!--<img [src]="item.profilePic" />-->
         </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
-        <div item-end class="intel" >{{item.intel}}</div>
+        <h2>{{story.name}}</h2>
+        <p>{{story.description}}</p>
+        <!--<div item-end class="intel" >{{item.intel}}</div>-->
       </button>
 
       <ion-item-options>
