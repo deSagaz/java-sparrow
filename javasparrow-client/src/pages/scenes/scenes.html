@@ -15,13 +15,13 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let scene of currentScenes | async">
+    <ion-item-sliding *ngFor="let scene of currentScenes | async; let i = index">
       <button ion-item (click)="onClick(scene)" [ngClass]="{'locked' : totalIntel < scene.minIntel}">
       <!-- <button ion-item (click)="openItem(scene)"> -->
         <ion-avatar item-start>
           <!--<img [src]="scene.profilePic" />-->
         </ion-avatar>
-        <h2>{{scene.name}}</h2>
+        <h2>({{i}}) {{scene.name}}</h2>
         <div item-end *ngIf="totalIntel < minIntel[0][scene.id]" class="lock_icon" ></div>
         <div item-end *ngIf="totalIntel >= minIntel[0][scene.id]" class="intel" >{{userIntel[0][scene.id]}}</div>
         <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->
