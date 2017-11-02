@@ -19,7 +19,7 @@
       <button ion-item (click)="onClick(scene)" [ngClass]="{'locked' : totalIntel < scene.minIntel}">
       <!-- <button ion-item (click)="openItem(scene)"> -->
         <ion-avatar item-start>
-          <!--<img [src]="scene.profilePic" />-->
+          <img [src]="scene.image" />
         </ion-avatar>
         <h2>({{i}}) {{scene.name}}</h2>
         <div item-end *ngIf="totalIntel < minIntel[0][scene.id]" class="lock_icon" ></div>
