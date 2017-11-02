@@ -32,6 +32,7 @@ class Scene(models.Model):
     story = models.ForeignKey(Story, on_delete=models.SET_NULL, related_name='scenes', null=True, blank=True)
     name = models.CharField(max_length=30)
     events = JSONField(default={})
+    image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"

@@ -43,7 +43,7 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Scene
-        fields = ('id', 'order', 'story', 'name', 'events')
+        fields = ('id', 'order', 'story', 'name', 'image', 'events')
 
 '''
 class SequenceSerializer(serializers.HyperlinkedModelSerializer):
