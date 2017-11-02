@@ -28,7 +28,7 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Story
-        fields = ('id', 'name', 'description', 'scenes')
+        fields = ('id', 'name', 'description', 'image', 'scenes')
 
 class SceneSerializer(serializers.HyperlinkedModelSerializer):
     """
