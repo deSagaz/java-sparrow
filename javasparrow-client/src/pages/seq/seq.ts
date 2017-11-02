@@ -9,6 +9,7 @@ import 'brace/mode/javascript';
 import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
+import { Stories } from "../../providers/items/stories";
 
 /**
  * Generated class for the SeqPage page.
@@ -61,10 +62,22 @@ export class SeqPage {
   backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
-              private _webWorkerService: WebWorkerService) {
+              private _webWorkerService: WebWorkerService, private stories: Stories) {
     this.backgroundImage = new BehaviorSubject("");
 
     this.scene = navParams.get("scene");
+
+    // Check whether sequence was valid
+    if (!this.scene) {
+      this.toast.error("No scene passed. Returning to menu.");
+      this.navCtrl.goToRoot();
+      return;
+    } else if (!this.scene || Object.keys(this.scene['events']).length === 0) {
+      this.toast.error("Empty sequence. Returning to menu.");
+      this.navCtrl.pop();
+      return;
+    }
+
     this.sequence = this.scene['events'];
     this.currentEventIndex = -1;
     this.next();
@@ -86,8 +99,7 @@ export class SeqPage {
   next() {
     if(this.currentEventIndex == this.sequence.length - 1) {
       console.log("SEQUENCE HAS ENDED"); // DEBUG
-      this.toast.info("Sequence has ended. Please wait. Developers will get you out of here eventually.");
-      // TODO: Return to chapter menu screen and check off level for user.
+      this.navCtrl.pop();
       return;
     } else {
       console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG

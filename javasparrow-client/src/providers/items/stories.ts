@@ -17,7 +17,11 @@ export class Stories {
     this.api.get('/stories', params).subscribe(
       (rawStories: Story[]) => {
         this.stories.next(rawStories);
-    }
+      }
     );
+  }
+
+  getStory(id: number) {
+    return this.stories.getValue()[id];
   }
 }
