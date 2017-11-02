@@ -71,7 +71,7 @@ export class SeqPage {
     // Check whether sequence was valid
     if (!this.scene) {
       this.toast.error("No scene passed. Returning to menu.");
-      this.navCtrl.goToRoot();
+      this.navCtrl.popToRoot();
       return;
     } else if (!this.scene || Object.keys(this.scene['events']).length === 0) {
       this.toast.error("Empty sequence. Returning to menu.");
