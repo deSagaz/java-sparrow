@@ -18,7 +18,7 @@
     <ion-item-sliding *ngFor="let story of currentStories | async">
       <button ion-item (click)="openStory(item)">
         <ion-avatar item-start>
-          <!--<img [src]="item.profilePic" />-->
+          <img [src]="story.image" />
         </ion-avatar>
         <h2>{{story.name}}</h2>
         <p>{{story.description}}</p>
