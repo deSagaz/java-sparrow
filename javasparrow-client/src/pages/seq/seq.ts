@@ -89,9 +89,8 @@ export class SeqPage {
               private _webWorkerService: WebWorkerService, private stories: Stories) {
   }
 
-  ngAfterViewInit() {
+  ionViewWillEnter() {
     this.backgroundImage = new BehaviorSubject("");
-
     this.scene = this.navParams.get("scene");
 
     // Check whether sequence was valid
@@ -105,7 +104,8 @@ export class SeqPage {
       return;
     }
 
-    this.sequence = this.scene['events'].reverse();
+    // Avoid changing the referenced array by making a new one
+    this.sequence = [].concat(this.scene['events']).reverse();
     this.next();
 
     // Initialize editor:
@@ -133,9 +133,11 @@ export class SeqPage {
     // reset styles to default
     this.resetStyle();
 
+    console.log(this.sequence);
     let currentEvent = this.sequence.pop();
     let currentEventType = currentEvent['eventType'];
     this.currentEventData = currentEvent['data'];
+    console.log(this.currentEventData);
 
     // Now decide what to do with this event type, and pass event data to function.
     if (currentEventType == "text") {
@@ -337,14 +339,14 @@ export class SeqPage {
   wrongAnswerResponse() {
     // Check if answer response is given (as object). If not, go to next step in sequence.
     if (this.currentEventData['wrongAnswerResponse'] !== null && typeof this.currentEventData['wrongAnswerResponse'] === 'object') {
-      this.sequence = this.sequence.concat(this.currentEventData['wrongAnswerResponse'].reverse());
+      this.sequence = this.sequence.concat([].concat(this.currentEventData['wrongAnswerResponse']).reverse());
     }
     this.next();
   }
   correctAnswerResponse() {
     // Check if answer response is given. If not, go to next step in sequence.
     if (this.currentEventData['correctAnswerResponse'] !== null && typeof this.currentEventData['correctAnswerResponse'] === 'object') {
-      this.sequence = this.sequence.concat(this.currentEventData['correctAnswerResponse'].reverse());
+      this.sequence = this.sequence.concat([].concat(this.currentEventData['correctAnswerResponse']).reverse());
     }
     this.next();
   }
