@@ -50,9 +50,8 @@ function shuffle(array) {
 export class SeqPage {
 
   scene: Scene[];
-  sequence: object[];
+  sequence: object[]; // Stack of elements - approached from top to bottom
 
-  currentEventType: string;
   currentEventData: object;
 
   @ViewChild('editor') editor;
