@@ -11,6 +11,30 @@ import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
 import { Stories } from "../../providers/items/stories";
 
+
+/**
+ * Simple array shuffler
+ * Taken from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array?page=1&tab=votes#tab-top
+ */
+function shuffle(array) {
+  let currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 /**
  * Generated class for the SeqPage page.
  *
@@ -112,7 +136,7 @@ export class SeqPage {
     this.currentEventIndex++;
     this.currentEventType = this.sequence[this.currentEventIndex]['eventType'];
 
-    // Now decide what to do with this event type
+    // Now decide what to do with this event type, and pass event to function.
     if (this.currentEventType == "text") {
       this.doText();
     } else if (this.currentEventType == "backgroundChange") {
@@ -129,32 +153,16 @@ export class SeqPage {
       this.doCodeChallenge(this.sequence[this.currentEventIndex]['data']);
     } else {
       console.error("Event type unknown: ", this.currentEventType);
-      this.toast.error("Event type unknown. Contact a developer.");
-      this.currentEventIndex--; // Rewind event index
+      this.toast.error("Event type unknown. Please update your application to the latest version.");
+      // Skip this event
+      this.next();
+      return;
     }
+    // If known event, check for generic event data.
+    this.doGeneric();
   }
 
-  showHint(){
-    let hint = '';
-    // Next button is not shown when a question is asked, but is shown when after the answer is checked. (Not a great solution)
-    //TODO:better solution
-    if (this.showNextButton &&  this.sequence[this.currentEventIndex]['data']['feedback']){
-      hint = this.sequence[this.currentEventIndex]['data']['feedback'];
-    } else{
-      hint = this.sequence[this.currentEventIndex]['data']['hint'];
-    }
-    this.toast.showHint(hint);
-  }
-
-  resetStyle() {
-    this.primaryTextColor = "white";
-    this.primaryTextItalic = false;
-  }
-
-  doText() {
-    // Load data
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['content'];
-
+  doGeneric() {
     // Set styling
     if (this.sequence[this.currentEventIndex]['data']['contentColor']) {
       this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['contentColor'];
@@ -162,12 +170,30 @@ export class SeqPage {
     if (this.sequence[this.currentEventIndex]['data']['contentItalic']) {
       this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['contentItalic'];
     }
+    // Show hint button, if available
+    if (this.sequence[this.currentEventIndex]['data']['hint']){
+      this.showHintButton = true;
+    }
+  }
+
+  showHint() {
+    this.toast.showHint(this.sequence[this.currentEventIndex]['data']['hint']);
+  }
+
+  resetStyle() {
+    this.primaryTextColor = "white";
+    this.primaryTextItalic = false;
+    this.showHintButton = false; // When hint is found, it is turned on again.
+  }
+
+  doText() {
+    // Load data
+    this.primaryText = this.sequence[this.currentEventIndex]['data']['content'];
 
     // Set interface
     this.showPrimaryText = true;
     this.showMultipleChoice = false;
     this.showNextButton = true;
-    this.showHintButton = false;
     this.backgroundContrast = false;
   }
 
@@ -188,7 +214,6 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showMultipleChoice = true;
     this.showNextButton = false;
-    this.showHintButton = true;
     this.backgroundContrast = true;
   }
 
@@ -202,7 +227,6 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
       }
-      this.showHintButton = false;
     } else {
       this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
 
@@ -212,7 +236,6 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
       }
-      this.showHintButton = true;
     }
     this.showMultipleChoice = false;
     this.showNextButton = true;
@@ -229,7 +252,6 @@ export class SeqPage {
     this.showPrimaryText = true;
     this.showOpenEnded = true;
     this.showNextButton = false;
-    this.showHintButton = true;
     this.backgroundContrast = true;
   }
 
@@ -243,7 +265,6 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
       }
-      this.showHintButton = false;
     } else{
       this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
 
@@ -253,7 +274,6 @@ export class SeqPage {
       if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
         this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
       }
-      this.showHintButton = true;
     }
     this.showOpenEnded = false;
     this.showNextButton = true;
@@ -295,62 +315,38 @@ export class SeqPage {
       });
     }
 
-    this.draggableCode = this.shuffle(this.draggableCode);
+    this.draggableCode = shuffle(this.draggableCode);
     console.log(this.draggableCode);
 
     // Set interface
     this.showPrimaryText = true;
     this.showDragAndDrop = true;
     this.showNextButton = false;
-    this.showHintButton = true;
     this.backgroundContrast = true;
   }
 
-  //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array?page=1&tab=votes#tab-top
-  shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-  }
-
   //Checks if the correct answer list given by the server is the same as the list given by seq-drag-and-drop.
-  checkDragAndDrop(ans){
+  checkDragAndDrop(ans) {
     let rightAnswer = this.sequence[this.currentEventIndex]['data']['code'];
-    if (ans.length != rightAnswer.length){
+    if (ans.length != rightAnswer.length) {
       this.wrongAnswerResponse();
-      this.showHintButton = true;
-    }else{
+    } else{
       for (let i = 0; i < ans.length; ++i) {
         if (ans[i] !== rightAnswer[i]){
           this.wrongAnswerResponse();
           this.showDragAndDrop = false;
           this.showNextButton = true;
-          this.showHintButton = true;
           return false;
         }
       }
       this.correctAnswerResponse();
-      this.showHintButton = false;
     }
     this.showDragAndDrop = false;
     this.showNextButton = true;
   }
 
   //Todo: use for other question-checks too
-  correctAnswerResponse(){
+  correctAnswerResponse() {
     this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
 
     if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
@@ -361,7 +357,7 @@ export class SeqPage {
     }
   }
 
-  wrongAnswerResponse(){
+  wrongAnswerResponse() {
     this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
 
     if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor']) {
@@ -377,7 +373,6 @@ export class SeqPage {
     this.showPrimaryText = false;
     this.showMultipleChoice = false;
     this.showNextButton = false;
-    this.showHintButton = false;
     this.backgroundContrast = false;
 
     // console.log("ANIMATION STARTED"); // DEBUG
@@ -405,11 +400,10 @@ export class SeqPage {
     // Load interface container
     this.showCodeWindow = true;
     this.showNextButton = false;
-    this.showHintButton = true;
 
     // Set challenge and initial code in editor
     this.primaryText = data['question'];
-    this.text = atob(data['initCode']);
+    this.text = atob(data['initCode']); // Decrypt base64 encoded string
   }
 
   checkCodeChallenge() {
@@ -430,6 +424,7 @@ export class SeqPage {
       return;
     }
 
+    // Use web worker to run code separate from DOM
     const promise = this._webWorkerService.run(new Function(this.text)).then(
       (result) => {
         // Check if correct
@@ -445,7 +440,6 @@ export class SeqPage {
           }
           this.showCodeWindow = false;
           this.showNextButton = true;
-          this.showHintButton = false;
 
         } else {
           // Show error message
