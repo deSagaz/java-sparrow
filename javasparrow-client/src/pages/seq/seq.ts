@@ -88,9 +88,12 @@ export class SeqPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
               private _webWorkerService: WebWorkerService, private stories: Stories) {
+  }
+
+  ngAfterViewInit() {
     this.backgroundImage = new BehaviorSubject("");
 
-    this.scene = navParams.get("scene");
+    this.scene = this.navParams.get("scene");
 
     // Check whether sequence was valid
     if (!this.scene) {
@@ -105,9 +108,7 @@ export class SeqPage {
 
     this.sequence = this.scene['events'].reverse();
     this.next();
-  }
 
-  ngAfterViewInit() {
     // Initialize editor:
     // Must be initialised in the background on first view
     // and should not be removed after that.
