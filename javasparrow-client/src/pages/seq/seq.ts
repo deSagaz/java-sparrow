@@ -229,29 +229,6 @@ export class SeqPage {
     this.backgroundContrast = true;
   }
 
-  checkSimpleAnswer(ans: number) {
-    if (ans == this.currentEventData['correctAnswer']) {
-      this.correctAnswerResponse();
-    } else {
-      this.wrongAnswerResponse();
-    }
-  }
-
-  wrongAnswerResponse() {
-    // Check if answer response is given (as object). If not, go to next step in sequence.
-    if (this.currentEventData['wrongAnswerResponse'] !== null && typeof this.currentEventData['wrongAnswerResponse'] === 'object') {
-      this.sequence = this.sequence.concat(this.currentEventData['wrongAnswerResponse'].reverse());
-    }
-    this.next();
-  }
-  correctAnswerResponse() {
-    // Check if answer response is given. If not, go to next step in sequence.
-    if (this.currentEventData['correctAnswerResponse'] !== null && typeof this.currentEventData['correctAnswerResponse'] === 'object') {
-      this.sequence = this.sequence.concat(this.currentEventData['correctAnswerResponse'].reverse());
-    }
-    this.next();
-  }
-
   doOpenEnded(data: object){
     // Load question
     this.primaryText = data['question'];
@@ -312,28 +289,6 @@ export class SeqPage {
     this.backgroundContrast = true;
   }
 
-  //Checks if the correct answer list given by the server is the same as the list given by seq-drag-and-drop.
-  checkDragAndDrop(ans) {
-    let rightAnswer = this.currentEventData['code'];
-    if (ans.length != rightAnswer.length) {
-      this.wrongAnswerResponse();
-    } else {
-      for (let i = 0; i < ans.length; ++i) {
-        if (ans[i] !== rightAnswer[i]){
-          this.wrongAnswerResponse();
-          this.showDragAndDrop = false;
-          this.showNextButton = true;
-          return false;
-        }
-      }
-      this.correctAnswerResponse();
-    }
-
-    // Set interface
-    this.showDragAndDrop = false;
-    this.showNextButton = true;
-  }
-
   doAnimation(data: object) {
     // Set interface
     this.showPrimaryText = false;
@@ -370,6 +325,51 @@ export class SeqPage {
     // Set challenge and initial code in editor
     this.primaryText = data['question'];
     this.text = atob(data['initCode']); // Decrypt base64 encoded string
+  }
+
+  checkSimpleAnswer(ans: number) {
+    if (ans == this.currentEventData['correctAnswer']) {
+      this.correctAnswerResponse();
+    } else {
+      this.wrongAnswerResponse();
+    }
+  }
+
+  wrongAnswerResponse() {
+    // Check if answer response is given (as object). If not, go to next step in sequence.
+    if (this.currentEventData['wrongAnswerResponse'] !== null && typeof this.currentEventData['wrongAnswerResponse'] === 'object') {
+      this.sequence = this.sequence.concat(this.currentEventData['wrongAnswerResponse'].reverse());
+    }
+    this.next();
+  }
+  correctAnswerResponse() {
+    // Check if answer response is given. If not, go to next step in sequence.
+    if (this.currentEventData['correctAnswerResponse'] !== null && typeof this.currentEventData['correctAnswerResponse'] === 'object') {
+      this.sequence = this.sequence.concat(this.currentEventData['correctAnswerResponse'].reverse());
+    }
+    this.next();
+  }
+
+  //Checks if the correct answer list given by the server is the same as the list given by seq-drag-and-drop.
+  checkDragAndDrop(ans) {
+    let rightAnswer = this.currentEventData['code'];
+    if (ans.length != rightAnswer.length) {
+      this.wrongAnswerResponse();
+    } else {
+      for (let i = 0; i < ans.length; ++i) {
+        if (ans[i] !== rightAnswer[i]){
+          this.wrongAnswerResponse();
+          this.showDragAndDrop = false;
+          this.showNextButton = true;
+          return false;
+        }
+      }
+      this.correctAnswerResponse();
+    }
+
+    // Set interface
+    this.showDragAndDrop = false;
+    this.showNextButton = true;
   }
 
   checkCodeChallenge() {
