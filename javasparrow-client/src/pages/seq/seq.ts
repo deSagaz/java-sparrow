@@ -63,13 +63,13 @@ export class SeqPage {
   primaryTextColor: string;
   primaryTextItalic: boolean;
 
-  // Anwers are used for multiple choice
+  // Answers are used for multiple choice
   multipleChoiceAnswers: string[];
 
-  //Code snippet shown for the open question
+  // Code snippet shown for the open question
   openEndedCode: string[] = [];
 
-  //Code for drag and drop and which lines of those are draggable
+  // Code for drag and drop and which lines of those are draggable
   dragAndDropCode: Array<any> = [];
   draggableCode: Array<any> = [];
 
@@ -135,22 +135,23 @@ export class SeqPage {
 
     this.currentEventIndex++;
     this.currentEventType = this.sequence[this.currentEventIndex]['eventType'];
+    let currentEventData = this.sequence[this.currentEventIndex]['data'];
 
-    // Now decide what to do with this event type, and pass event to function.
+    // Now decide what to do with this event type, and pass event data to function.
     if (this.currentEventType == "text") {
-      this.doText();
+      this.doText(currentEventData);
     } else if (this.currentEventType == "backgroundChange") {
-      this.doBackgroundChange();
+      this.doBackgroundChange(currentEventData);
     } else if (this.currentEventType == "quiz") {
-      this.doQuiz();
+      this.doQuiz(currentEventData);
     } else if (this.currentEventType == "open") {
-      this.doOpenEnded();
+      this.doOpenEnded(currentEventData);
     } else if (this.currentEventType == "drag") {
-      this.doDragAndDrop();
+      this.doDragAndDrop(currentEventData);
     } else if (this.currentEventType == "animation") {
-      this.doAnimation(this.sequence[this.currentEventIndex]['data']);
+      this.doAnimation(currentEventData);
     } else if (this.currentEventType == "codeChallenge") {
-      this.doCodeChallenge(this.sequence[this.currentEventIndex]['data']);
+      this.doCodeChallenge(currentEventData);
     } else {
       console.error("Event type unknown: ", this.currentEventType);
       this.toast.error("Event type unknown. Please update your application to the latest version.");
@@ -186,9 +187,9 @@ export class SeqPage {
     this.showHintButton = false; // When hint is found, it is turned on again.
   }
 
-  doText() {
+  doText(data: object) {
     // Load data
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['content'];
+    this.primaryText = data['content'];
 
     // Set interface
     this.showPrimaryText = true;
@@ -197,18 +198,18 @@ export class SeqPage {
     this.backgroundContrast = false;
   }
 
-  doBackgroundChange() {
+  doBackgroundChange(data: object) {
     // Change background
-    this.backgroundImage.next(environment.imgLoc + this.sequence[this.currentEventIndex]['data']['image']);
+    this.backgroundImage.next(environment.imgLoc + data['image']);
     // Immediately run next event
     this.next();
   }
 
-  doQuiz() {
+  doQuiz(data: object) {
     // Load data
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['question'];
+    this.primaryText = data['question'];
     // Go through each answer in the answer array
-    this.multipleChoiceAnswers = this.sequence[this.currentEventIndex]['data']['answers'];
+    this.multipleChoiceAnswers = data['answers'];
 
     // Set interface
     this.showPrimaryText = true;
@@ -241,12 +242,12 @@ export class SeqPage {
     this.showNextButton = true;
   }
 
-  doOpenEnded(){
+  doOpenEnded(data: object){
     // Load question
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['question'];
+    this.primaryText = data['question'];
 
     // Load code
-    this.openEndedCode = this.sequence[this.currentEventIndex]['data']['code'];
+    this.openEndedCode = data['code'];
 
     // Set interface
     this.showPrimaryText = true;
@@ -279,14 +280,14 @@ export class SeqPage {
     this.showNextButton = true;
   }
 
-  doDragAndDrop(){
+  doDragAndDrop(data: object){
     //Question
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['question'];
+    this.primaryText = data['question'];
 
     //Pass code and indices of code lines which are draggable
-    let code = this.sequence[this.currentEventIndex]['data']['code'];
-    let draggableIndices = this.sequence[this.currentEventIndex]['data']['draggable_indices'];
-    let extraCode = this.sequence[this.currentEventIndex]['data']['extra'];
+    let code = data['code'];
+    let draggableIndices = data['draggable_indices'];
+    let extraCode = data['extra'];
 
     let len = code.length;
     for (let i = 0; i < len; i++) {
