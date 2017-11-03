@@ -52,8 +52,8 @@ export class SeqPage {
   scene: Scene[];
   sequence: object[];
 
-  currentEventIndex: number;
   currentEventType: string;
+  currentEventData: object;
 
   @ViewChild('editor') editor;
   text: string = "";
@@ -103,8 +103,7 @@ export class SeqPage {
       return;
     }
 
-    this.sequence = this.scene['events'];
-    this.currentEventIndex = -1;
+    this.sequence = this.scene['events'].reverse();
     this.next();
   }
 
@@ -122,63 +121,64 @@ export class SeqPage {
   }
 
   next() {
-    if(this.currentEventIndex == this.sequence.length - 1) {
+    // Check if sequence is empty
+    if (this.sequence.length === 0) {
       console.log("SEQUENCE HAS ENDED"); // DEBUG
       this.navCtrl.pop();
       return;
     } else {
-      console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG
+      console.log("NEXT EVENT TRIGGERED"); // DEBUG
     }
 
     // reset styles to default
     this.resetStyle();
 
-    this.currentEventIndex++;
-    this.currentEventType = this.sequence[this.currentEventIndex]['eventType'];
-    let currentEventData = this.sequence[this.currentEventIndex]['data'];
+    let currentEvent = this.sequence.pop();
+    let currentEventType = currentEvent['eventType'];
+    this.currentEventData = currentEvent['data'];
 
     // Now decide what to do with this event type, and pass event data to function.
-    if (this.currentEventType == "text") {
-      this.doText(currentEventData);
-    } else if (this.currentEventType == "backgroundChange") {
-      this.doBackgroundChange(currentEventData);
-    } else if (this.currentEventType == "quiz") {
-      this.doQuiz(currentEventData);
-    } else if (this.currentEventType == "open") {
-      this.doOpenEnded(currentEventData);
-    } else if (this.currentEventType == "drag") {
-      this.doDragAndDrop(currentEventData);
-    } else if (this.currentEventType == "animation") {
-      this.doAnimation(currentEventData);
-    } else if (this.currentEventType == "codeChallenge") {
-      this.doCodeChallenge(currentEventData);
+    if (currentEventType == "text") {
+      this.doText(this.currentEventData);
+    } else if (currentEventType == "backgroundChange") {
+      this.doBackgroundChange(this.currentEventData);
+    } else if (currentEventType == "quiz") {
+      this.doQuiz(this.currentEventData);
+    } else if (currentEventType == "open") {
+      this.doOpenEnded(this.currentEventData);
+    } else if (currentEventType == "drag") {
+      this.doDragAndDrop(this.currentEventData);
+    } else if (currentEventType == "animation") {
+      this.doAnimation(this.currentEventData);
+    } else if (currentEventType == "codeChallenge") {
+      this.doCodeChallenge(this.currentEventData);
     } else {
-      console.error("Event type unknown: ", this.currentEventType);
+      console.error("Event type unknown: ", currentEventType);
       this.toast.error("Event type unknown. Please update your application to the latest version.");
       // Skip this event
       this.next();
       return;
     }
     // If known event, check for generic event data.
-    this.doGeneric();
+    this.doGeneric(this.currentEventData);
   }
 
-  doGeneric() {
+  doGeneric(data: object) {
     // Set styling
-    if (this.sequence[this.currentEventIndex]['data']['contentColor']) {
-      this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['contentColor'];
+    if (data['contentColor']) {
+      this.primaryTextColor = data['contentColor'];
     }
-    if (this.sequence[this.currentEventIndex]['data']['contentItalic']) {
-      this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['contentItalic'];
+    if (data['contentItalic']) {
+      this.primaryTextItalic = data['contentItalic'];
     }
     // Show hint button, if available
-    if (this.sequence[this.currentEventIndex]['data']['hint']){
+    if (data['hint']){
       this.showHintButton = true;
     }
   }
 
   showHint() {
-    this.toast.showHint(this.sequence[this.currentEventIndex]['data']['hint']);
+    this.toast.showHint(this.currentEventData['hint']);
   }
 
   resetStyle() {
@@ -219,23 +219,23 @@ export class SeqPage {
   }
 
   checkMultipleChoiceAnswer(ans: number) {
-    if (ans == this.sequence[this.currentEventIndex]['data']['correctAnswer']) {
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
+    if (ans == this.currentEventData['correctAnswer']) {
+      this.primaryText = this.currentEventData['correctAnswerResponse'];
 
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
+      if (this.currentEventData['correctAnswerResponseColor']) {
+        this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
       }
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
+      if (this.currentEventData['correctAnswerResponseItalic']) {
+        this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
       }
     } else {
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
+      this.primaryText = this.currentEventData['wrongAnswerResponse'];
 
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor'];
+      if (this.currentEventData['wrongAnswerResponseColor']) {
+        this.primaryTextColor = this.currentEventData['wrongAnswerResponseColor'];
       }
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
+      if (this.currentEventData['wrongAnswerResponseItalic']) {
+        this.primaryTextItalic = this.currentEventData['wrongAnswerResponseItalic'];
       }
     }
     this.showMultipleChoice = false;
@@ -257,23 +257,23 @@ export class SeqPage {
   }
 
   checkOpenEndedAnswer (ans: number) {
-    if (ans == this.sequence[this.currentEventIndex]['data']['correctAnswer']) {
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
+    if (ans == this.currentEventData['correctAnswer']) {
+      this.primaryText = this.currentEventData['correctAnswerResponse'];
 
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
+      if (this.currentEventData['correctAnswerResponseColor']) {
+        this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
       }
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
+      if (this.currentEventData['correctAnswerResponseItalic']) {
+        this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
       }
     } else{
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
+      this.primaryText = this.currentEventData['wrongAnswerResponse'];
 
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor'];
+      if (this.currentEventData['wrongAnswerResponseColor']) {
+        this.primaryTextColor = this.currentEventData['wrongAnswerResponseColor'];
       }
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
+      if (this.currentEventData['wrongAnswerResponseItalic']) {
+        this.primaryTextItalic = this.currentEventData['wrongAnswerResponseItalic'];
       }
     }
     this.showOpenEnded = false;
@@ -328,7 +328,7 @@ export class SeqPage {
 
   //Checks if the correct answer list given by the server is the same as the list given by seq-drag-and-drop.
   checkDragAndDrop(ans) {
-    let rightAnswer = this.sequence[this.currentEventIndex]['data']['code'];
+    let rightAnswer = this.currentEventData['code'];
     if (ans.length != rightAnswer.length) {
       this.wrongAnswerResponse();
     } else{
@@ -348,24 +348,24 @@ export class SeqPage {
 
   //Todo: use for other question-checks too
   correctAnswerResponse() {
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
+    this.primaryText = this.currentEventData['correctAnswerResponse'];
 
-    if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
-      this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
+    if (this.currentEventData['correctAnswerResponseColor']) {
+      this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
     }
-    if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
-      this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
+    if (this.currentEventData['correctAnswerResponseItalic']) {
+      this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
     }
   }
 
   wrongAnswerResponse() {
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
+    this.primaryText = this.currentEventData['wrongAnswerResponse'];
 
-    if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor']) {
-      this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor'];
+    if (this.currentEventData['wrongAnswerResponseColor']) {
+      this.primaryTextColor = this.currentEventData['wrongAnswerResponseColor'];
     }
-    if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
-      this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
+    if (this.currentEventData['wrongAnswerResponseItalic']) {
+      this.primaryTextItalic = this.currentEventData['wrongAnswerResponseItalic'];
     }
   }
 
@@ -409,7 +409,7 @@ export class SeqPage {
 
   checkCodeChallenge() {
     // Do preliminary check
-    if (this.sequence[this.currentEventIndex]['data']['disallowLoops']) {
+    if (this.currentEventData['disallowLoops']) {
       // Check if user used any references to while or for
       if (this.text.includes("while") || this.text.includes("for")) {
         // Show error message
@@ -429,15 +429,15 @@ export class SeqPage {
     const promise = this._webWorkerService.run(new Function(this.text)).then(
       (result) => {
         // Check if correct
-        if (this.sequence[this.currentEventIndex]['data']['answer'] == result) {
+        if (this.currentEventData['answer'] == result) {
           // If correct
-          this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
+          this.primaryText = this.currentEventData['correctAnswerResponse'];
 
-          if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
-            this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
+          if (this.currentEventData['correctAnswerResponseColor']) {
+            this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
           }
-          if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
-            this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
+          if (this.currentEventData['correctAnswerResponseItalic']) {
+            this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
           }
           this.showCodeWindow = false;
           this.showNextButton = true;
