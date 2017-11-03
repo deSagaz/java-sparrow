@@ -8,10 +8,10 @@
     </div>
     <seq-multiple-choice *ngIf="showMultipleChoice"
                          [answers]=multipleChoiceAnswers
-                         (answerGiven)="checkMultipleChoiceAnswer($event)"></seq-multiple-choice>
+                         (answerGiven)="checkSimpleAnswer($event)"></seq-multiple-choice>
     <seq-open-ended *ngIf="showOpenEnded"
                     [codeSnippet]=openEndedCode
-                    (answerGiven)="checkOpenEndedAnswer($event)"></seq-open-ended>
+                    (answerGiven)="checkSimpleAnswer($event)"></seq-open-ended>
     <seq-drag-and-drop *ngIf="showDragAndDrop"
                         [staticCode]=dragAndDropCode
                         [draggableCode]=draggableCode

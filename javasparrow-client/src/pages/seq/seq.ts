@@ -181,10 +181,20 @@ export class SeqPage {
     this.toast.showHint(this.currentEventData['hint']);
   }
 
+  /**
+   * Reset all component displays to be off and reset default styles.
+   */
   resetStyle() {
     this.primaryTextColor = "white";
     this.primaryTextItalic = false;
     this.showHintButton = false; // When hint is found, it is turned on again.
+    this.showMultipleChoice = false;
+    this.showNextButton = false;
+    this.showPrimaryText = false;
+    this.backgroundContrast = false;
+    this.showOpenEnded = false;
+    this.showCodeWindow = false;
+    this.showDragAndDrop = false;
   }
 
   doText(data: object) {
@@ -218,28 +228,27 @@ export class SeqPage {
     this.backgroundContrast = true;
   }
 
-  checkMultipleChoiceAnswer(ans: number) {
+  checkSimpleAnswer(ans: number) {
     if (ans == this.currentEventData['correctAnswer']) {
-      this.primaryText = this.currentEventData['correctAnswerResponse'];
-
-      if (this.currentEventData['correctAnswerResponseColor']) {
-        this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
-      }
-      if (this.currentEventData['correctAnswerResponseItalic']) {
-        this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
-      }
+      this.correctAnswerResponse();
     } else {
-      this.primaryText = this.currentEventData['wrongAnswerResponse'];
-
-      if (this.currentEventData['wrongAnswerResponseColor']) {
-        this.primaryTextColor = this.currentEventData['wrongAnswerResponseColor'];
-      }
-      if (this.currentEventData['wrongAnswerResponseItalic']) {
-        this.primaryTextItalic = this.currentEventData['wrongAnswerResponseItalic'];
-      }
+      this.wrongAnswerResponse();
     }
-    this.showMultipleChoice = false;
-    this.showNextButton = true;
+  }
+
+  wrongAnswerResponse() {
+    // Check if answer response is given (as object). If not, go to next step in sequence.
+    if (this.currentEventData['wrongAnswerResponse'] !== null && typeof this.currentEventData['wrongAnswerResponse'] === 'object') {
+      this.sequence = this.sequence.concat(this.currentEventData['wrongAnswerResponse'].reverse());
+    }
+    this.next();
+  }
+  correctAnswerResponse() {
+    // Check if answer response is given. If not, go to next step in sequence.
+    if (this.currentEventData['correctAnswerResponse'] !== null && typeof this.currentEventData['correctAnswerResponse'] === 'object') {
+      this.sequence = this.sequence.concat(this.currentEventData['correctAnswerResponse'].reverse());
+    }
+    this.next();
   }
 
   doOpenEnded(data: object){
@@ -254,30 +263,6 @@ export class SeqPage {
     this.showOpenEnded = true;
     this.showNextButton = false;
     this.backgroundContrast = true;
-  }
-
-  checkOpenEndedAnswer (ans: number) {
-    if (ans == this.currentEventData['correctAnswer']) {
-      this.primaryText = this.currentEventData['correctAnswerResponse'];
-
-      if (this.currentEventData['correctAnswerResponseColor']) {
-        this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
-      }
-      if (this.currentEventData['correctAnswerResponseItalic']) {
-        this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
-      }
-    } else{
-      this.primaryText = this.currentEventData['wrongAnswerResponse'];
-
-      if (this.currentEventData['wrongAnswerResponseColor']) {
-        this.primaryTextColor = this.currentEventData['wrongAnswerResponseColor'];
-      }
-      if (this.currentEventData['wrongAnswerResponseItalic']) {
-        this.primaryTextItalic = this.currentEventData['wrongAnswerResponseItalic'];
-      }
-    }
-    this.showOpenEnded = false;
-    this.showNextButton = true;
   }
 
   doDragAndDrop(data: object){
@@ -331,7 +316,7 @@ export class SeqPage {
     let rightAnswer = this.currentEventData['code'];
     if (ans.length != rightAnswer.length) {
       this.wrongAnswerResponse();
-    } else{
+    } else {
       for (let i = 0; i < ans.length; ++i) {
         if (ans[i] !== rightAnswer[i]){
           this.wrongAnswerResponse();
@@ -342,31 +327,10 @@ export class SeqPage {
       }
       this.correctAnswerResponse();
     }
+
+    // Set interface
     this.showDragAndDrop = false;
     this.showNextButton = true;
-  }
-
-  //Todo: use for other question-checks too
-  correctAnswerResponse() {
-    this.primaryText = this.currentEventData['correctAnswerResponse'];
-
-    if (this.currentEventData['correctAnswerResponseColor']) {
-      this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
-    }
-    if (this.currentEventData['correctAnswerResponseItalic']) {
-      this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
-    }
-  }
-
-  wrongAnswerResponse() {
-    this.primaryText = this.currentEventData['wrongAnswerResponse'];
-
-    if (this.currentEventData['wrongAnswerResponseColor']) {
-      this.primaryTextColor = this.currentEventData['wrongAnswerResponseColor'];
-    }
-    if (this.currentEventData['wrongAnswerResponseItalic']) {
-      this.primaryTextItalic = this.currentEventData['wrongAnswerResponseItalic'];
-    }
   }
 
   doAnimation(data: object) {
