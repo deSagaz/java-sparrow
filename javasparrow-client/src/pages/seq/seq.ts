@@ -370,17 +370,11 @@ export class SeqPage {
       for (let i = 0; i < ans.length; ++i) {
         if (ans[i] !== rightAnswer[i]){
           this.wrongAnswerResponse();
-          this.showDragAndDrop = false;
-          this.showNextButton = true;
-          return false;
+          return;
         }
       }
       this.correctAnswerResponse();
     }
-
-    // Set interface
-    this.showDragAndDrop = false;
-    this.showNextButton = true;
   }
 
   checkCodeChallenge() {
