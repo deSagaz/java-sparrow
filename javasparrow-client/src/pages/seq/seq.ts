@@ -233,16 +233,18 @@ export class SeqPage {
     // Load question
     this.primaryText = data['question'];
 
-    // Load code
-    this.code = atob(data['code']); // Decrypt base64 encoded string;
-    this.editor.getEditor().setOptions({
-      readOnly: true
-    });
+    // Load code, if available
+    if (data['code']) {
+      this.code = atob(data['code']); // Decrypt base64 encoded string;
+      this.editor.getEditor().setOptions({
+        readOnly: true
+      });
+      this.showCodeWindow = true;
+    }
 
     // Set interface
     this.showPrimaryText = true;
     this.showOpenEnded = true;
-    this.showCodeWindow = true;
     this.showNextButton = false;
     this.backgroundContrast = true;
   }
