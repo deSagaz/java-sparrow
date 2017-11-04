@@ -12,8 +12,6 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 })
 export class SeqOpenEndedComponent {
 
-  @Input() codeSnippet = [];
-
   @Output() answerGiven = new EventEmitter();
 
   constructor() {

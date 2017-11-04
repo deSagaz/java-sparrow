@@ -3,14 +3,13 @@
   <div class="overlay">
     <h1 *ngIf="showPrimaryText" [style.color]="primaryTextColor" [ngClass]="{'italic': primaryTextItalic}">{{ primaryText }}</h1>
     <div class="codeWindow" [ngClass]="{'hide': !showCodeWindow}">
-      <ace-editor [(text)]="text" #editor [mode]="'javascript'"></ace-editor>
-      <button (click)="checkCodeChallenge()">Run code</button>
+      <ace-editor [(text)]="code" #editor [mode]="'javascript'"></ace-editor>
+      <button (click)="checkCodeChallenge()" [ngClass]="{'hide': !showCodeWindowSubmit}">Run code</button>
     </div>
     <seq-multiple-choice *ngIf="showMultipleChoice"
                          [answers]=multipleChoiceAnswers
                          (answerGiven)="checkSimpleAnswer($event)"></seq-multiple-choice>
     <seq-open-ended *ngIf="showOpenEnded"
-                    [codeSnippet]=openEndedCode
                     (answerGiven)="checkSimpleAnswer($event)"></seq-open-ended>
     <seq-drag-and-drop *ngIf="showDragAndDrop"
                         [staticCode]=dragAndDropCode

@@ -55,7 +55,7 @@ export class SeqPage {
   currentEventData: object;
 
   @ViewChild('editor') editor;
-  text: string = "";
+  code: string = "";
 
   // primaryText is used for character dialogue and question texts
   primaryText: string;
@@ -64,9 +64,6 @@ export class SeqPage {
 
   // Answers are used for multiple choice
   multipleChoiceAnswers: string[];
-
-  // Code snippet shown for the open question
-  openEndedCode: string[] = [];
 
   // Code for drag and drop and which lines of those are draggable
   dragAndDropCode: Array<any> = [];
@@ -79,6 +76,7 @@ export class SeqPage {
   showMultipleChoice: boolean = false;
   showOpenEnded: boolean = false;
   showCodeWindow: boolean = false;
+  showCodeWindowSubmit: boolean = false;
   showDragAndDrop: boolean = false;
 
   // Background
@@ -196,6 +194,7 @@ export class SeqPage {
     this.backgroundContrast = false;
     this.showOpenEnded = false;
     this.showCodeWindow = false;
+    this.showCodeWindowSubmit = false;
     this.showDragAndDrop = false;
   }
 
@@ -235,11 +234,15 @@ export class SeqPage {
     this.primaryText = data['question'];
 
     // Load code
-    this.openEndedCode = data['code'];
+    this.code = atob(data['code']); // Decrypt base64 encoded string;
+    this.editor.getEditor().setOptions({
+      readOnly: true
+    });
 
     // Set interface
     this.showPrimaryText = true;
     this.showOpenEnded = true;
+    this.showCodeWindow = true;
     this.showNextButton = false;
     this.backgroundContrast = true;
   }
@@ -320,12 +323,17 @@ export class SeqPage {
 
   doCodeChallenge(data: object) {
     // Load interface container
+    this.showPrimaryText = true;
     this.showCodeWindow = true;
     this.showNextButton = false;
+    this.showCodeWindowSubmit = true;
 
     // Set challenge and initial code in editor
     this.primaryText = data['question'];
-    this.text = atob(data['initCode']); // Decrypt base64 encoded string
+    this.code = atob(data['initCode']); // Decrypt base64 encoded string
+    this.editor.getEditor().setOptions({
+      readOnly: false
+    });
   }
 
   checkSimpleAnswer(ans: number) {
@@ -377,7 +385,7 @@ export class SeqPage {
     // Do preliminary check
     if (this.currentEventData['disallowLoops']) {
       // Check if user used any references to while or for
-      if (this.text.includes("while") || this.text.includes("for")) {
+      if (this.code.includes("while") || this.code.includes("for")) {
         // Show error message
         this.toast.error("You used a loop. These are not allowed on this system. Try a recursive approach.");
         return;
@@ -385,14 +393,14 @@ export class SeqPage {
     }
 
     // Check for hardcoded answer
-    if (this.text.includes("return " + 6765)) {
+    if (this.code.includes("return " + 6765)) {
       // Show error message
       this.toast.error("You CHEATED. Game Over.");
       return;
     }
 
     // Use web worker to run code separate from DOM
-    const promise = this._webWorkerService.run(new Function(this.text)).then(
+    const promise = this._webWorkerService.run(new Function(this.code)).then(
       (result) => {
         // Check if correct
         if (this.currentEventData['answer'] == result) {
