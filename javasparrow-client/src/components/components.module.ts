@@ -4,14 +4,18 @@ import { SeqMultipleChoiceComponent } from './seq-multiple-choice/seq-multiple-c
 import { IonicModule } from "ionic-angular";
 import { MyApp } from "../app/app.component";
 import { SeqOpenEndedComponent } from './seq-open-ended/seq-open-ended';
+import { SeqDragAndDropComponent } from './seq-drag-and-drop/seq-drag-and-drop';
+import { DragulaModule } from "ng2-dragula/ng2-dragula";
 
 @NgModule({
 	declarations: [SeqCodeChallengeComponent,
     SeqMultipleChoiceComponent,
-    SeqOpenEndedComponent],
-	imports: [IonicModule.forRoot(SeqMultipleChoiceComponent)],
+    SeqOpenEndedComponent,
+    SeqDragAndDropComponent],
+	imports: [IonicModule.forRoot(SeqMultipleChoiceComponent), DragulaModule],
 	exports: [SeqCodeChallengeComponent,
     SeqMultipleChoiceComponent,
-    SeqOpenEndedComponent]
+    SeqOpenEndedComponent,
+    SeqDragAndDropComponent]
 })
 export class ComponentsModule {}

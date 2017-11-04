@@ -1,9 +1,21 @@
 seq-open-ended {
   #answer{
-    background-color: #000022;
+    background-color: rgba(0,0,34,0.7);
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
     margin: 10px;
+  }
+  .codeField{
+    padding-left: 10px;
+    width: 100%;
+    text-align: left;
+  }
+
+  #codeBlock{
+    width: 100.5%;
+    border: 2px solid #000022;
+    padding: 10px;
+    background-color: rgba(0,0,34,0.7);
   }
 }

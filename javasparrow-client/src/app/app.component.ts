@@ -7,6 +7,7 @@ import { Config, Nav, Platform } from 'ionic-angular';
 import { FirstRunPage } from '../pages/pages';
 import { Settings } from '../providers/providers';
 
+
 @Component({
   template: `<!--<ion-menu [content]="content">-->
     <!--<ion-header>-->
@@ -44,7 +45,8 @@ export class MyApp {
     { title: 'Menu', component: 'MenuPage' },
     { title: 'Settings', component: 'SettingsPage' },
     { title: 'Search', component: 'SearchPage' },
-    { title: 'Scenes', component: 'ScenesPage' }
+    { title: 'Scenes', component: 'ScenesPage' },
+    { title: 'Sequence', component: 'SeqPage' }
   ]
 
   constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {
