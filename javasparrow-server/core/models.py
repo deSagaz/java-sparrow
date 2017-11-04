@@ -18,6 +18,7 @@ class Story(models.Model):
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
 
+    '''
     def calcTotalScore(self):
         number = Story.scoreTotal
         {% for i in self.scenes %}
@@ -25,6 +26,7 @@ class Story(models.Model):
 
             {self.number = (number + (i.scoreMax))}
         {% endfor %}
+    '''
 
     class Meta:
         verbose_name_plural = "Stories"
