@@ -9,7 +9,8 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
  */
 @Component({
   selector: 'seq-drag-and-drop',
-  templateUrl: 'seq-drag-and-drop.html'
+  templateUrl: 'seq-drag-and-drop.html',
+  providers: [DragulaService]
 })
 export class SeqDragAndDropComponent{
   @Input() staticCode = [];
@@ -29,7 +30,7 @@ export class SeqDragAndDropComponent{
       this.onRemoveModel(value.slice(1));
     });
 
-    dragulaService.setOptions('another-bag', {
+    dragulaService.setOptions('drag-drop', {
       moves: (el, source, handle, sibling) => !el.classList.contains('no-drag')
     });
   }

@@ -3,10 +3,10 @@
   <!--Create two boxes with items according to the two lists from the .ts file.-->
   <!--One list has to be te static code and the other the code that can be dragged to
   answer the question. Which is which has to be indicated for every element.-->
-  <div class='container' id="c1" [dragula]='"another-bag"' [dragulaModel]='staticCode'>
+  <div class='container' id="c1" [dragula]='"drag-drop"' [dragulaModel]='staticCode'>
     <div *ngFor='let text of staticCode' [innerHtml]='text.codeLine' [ngClass]="{'no-drag' : !text.draggable}"></div>
   </div>
-  <div class='container' [dragula]='"another-bag"' [dragulaModel]='draggableCode'>
+  <div class='container' [dragula]='"drag-drop"' [dragulaModel]='draggableCode'>
     <div *ngFor='let text of draggableCode' [innerHtml]='text.codeLine' [ngClass]="{'no-drag' : !text.draggable}"></div>
   </div>
 </div>

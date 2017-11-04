@@ -9,7 +9,6 @@ import { IonicStorageModule, Storage } from '@ionic/storage';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { DragulaModule, DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { Stories } from '../providers/providers';
 import { Scenes } from '../providers/providers';
@@ -49,7 +48,6 @@ export function provideSettings(storage: Storage) {
     MyApp
   ],
   imports: [
-    DragulaModule,
     BrowserModule,
     HttpClientModule,
     TranslateModule.forRoot({
@@ -80,7 +78,6 @@ export function provideSettings(storage: Storage) {
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    DragulaService,
     ToastProvider,
     WebWorkerService
   ]
