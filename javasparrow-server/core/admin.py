@@ -1,11 +1,11 @@
 from django.contrib import admin
 
 # Register your models here.
-from core.models import Story, Scene, UserIntel#, Sequence #Exercise, Question, Answer, AnimText, Video, MultChoice, FillBlank
+from core.models import Story, Scene, Score#, Sequence #Exercise, Question, Answer, AnimText, Video, MultChoice, FillBlank
 
 admin.site.register(Story)
 admin.site.register(Scene)
-admin.site.register(UserIntel)
+admin.site.register(Score)
 #admin.site.register(Sequence)
 '''
 admin.site.register(Exercise)

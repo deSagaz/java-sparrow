@@ -4,7 +4,7 @@ from rest_framework import viewsets
 # Create your views here.
 from core.models import Story
 from core.models import Scene
-from core.models import UserIntel
+from core.models import Score
 #from core.models import Sequence
 
 '''
@@ -18,7 +18,7 @@ from core.models import FillBlank
 '''
 from core.serializers import StorySerializer
 from core.serializers import SceneSerializer
-from core.serializers import UserIntelSerializer
+from core.serializers import ScoreSerializer
 #from core.serializers import SequenceSerializer
 '''
 from core.serializers import VideoSerializer
@@ -56,7 +56,7 @@ class SceneViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Scene.objects.all()
     serializer_class = SceneSerializer
 
-class UserIntelViewSet(viewsets.ReadOnlyModelViewSet):
+class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Contains all scenes.
     Provides `list` and `detail` views.
@@ -65,8 +65,8 @@ class UserIntelViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = ()
     authentication_classes = ()
 
-    queryset = UserIntel.objects.all()
-    serializer_class = UserIntelSerializer
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
 
 '''
 class SequenceViewSet(viewsets.ReadOnlyModelViewSet):

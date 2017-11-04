@@ -6,7 +6,7 @@ from rest_auth.serializers import UserModel
 
 from core.models import Story
 from core.models import Scene
-from core.models import UserIntel
+from core.models import Score
 #from core.models import Sequence
 
 '''
@@ -46,17 +46,17 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
     #    view_name='sequence-detail'
     #)
 
-    userintels = serializers.HyperlinkedRelatedField(
+    scores = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='userintel-detail'
+        view_name='score-detail'
     )
 
     class Meta:
         model = Scene
-        fields = ('id', 'order', 'story', 'name', 'events', 'userintels', 'image')
+        fields = ('id', 'order', 'story', 'name', 'events', 'scores', 'image')
 
-class UserIntelSerializer(serializers.HyperlinkedModelSerializer):
+class ScoreSerializer(serializers.HyperlinkedModelSerializer):
     """
     Generates list of all scenes.
     """
@@ -67,9 +67,9 @@ class UserIntelSerializer(serializers.HyperlinkedModelSerializer):
     #    user = request.user
 
     class Meta:
-        model = UserIntel
-        #fields = ('id', 'user', 'scene', 'intel')
-        fields = ('id', 'scene', 'intelmax', 'userintel', 'eventnr')
+        model = Score
+        #fields = ('id', 'user', 'scene', 'score')
+        fields = ('id', 'scene', 'score')
 
 '''
 class SequenceSerializer(serializers.HyperlinkedModelSerializer):
