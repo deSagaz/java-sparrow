@@ -8,12 +8,23 @@ class Story(models.Model):
     id          An IntegerField that holds the id with which it can be identified
     name        A CharField that indicates the name of the Story
     description A CharField offering a short description of the Story
+    totalScore  Total score acquired by the used
+    totScorMax  Max score achievable for this story
     """
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=512)
+    scoreTotal = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
+
+    def calcTotalScore(self):
+        number = Story.scoreTotal
+        {% for i in self.scenes %}
+            {{ forloop.counter0 }}
+
+            {self.number = (number + (i.scoreMax))}
+        {% endfor %}
 
     class Meta:
         verbose_name_plural = "Stories"
@@ -26,18 +37,26 @@ class Scene(models.Model):
     story       A ManyToOne/ForeignKey that relates the Scene(s?) to a single Story?
     name        A CharField that indicates the name of the Scene
     events      List of events for things such as questions
+    scoreMax    Maximum achievable score for this Scene
+    scoreReq    Required score to unlock this Scene
     """
     order = models.IntegerField(default=-1)
     story = models.ForeignKey(Story, on_delete=models.SET_NULL, related_name='scenes', null=True, blank=True)
     name = models.CharField(max_length=30)
     events = JSONField(default={})
     image = models.ImageField(null=True, blank=True)
+    scoreMax = models.IntegerField(default=0)
+    scoreReq = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
 
     def __unicode__(self):
         return '%d: %s' % (self.order, self.name)
+
+    def __get__(self, instance, owner):
+        return [self.scoreMax, self.scoreReq]
+
 
     class Meta:
         unique_together = ('story', 'order')
