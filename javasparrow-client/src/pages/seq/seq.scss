@@ -25,12 +25,11 @@ page-seq {
     z-index: 1000;
     position: absolute;
     text-align: center;
-    //bottom: 0;
     width: 100%;
-    min-height:100%;
     padding: 2%;
     left: 0;
     text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+
     button {
       padding: 20px;
       margin: 10px;
@@ -52,6 +51,10 @@ page-seq {
     seq-multiple-choice ion-row {
       padding-bottom: 20px;
     }
+  }
+  // In case content fits on small phone screen without scrolling
+  .smallContent {
+    bottom: 0;
   }
   .italic {
     font-style: italic;
