@@ -1,5 +1,7 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+import logging
 from django.contrib.auth.models import User
 
 
@@ -13,14 +15,22 @@ class Story(models.Model):
     """
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=512)
-    #totalScore = models.IntegerField(default=0)
+    #totalScoreMax = calcTotalScoreMax()
+    #totalScoreMax = models.IntegerField(default=0)
+
+    '''
+    def __init__(self):
+        #self.super.__init__(self)
+        self.totalScoreMax = self.calcTotalScoreMax()
+    '''
+
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
 
     '''
-    def calcTotalScore(self):
-        number = Story.scoreTotal
+    def calcTotalScoreMax(self):
+        number = Story.totalScoreMax
         <ul>
         {% for scene in self.scenes %}
             #{{ forloop.counter0 }}
@@ -28,8 +38,19 @@ class Story(models.Model):
             {number = (number + (scene.scoreMax))}
         {% endfor %}
         </ul>
-        return self.number
+        return number
     '''
+
+    def calcTotalScoreMax(self):
+        #number = Story.totalScoreMax
+        number = 0
+        for scene in self.scenes:
+            #{{ forloop.counter0 }}
+
+            number = (number + scene.scoreMax)
+        #self.totalScoreMax = number
+        return number
+
 
     class Meta:
         verbose_name_plural = "Stories"
