@@ -63,7 +63,7 @@ class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
     Read-only and public.
     """
     permission_classes = ()
-    authentication_classes = ()
+    #authentication_classes = ()
 
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer

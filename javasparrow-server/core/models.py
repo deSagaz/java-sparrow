@@ -95,7 +95,7 @@ class Score(models.Model):
     scene       ForeignKey with a Scene, as a scene has multiple exercises that all need an intel value
     score       The achieved score by the player for the current Scene
     """
-    #user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='scores', null=True, blank=True)
     score = models.IntegerField(default=0)
 

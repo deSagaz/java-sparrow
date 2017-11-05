@@ -3,6 +3,7 @@ from rest_framework.exceptions import ParseError
 from django.utils import timezone
 import logging
 from rest_auth.serializers import UserModel
+from django.contrib.auth.models import User
 
 from core.models import Story
 from core.models import Scene
@@ -61,15 +62,33 @@ class ScoreSerializer(serializers.HyperlinkedModelSerializer):
     Generates list of all scenes.
     """
 
-    #user = None
-    #request = self.context.get("request")
-    #if request and hasattr(request, "user"):  # If user exists
-    #    user = request.user
+    def getUser(self):
+        '''
+        self.user = User.authenticate(username='a', password='a')
+        if self.user is None:
+            self.user = User(username='a', password='a', email='a')
+
+        request = self.context.get("request")
+        user_id = request.session.get('user_id', None)
+        #self.user = None
+        if user_id is not None:
+            request.session.delete('user_id')
+            self.user = User.objects.get(id=user_id)
+        else:
+            self.user = User.objects.create(user=User.__init__(self))
+        #user = Score.objects.create(user=user)
+        if request and hasattr(request, "user"):  # If user exists
+            self.user = request.user
+        '''
+        self.user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):  # If user exists
+            self.user = request.user
 
     class Meta:
         model = Score
-        #fields = ('id', 'user', 'scene', 'score')
-        fields = ('id', 'scene', 'score')
+        fields = ('id', 'user', 'scene', 'score')
+        #fields = ('id', 'scene', 'score')
 
 '''
 class SequenceSerializer(serializers.HyperlinkedModelSerializer):
