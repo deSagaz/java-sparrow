@@ -8,12 +8,12 @@ class Story(models.Model):
     id          An IntegerField that holds the id with which it can be identified
     name        A CharField that indicates the name of the Story
     description A CharField offering a short description of the Story
-    totalScore  Total score acquired by the used
+    totalScore  Total score acquired by the user
     totScorMax  Max score achievable for this story
     """
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=512)
-    scoreTotal = models.IntegerField(default=0)
+    #totalScore = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
@@ -21,11 +21,14 @@ class Story(models.Model):
     '''
     def calcTotalScore(self):
         number = Story.scoreTotal
-        {% for i in self.scenes %}
-            {{ forloop.counter0 }}
+        <ul>
+        {% for scene in self.scenes %}
+            #{{ forloop.counter0 }}
 
-            {self.number = (number + (i.scoreMax))}
+            {number = (number + (scene.scoreMax))}
         {% endfor %}
+        </ul>
+        return self.number
     '''
 
     class Meta:
@@ -72,7 +75,7 @@ class Score(models.Model):
     score       The achieved score by the player for the current Scene
     """
     #user = models.OneToOneField(User, on_delete=models.CASCADE)
-    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='userintels', null=True, blank=True)
+    scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='scores', null=True, blank=True)
     score = models.IntegerField(default=0)
 
     #def __str__(self):

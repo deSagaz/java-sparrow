@@ -54,7 +54,7 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Scene
-        fields = ('id', 'order', 'story', 'name', 'events', 'scores', 'image')
+        fields = ('id', 'order', 'story', 'name', 'events', 'scores', 'image', 'scoreMax', 'scoreReq')
 
 class ScoreSerializer(serializers.HyperlinkedModelSerializer):
     """
