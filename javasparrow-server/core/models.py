@@ -15,6 +15,7 @@ class Story(models.Model):
     """
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=512)
+    image = models.ImageField(null=True, blank=True)
     #totalScoreMax = calcTotalScoreMax()
     #totalScoreMax = models.IntegerField(default=0)
 

@@ -204,5 +204,9 @@ STATICFILES_DIRS = [
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
+
 # Prevent mails to be sent
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
