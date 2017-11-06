@@ -47,8 +47,6 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
     'authentication.apps.AuthenticationConfig',
-    'usermodel.apps.UsermodelConfig',
-
 
     'django_extensions',
 
@@ -104,12 +102,12 @@ WSGI_APPLICATION = 'javasparrow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
-#}
+# }
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -124,7 +122,6 @@ DATABASES = {
         'PORT': '5433',
     }
 }
-
 
 
 # Password validation
