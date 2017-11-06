@@ -5,5 +5,10 @@
 
 export const environment = {
   apiUrl: "https://javasparrow.herokuapp.com",
-  imgLoc: "assets/img/"
+  imgLoc: "assets/img/",
+
+  quizPoints: 5,
+  openPoints: 10,
+  dragPoints: 15,
+  codingPoints: 25
 };
