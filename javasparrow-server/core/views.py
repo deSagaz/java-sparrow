@@ -40,6 +40,14 @@ class ScoreViewSet(viewsets.ModelViewSet):
     Contains scores of currently authenticated user.
     Provides `list` and `detail` views.
     Read-and-write and private.
+
+    **Error codes:**
+    0 - Authentication error;
+    1 - Invalid score;
+    2 - Invalid scene;
+    3 - No score improvement;
+    4 - Maximum score already reached;
+    5 - Scene does not allow for submitting score (max score = 0).
     """
     http_method_names = ['get', 'post', 'head']
 

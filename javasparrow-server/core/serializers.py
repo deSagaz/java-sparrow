@@ -44,21 +44,69 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
 class ScoreSerializer(serializers.ModelSerializer):
     """
     Generates list of all scores.
+    On POST, checks if input is correct.
+    See View class for error code overview.
     """
-
     def create(self, validated_data):
-        # Get currently logged-in user and designate as holder
+
+        # Check if given scene is valid
+        if not validated_data.get('scene', None):
+            raise ParseError(detail={"errorCode": 2, "message": "Invalid scene"}, code=400)
+        else:
+            scene = validated_data.get('scene', None)
+
+            # Check if scene.scoreMax is valid for a POST
+            if scene.scoreMax <= 0:
+                raise ParseError(detail={"errorCode": 5, "message": "Scene does not allow for submitting score (max score = 0)"}, code=400)
+
+        # Check if given score is valid
+        if not validated_data.get('score', None):
+            raise ParseError(detail={"errorCode": 1, "message": "Invalid score"}, code=400)
+        else:
+            newscore = validated_data.get('score', None)
+
+            # Cut off score if more than max score (rather than throw error)
+            if newscore > scene.scoreMax:
+                newscore = scene.scoreMax
+
+        # Get currently logged-in user
         user = None
         request = self.context.get("request")
+
         if request and hasattr(request, "user"):  # If user exists
             user = request.user
-            score, created = Score.objects.filter(user=user).update_or_create(
-                scene=validated_data.get('scene', None),
-                defaults={'scene': validated_data.get('scene', None),
-                          'user': user,
-                          'score': validated_data.get('score', None)})
+
+            # Set default score attributes from user input
+            defaults = {'scene': scene,
+                        'user': user,
+                        'score': newscore}
+
+            try:
+                prevscore = Score.objects.filter(user=user).get(scene=scene) # If fine, Score exists
+
+                # Check if prevscore is maxscore
+                if prevscore.score == scene.scoreMax:
+                    raise ParseError(detail={"errorCode": 4, "message": "Maximum score already reached"}, code=400)
+
+                # Check if score is higher than previous result
+                if prevscore.score < newscore:
+                    score = prevscore
+                    for key, value in defaults.items():
+                        setattr(score, key, value)
+                    score.save()
+                else:
+                    raise ParseError(detail={"errorCode": 3, "message": "No score improvement " + str(newscore) + " " + str(prevscore.score)}, code=400)
+
+            except Score.DoesNotExist:
+                # Check if score is valid
+                if 0 <= newscore:
+                    new_values = defaults
+                    score = Score(**new_values)
+                    score.save()
+                else:
+                    raise ParseError(detail={"errorCode": 1, "message": "Invalid score"}, code=400)
         else:
-            raise ParseError(detail="User name error", code=400)
+            raise ParseError(detail={"errorCode": 0, "message": "Authentication error"}, code=401)
         return score
 
     class Meta:
