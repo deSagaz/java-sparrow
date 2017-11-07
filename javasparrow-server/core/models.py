@@ -99,5 +99,5 @@ class Score(models.Model):
     scene = models.ForeignKey(Scene, on_delete=models.SET_NULL, related_name='scores', null=True, blank=True)
     score = models.IntegerField(default=0)
 
-    # def __str__(self):
-    #    return self.user + " (" + str(self.id) + "), Score: " + self.score + ", Scene: " + self.scene
+    def __str__(self):
+       return str(self.id) + " | " + str(self.user) + " | " + str(self.scene) + " of " + str(self.scene.story) + " | " + str(self.score)
