@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-# from rest_framework.exceptions import ParseError
+from rest_framework.exceptions import ParseError
 # from django.utils import timezone
 # import logging
 # from rest_auth.serializers import UserModel
@@ -15,7 +14,6 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
     """
     Generates list of all stories.
     """
-    # scenes = serializers.StringRelatedField(many=True)
     scenes = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -43,35 +41,26 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'order', 'story', 'name', 'events', 'scores', 'image', 'scoreMax', 'scoreReq')
 
 
-class ScoreSerializer(serializers.HyperlinkedModelSerializer):
+class ScoreSerializer(serializers.ModelSerializer):
     """
-    Generates list of all scenes.
+    Generates list of all scores.
     """
 
-    def getUser(self):
-        '''
-        self.user = User.authenticate(username='a', password='a')
-        if self.user is None:
-            self.user = User(username='a', password='a', email='a')
-
+    def create(self, validated_data):
+        # Get currently logged-in user and designate as holder
+        user = None
         request = self.context.get("request")
-        user_id = request.session.get('user_id', None)
-        #self.user = None
-        if user_id is not None:
-            request.session.delete('user_id')
-            self.user = User.objects.get(id=user_id)
+        if request and hasattr(request, "user"):  # If user exists
+            user = request.user
+            score, created = Score.objects.filter(user=user).update_or_create(
+                scene=validated_data.get('scene', None),
+                defaults={'scene': validated_data.get('scene', None),
+                          'user': user,
+                          'score': validated_data.get('score', None)})
         else:
-            self.user = User.objects.create(user=User.__init__(self))
-        #user = Score.objects.create(user=user)
-        if request and hasattr(request, "user"):  # If user exists
-            self.user = request.user
-        '''
-        self.user = None
-        request = self.context.get("request")
-        if request and hasattr(request, "user"):  # If user exists
-            self.user = request.user
+            raise ParseError(detail="User name error", code=400)
+        return score
 
     class Meta:
         model = Score
-        fields = ('id', 'user', 'scene', 'score')
-        # fields = ('id', 'scene', 'score')
+        fields = ('scene', 'score')
