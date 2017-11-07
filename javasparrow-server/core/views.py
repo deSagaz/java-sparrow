@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
 from core.models import Story
 from core.models import Scene
@@ -35,14 +35,24 @@ class SceneViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SceneSerializer
 
 
-class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
+class ScoreViewSet(viewsets.ModelViewSet):
     """
-    Contains all scenes.
+    Contains scores of currently authenticated user.
     Provides `list` and `detail` views.
-    Read-only and public.
-    """
-    permission_classes = ()
-    # authentication_classes = ()
+    Read-and-write and private.
 
-    queryset = Score.objects.all()
+    **Error codes:**
+    0 - Authentication error;
+    1 - Invalid score;
+    2 - Invalid scene;
+    3 - No score improvement;
+    4 - Maximum score already reached;
+    5 - Scene does not allow for submitting score (max score = 0).
+    """
+    http_method_names = ['get', 'post', 'head']
+
+    def get_queryset(self):
+        user = self.request.user
+        return Score.objects.filter(user=user)
+
     serializer_class = ScoreSerializer

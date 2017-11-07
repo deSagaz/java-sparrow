@@ -10,8 +10,8 @@ from core import views
 router = DefaultRouter()
 router.register(r'stories', views.StoryViewSet)
 router.register(r'scenes', views.SceneViewSet)
-router.register(r'scores', views.ScoreViewSet)
+router.register(r'scores', views.ScoreViewSet, base_name="Scenes")
 
 urlpatterns = [
-    url(r'', include(router.urls)),
+    url(r'', include(router.urls))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
