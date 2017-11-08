@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, AlertController, NavController, NavParams } from 'ionic-angular';
 
 import { Scene } from '../../models/scene';
 import { Scenes } from '../../providers/providers';
@@ -19,13 +19,13 @@ import { Api } from "../../providers/api/api";
 export class ScenesPage {
   currentScenes: BehaviorSubject<Scene[]>;
   userIntel: Array<any>;
-  minIntel: Array<any>;
   totalIntel = 0;
   story = Story;
 
   constructor(public navCtrl: NavController, public scenes: Scenes,
               private user: User, private toast: ToastProvider,
-              public navParams: NavParams, private api: Api) { }
+              public navParams: NavParams, private api: Api,
+              public alertCtrl: AlertController) { }
 
   /**
    * Auth guard
@@ -54,18 +54,8 @@ export class ScenesPage {
     this.currentScenes = this.scenes.scenes;
 
     // TODO: TEMPORARY
-    this.userIntel = [{"1": 10, "4": 15, "3": 0, "2": 0}];
-    this.minIntel = [{"1": 0, "4": 5, "3": 20, "2": 15}];
-    this.totalIntel = this.getTotalIntel();
-  }
-
-  // TODO: TEMPORARY
-  getTotalIntel(){
-    let scenes = this.userIntel[0];
-    for(let key of Object.keys(scenes)){
-      this.totalIntel = this.totalIntel + scenes[key];
-    }
-    return this.totalIntel;
+    this.userIntel = [{"1": 0, "4": 0, "3": 0, "2": 0}];
+    this.totalIntel = 5;
   }
 
   /**
@@ -83,12 +73,25 @@ export class ScenesPage {
   }
 
   onClick(scene) {
-    // Check if downloaded already. If not, download now.
     if (5 != 5) {
+      // Check if downloaded already. If not, download now.
       this.download(scene);
-    } else if (5 == 5 || this.totalIntel >= scene.minIntel){
+    } else if (this.totalIntel >= scene.scoreReq){
+      // Check if unlocked
       this.openScene(scene);
+    } else {
+      // Give user modal with information on scene score req.
+      let alert = this.alertCtrl.create({
+        title: 'Uh oh!',
+        subTitle: 'This scene is still locked. Play other levels to earn enough ' +
+        'Intel' + '. You will need ' + scene.scoreReq + ' points (' +
+        (scene.scoreReq - this.totalIntel) + " to go).",
+        buttons: ['OK']
+      });
+      alert.present();
     }
+
+
   }
 
   download(scene) {
