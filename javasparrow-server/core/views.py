@@ -17,11 +17,8 @@ class StoryViewSet(viewsets.ReadOnlyModelViewSet):
     List view provides generic information.
     Detail view provides scene list as well.
 
-    Read-only and public.
+    Read-only and private.
     """
-    permission_classes = ()
-    authentication_classes = ()
-
     queryset = Story.objects.all()
 
     serializer_class = StoryListSerializer
