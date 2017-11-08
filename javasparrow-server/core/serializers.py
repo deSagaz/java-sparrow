@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 # from django.utils import timezone
@@ -65,21 +66,23 @@ class StoryListSerializer(serializers.ModelSerializer):
     Generates list of all stories.
     """
 
-    # userScore = serializers.SerializerMethodField()
-    #
-    # def get_userScore(self, scene):
-    #     user = None
-    #     request = self.context.get("request")
-    #
-    #     if request and hasattr(request, "user"):  # If user exists
-    #         user = request.user
-    #         return Score.objects.filter(user=user.id, scene=scene.id).aggregate(Sum('score'))
-    #     else:
-    #         return 0
+    scoreUser = serializers.SerializerMethodField()
+
+    def get_scoreUser(self, story):
+        user = None
+        request = self.context.get("request")
+
+        if request and hasattr(request, "user"):  # If user exists
+            user = request.user
+
+            return Score.objects.filter(user=user.id, scene__story=story.id)\
+                .aggregate(Sum('score')).get('score__sum', 0)
+        else:
+            return 0
 
     class Meta:
         model = Story
-        fields = ('id', 'name', 'description', 'image')
+        fields = ('id', 'name', 'description', 'image', 'scoreUser')
 
 
 class StoryDetailSerializer(serializers.ModelSerializer):
