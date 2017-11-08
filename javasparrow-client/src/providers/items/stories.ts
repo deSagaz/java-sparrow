@@ -14,7 +14,7 @@ export class Stories {
   }
 
   query(params?: any) {
-    this.api.get('/stories', params).subscribe(
+    this.api.get('stories', params).subscribe(
       (rawStories: Story[]) => {
         this.stories.next(rawStories);
       }

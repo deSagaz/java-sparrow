@@ -14,7 +14,7 @@ export class Scenes {
   }
 
   query(params?: any) {
-    this.api.get('/scenes', params).subscribe(
+    this.api.get('scenes', params).subscribe(
       (rawScenes: Scene[]) => {
         this.scenes.next(rawScenes);
         console.log(this.scenes.getValue());
