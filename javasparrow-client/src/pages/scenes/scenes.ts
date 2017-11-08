@@ -1,26 +1,31 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 
 import { Scene } from '../../models/scene';
 import { Scenes } from '../../providers/providers';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { FirstRunPage } from "../pages";
+import { FirstRunPage, MainPage } from "../pages";
 import { User } from "../../providers/user/user";
 import { ToastProvider } from "../../providers/toast/toast";
+import { Story } from "../../models/story";
+import { Api } from "../../providers/api/api";
 
 @IonicPage()
 @Component({
   selector: 'page-scenes',
-  templateUrl: 'scenes.html'
+  templateUrl: 'scenes.html',
+  providers: [Scenes]
 })
 export class ScenesPage {
   currentScenes: BehaviorSubject<Scene[]>;
   userIntel: Array<any>;
   minIntel: Array<any>;
   totalIntel = 0;
+  story = Story;
 
   constructor(public navCtrl: NavController, public scenes: Scenes,
-              private user: User, private toast: ToastProvider) { }
+              private user: User, private toast: ToastProvider,
+              public navParams: NavParams, private api: Api) { }
 
   /**
    * Auth guard
@@ -37,8 +42,15 @@ export class ScenesPage {
    * Initate view
    */
   ionViewDidEnter() {
-    // currentScenes is still a list of placeholders set up in scene.ts in the src/mocks/providers/ folder.
-    this.scenes.query();
+    this.story = this.navParams.get("story");
+
+    // Check if story was passed
+    if (!this.story) {
+      this.navCtrl.setRoot(MainPage);
+      return;
+    }
+    this.scenes.query(this.story['id']);
+
     this.currentScenes = this.scenes.scenes;
 
     // TODO: TEMPORARY
@@ -59,13 +71,15 @@ export class ScenesPage {
   /**
    * Navigate to the detail page for this scene.
    */
-  openScene(scene: Scene) {
-    this.navCtrl.push('SeqPage', {
-        scene: scene
-      })
-    // this.navCtrl.push('ItemDetailPage', {
-    //   scene: scene
-    // });
+  openScene(scene: Scene, params?) {
+    // Now download full scene (including events) via API
+    this.api.get('scenes/' + scene['id'] + '/', params).subscribe(
+      (scene: Scene) => {
+        this.navCtrl.push('SeqPage', {
+          scene: scene
+        })
+      }
+    );
   }
 
   onClick(scene) {

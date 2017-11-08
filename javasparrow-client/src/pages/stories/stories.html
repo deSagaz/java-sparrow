@@ -16,7 +16,7 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let story of currentStories | async">
-      <button ion-item (click)="openStory(item)">
+      <button ion-item (click)="openStory(story)">
         <ion-avatar item-start>
           <img [src]="story.image" />
         </ion-avatar>

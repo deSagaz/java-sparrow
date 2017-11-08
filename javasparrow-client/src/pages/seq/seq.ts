@@ -10,7 +10,7 @@ import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
 import { Stories } from "../../providers/items/stories";
-import { FirstRunPage } from "../pages";
+import { FirstRunPage, MainPage } from "../pages";
 import { User } from "../../providers/user/user";
 
 
@@ -117,11 +117,11 @@ export class SeqPage {
     // Check whether sequence was valid
     if (!this.scene) {
       this.toast.error("No scene passed. Returning to menu.");
-      this.navCtrl.popToRoot();
+      this.navCtrl.setRoot(MainPage);
       return;
     } else if (!this.scene || Object.keys(this.scene['events']).length === 0) {
       this.toast.error("Empty sequence. Returning to menu.");
-      this.navCtrl.pop();
+      this.navCtrl.setRoot(MainPage);
       return;
     }
 
@@ -155,11 +155,10 @@ export class SeqPage {
     // reset styles to default
     this.resetStyle();
 
-    console.log(this.sequence);
+    // console.log(this.sequence); // DEBUG
     let currentEvent = this.sequence.pop();
     let currentEventType = currentEvent['eventType'];
     this.currentEventData = currentEvent['data'];
-    console.log(this.currentEventData);
 
     // Now decide what to do with this event type, and pass event data to function.
     if (currentEventType == "text") {

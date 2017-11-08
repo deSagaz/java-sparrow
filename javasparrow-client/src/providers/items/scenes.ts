@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Scene } from '../../models/scene';
 import { Api } from '../api/api';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Story } from "../../models/story";
 
 @Injectable()
 export class Scenes {
@@ -13,11 +14,10 @@ export class Scenes {
     this.scenes = new BehaviorSubject([]);
   }
 
-  query(params?: any) {
-    this.api.get('scenes', params).subscribe(
-      (rawScenes: Scene[]) => {
-        this.scenes.next(rawScenes);
-        console.log(this.scenes.getValue());
+  query(sceneId: number, params?) {
+    this.api.get('stories/' + sceneId + '/', params).subscribe(
+      (rawStory: Story) => {
+        this.scenes.next(rawStory['scenes']);
       }
     );
   }
