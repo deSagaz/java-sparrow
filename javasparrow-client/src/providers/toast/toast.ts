@@ -36,6 +36,15 @@ export class ToastProvider {
     toast.present();
   }
 
+  showScore(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 700,
+      cssClass: "toast-info"
+    });
+    toast.present();
+  }
+
   showHint(messageText: string) {
     let hint = this.toastCtrl.create({
       message: messageText,

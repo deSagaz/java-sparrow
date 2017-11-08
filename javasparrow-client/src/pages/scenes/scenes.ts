@@ -4,6 +4,9 @@ import { IonicPage, ModalController, NavController } from 'ionic-angular';
 import { Scene } from '../../models/scene';
 import { Scenes } from '../../providers/providers';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { FirstRunPage } from "../pages";
+import { User } from "../../providers/user/user";
+import { ToastProvider } from "../../providers/toast/toast";
 
 @IonicPage()
 @Component({
@@ -16,7 +19,24 @@ export class ScenesPage {
   minIntel: Array<any>;
   totalIntel = 0;
 
-  constructor(public navCtrl: NavController, public scenes: Scenes, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public scenes: Scenes,
+              private user: User, private toast: ToastProvider) { }
+
+  /**
+   * Auth guard
+   */
+  ionViewWillEnter() {
+    let isAuthenticated = this.user.authenticated();
+    if (!isAuthenticated) {
+      this.toast.error("Please log in");
+      this.navCtrl.setRoot(FirstRunPage);
+    }
+  }
+
+  /**
+   * Initate view
+   */
+  ionViewDidEnter() {
     // currentScenes is still a list of placeholders set up in scene.ts in the src/mocks/providers/ folder.
     this.scenes.query();
     this.currentScenes = this.scenes.scenes;
@@ -34,12 +54,6 @@ export class ScenesPage {
       this.totalIntel = this.totalIntel + scenes[key];
     }
     return this.totalIntel;
-  }
-
-  /**
-   * The view loaded, let's query our scenes for the list
-   */
-  ionViewDidLoad() {
   }
 
   /**

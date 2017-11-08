@@ -10,6 +10,8 @@ import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
 import { Stories } from "../../providers/items/stories";
+import { FirstRunPage } from "../pages";
+import { User } from "../../providers/user/user";
 
 
 /**
@@ -51,6 +53,7 @@ export class SeqPage {
 
   scene: Scene[];
   sequence: object[]; // Stack of elements - approached from top to bottom
+  score: number;
 
   currentEventData: object;
 
@@ -69,6 +72,10 @@ export class SeqPage {
   dragAndDropCode: Array<any> = [];
   draggableCode: Array<any> = [];
 
+  // Banner and message for end page
+  endMessage: string;
+  endBanner: BehaviorSubject<string>;
+
   // Which components to show?
   showPrimaryText: boolean = true;
   showNextButton: boolean = true;
@@ -78,16 +85,32 @@ export class SeqPage {
   showCodeWindow: boolean = false;
   showCodeWindowSubmit: boolean = false;
   showDragAndDrop: boolean = false;
+  showEnding: boolean = false;
 
   // Background
   backgroundImage: BehaviorSubject<string>;
   backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
-              private _webWorkerService: WebWorkerService, private stories: Stories) {
+              private _webWorkerService: WebWorkerService, private stories: Stories, private user: User) {
   }
 
+  /**
+   * Auth guard
+   */
   ionViewWillEnter() {
+    let isAuthenticated = this.user.authenticated();
+    if (!isAuthenticated) {
+      this.toast.error("Please log in");
+      this.navCtrl.setRoot(FirstRunPage);
+      return;
+    }
+  }
+
+  /**
+   * Initiate
+   */
+  ionViewDidEnter() {
     this.backgroundImage = new BehaviorSubject("");
     this.scene = this.navParams.get("scene");
 
@@ -104,6 +127,7 @@ export class SeqPage {
 
     // Avoid changing the referenced array by making a new one
     this.sequence = [].concat(this.scene['events']).reverse();
+    this.score = 0;
     this.next();
 
     // Initialize editor:
@@ -152,6 +176,8 @@ export class SeqPage {
       this.doAnimation(this.currentEventData);
     } else if (currentEventType == "codeChallenge") {
       this.doCodeChallenge(this.currentEventData);
+    } else if (currentEventType == "end") {
+      this.ending();
     } else {
       console.error("Event type unknown: ", currentEventType);
       this.toast.error("Event type unknown. Please update your application to the latest version.");
@@ -196,6 +222,7 @@ export class SeqPage {
     this.showCodeWindow = false;
     this.showCodeWindowSubmit = false;
     this.showDragAndDrop = false;
+    this.showEnding = false;
   }
 
   doText(data: object) {
@@ -340,6 +367,18 @@ export class SeqPage {
 
   checkSimpleAnswer(ans: number) {
     if (ans == this.currentEventData['correctAnswer']) {
+      if (this.currentEventData['points']){
+        this.score += this.currentEventData['points'];
+        this.toast.showScore("+ " + this.currentEventData['points'] + " intel");
+      } else{
+        if (this.currentEventData['eventType'] == 'open'){
+          this.score += environment.openPoints;
+          this.toast.showScore("+ " + environment.openPoints + " intel");
+        } else if (this.currentEventData['eventType'] == 'quiz'){
+          this.score += environment.quizPoints;
+          this.toast.showScore("+ " + environment.quizPoints + " intel");
+        }
+      }
       this.correctAnswerResponse();
     } else {
       this.wrongAnswerResponse();
@@ -373,6 +412,13 @@ export class SeqPage {
           return;
         }
       }
+      if(this.currentEventData['points']){
+        this.score += this.currentEventData['points'];
+        this.toast.showScore("+ " + this.currentEventData['points'] + " intel")
+      } else {
+        this.score += environment.dragPoints;
+        this.toast.showScore("+ " + environment.dragPoints + " intel");
+      }
       this.correctAnswerResponse();
     }
   }
@@ -401,6 +447,13 @@ export class SeqPage {
         // Check if correct
         if (this.currentEventData['answer'] == result) {
           // If correct
+          if(this.currentEventData['points']){
+            this.score += this.currentEventData['points'];
+            this.toast.showScore("+ " + this.currentEventData['points'] + " intel");
+          } else{
+            this.score += environment.codingPoints;
+            this.toast.showScore("+ " + environment.codingPoints + " intel");
+          }
           this.primaryText = this.currentEventData['correctAnswerResponse'];
 
           if (this.currentEventData['correctAnswerResponseColor']) {
@@ -422,5 +475,16 @@ export class SeqPage {
         this.toast.error("ERROR: " + error.message);
       }
     );
+  }
+
+  ending(){
+    this.endMessage = this.currentEventData['content'];
+    this.endBanner = new BehaviorSubject(environment.imgLoc + this.currentEventData['banner']);
+
+    // Set interface
+    this.showPrimaryText = false;
+    this.showEnding = true;
+    this.showNextButton = true;
+    this.backgroundContrast = true;
   }
 }
