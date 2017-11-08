@@ -34,4 +34,11 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <ion-footer *ngIf="story.scoreUser > 0">
+    <ion-toolbar>
+      <ion-title>Intel: {{ story.scoreUser }}</ion-title>
+    </ion-toolbar>
+  </ion-footer>
+
 </ion-content>
