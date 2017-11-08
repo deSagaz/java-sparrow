@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { App, IonicPage, ModalController, NavController } from 'ionic-angular';
 
 import { Story } from '../../models/story';
 import { Stories } from '../../providers/providers';
 import { Observable } from "rxjs/Observable";
+import { User } from "../../providers/user/user";
+import { ToastProvider } from "../../providers/toast/toast";
+import { WelcomePage } from "../welcome/welcome";
+import { FirstRunPage } from "../pages";
+import { MyApp } from "../../app/app.component";
 
 @IonicPage()
 @Component({
@@ -15,19 +20,28 @@ export class StoriesPage {
   currentStories: Observable<Story[]>;
   totalIntel: object;
 
-  constructor(public navCtrl: NavController, public stories: Stories, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, private app: MyApp, public stories: Stories, public user: User, private toast: ToastProvider) { }
 
+  /**
+   * Auth guard
+   */
+  ionViewWillEnter() {
+      let isAuthenticated = this.user.authenticated();
+      if (!isAuthenticated) {
+        this.toast.error("Please log in");
+        this.navCtrl.setRoot(FirstRunPage);
+      }
+  }
+
+  /**
+   * Initiate
+   */
+  ionViewDidEnter() {
     this.stories.query();
     this.currentStories = this.stories.stories;
 
     // TODO: TEMPORARY
     this.totalIntel = {"1": 0, "2": 120, "3": 25};
-  }
-
-  /**
-   * The view loaded, let's query our stories for the list
-   */
-  ionViewDidLoad() {
   }
 
   /**

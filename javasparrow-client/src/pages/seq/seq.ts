@@ -10,6 +10,8 @@ import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
 import { Stories } from "../../providers/items/stories";
+import { FirstRunPage } from "../pages";
+import { User } from "../../providers/user/user";
 
 
 /**
@@ -90,10 +92,25 @@ export class SeqPage {
   backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
-              private _webWorkerService: WebWorkerService, private stories: Stories) {
+              private _webWorkerService: WebWorkerService, private stories: Stories, private user: User) {
   }
 
+  /**
+   * Auth guard
+   */
   ionViewWillEnter() {
+    let isAuthenticated = this.user.authenticated();
+    if (!isAuthenticated) {
+      this.toast.error("Please log in");
+      this.navCtrl.setRoot(FirstRunPage);
+      return;
+    }
+  }
+
+  /**
+   * Initiate
+   */
+  ionViewDidEnter() {
     this.backgroundImage = new BehaviorSubject("");
     this.scene = this.navParams.get("scene");
 

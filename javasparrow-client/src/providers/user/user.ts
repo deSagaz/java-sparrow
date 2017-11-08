@@ -3,6 +3,9 @@ import 'rxjs/add/operator/toPromise';
 import { Injectable } from '@angular/core';
 
 import { Api } from '../api/api';
+import { ToastProvider } from "../toast/toast";
+import { NavController } from "ionic-angular";
+import { WelcomePage } from "../../pages/welcome/welcome";
 
 /**
  * Most apps have the concept of a User. This is a simple provider
@@ -28,7 +31,7 @@ export class User {
   _user: any;
   _token: string;
 
-  constructor(public api: Api) { }
+  constructor(public api: Api, private toast: ToastProvider) { }
 
   /**
    * Send a POST request to our login endpoint with the data
@@ -53,7 +56,7 @@ export class User {
         try {
           document.getElementById(errorKeys[i]).innerHTML = jsonError[errorKeys[i]];
         }catch(err){}
-      };
+      }
     });
 
     return seq;
@@ -100,5 +103,16 @@ export class User {
   _loggedIn(resp) {
     this._user = resp.user;
     this._token = resp.token;
+  }
+
+  // Returns whether the user is currently authenticated
+  authenticated() : boolean {
+    // Checks whether token exists
+    // TODO: check whether token is still valid
+    if (localStorage.getItem("token")) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
