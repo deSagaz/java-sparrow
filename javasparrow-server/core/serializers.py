@@ -10,35 +10,49 @@ from core.models import Scene
 from core.models import Score
 
 
-class StorySerializer(serializers.HyperlinkedModelSerializer):
+class SceneSerializer(serializers.ModelSerializer):
+    """
+    Generates list of all scenes.
+    """
+
+    class Meta:
+        model = Scene
+        fields = ('id', 'name', 'story', 'image', 'events', 'scoreMax', 'scoreReq')
+
+
+class SceneSerializerMin(serializers.ModelSerializer):
+    """
+    Generates list of all scene IDs
+    """
+
+    class Meta:
+        model = Scene
+        fields = ('id', 'name', 'image', 'scoreMax', 'scoreReq')
+
+
+class StoryListSerializer(serializers.ModelSerializer):
     """
     Generates list of all stories.
     """
-    scenes = serializers.HyperlinkedRelatedField(
+
+    class Meta:
+        model = Story
+        fields = ('id', 'name', 'description', 'image')
+
+
+class StoryDetailSerializer(serializers.ModelSerializer):
+    """
+    Generates list of all stories.
+    """
+
+    scenes = SceneSerializer(
         many=True,
-        read_only=True,
-        view_name='scene-detail'
+        read_only=True
     )
 
     class Meta:
         model = Story
         fields = ('id', 'name', 'description', 'image', 'scenes')
-
-
-class SceneSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all scenes.
-    """
-
-    scores = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='score-detail'
-    )
-
-    class Meta:
-        model = Scene
-        fields = ('id', 'order', 'story', 'name', 'events', 'scores', 'image', 'scoreMax', 'scoreReq')
 
 
 class ScoreSerializer(serializers.ModelSerializer):
@@ -47,6 +61,7 @@ class ScoreSerializer(serializers.ModelSerializer):
     On POST, checks if input is correct.
     See View class for error code overview.
     """
+
     def create(self, validated_data):
 
         # Check if given scene is valid

@@ -1,10 +1,10 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 
 from core.models import Story
 from core.models import Scene
 from core.models import Score
 
-from core.serializers import StorySerializer
+from core.serializers import StoryListSerializer, StoryDetailSerializer
 from core.serializers import SceneSerializer
 from core.serializers import ScoreSerializer
 
@@ -13,13 +13,26 @@ class StoryViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Contains all stories.
     Provides `list` and `detail` views.
+
+    List view provides generic information.
+    Detail view provides scene list as well.
+
     Read-only and public.
     """
     permission_classes = ()
     authentication_classes = ()
 
     queryset = Story.objects.all()
-    serializer_class = StorySerializer
+
+    serializer_class = StoryListSerializer
+    detail_serializer_class = StoryDetailSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            if hasattr(self, 'detail_serializer_class'):
+                return self.detail_serializer_class
+
+        return super(viewsets.ReadOnlyModelViewSet, self).get_serializer_class()
 
 
 class SceneViewSet(viewsets.ReadOnlyModelViewSet):
