@@ -16,13 +16,13 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let story of currentStories | async">
-      <button ion-item (click)="openStory(item)">
+      <button ion-item (click)="openStory(story)">
         <ion-avatar item-start>
           <img [src]="story.image" />
         </ion-avatar>
         <h2>{{story.name}}</h2>
         <p>{{story.description}}</p>
-        <div item-end class="intel" >{{totalIntel[story.id]}}</div>
+        <div item-end class="intel" >{{story.scoreUser}}</div>
       </button>
 
       <ion-item-options>

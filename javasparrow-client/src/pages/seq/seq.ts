@@ -10,8 +10,10 @@ import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
 import { Stories } from "../../providers/items/stories";
-import { FirstRunPage } from "../pages";
+import { FirstRunPage, MainPage } from "../pages";
 import { User } from "../../providers/user/user";
+import { Api } from "../../providers/api/api";
+import { HttpHeaders } from "@angular/common/http";
 
 
 /**
@@ -56,6 +58,7 @@ export class SeqPage {
   score: number;
 
   currentEventData: object;
+  currentEventType: string;
 
   @ViewChild('editor') editor;
   code: string = "";
@@ -92,7 +95,8 @@ export class SeqPage {
   backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
-              private _webWorkerService: WebWorkerService, private stories: Stories, private user: User) {
+              private _webWorkerService: WebWorkerService, private stories: Stories, private user: User,
+              private api: Api) {
   }
 
   /**
@@ -117,11 +121,11 @@ export class SeqPage {
     // Check whether sequence was valid
     if (!this.scene) {
       this.toast.error("No scene passed. Returning to menu.");
-      this.navCtrl.popToRoot();
+      this.navCtrl.setRoot(MainPage);
       return;
     } else if (!this.scene || Object.keys(this.scene['events']).length === 0) {
       this.toast.error("Empty sequence. Returning to menu.");
-      this.navCtrl.pop();
+      this.navCtrl.setRoot(MainPage);
       return;
     }
 
@@ -155,11 +159,11 @@ export class SeqPage {
     // reset styles to default
     this.resetStyle();
 
-    console.log(this.sequence);
+    // console.log(this.sequence); // DEBUG
     let currentEvent = this.sequence.pop();
     let currentEventType = currentEvent['eventType'];
+    this.currentEventType = currentEvent['eventType'];
     this.currentEventData = currentEvent['data'];
-    console.log(this.currentEventData);
 
     // Now decide what to do with this event type, and pass event data to function.
     if (currentEventType == "text") {
@@ -371,10 +375,10 @@ export class SeqPage {
         this.score += this.currentEventData['points'];
         this.toast.showScore("+ " + this.currentEventData['points'] + " intel");
       } else{
-        if (this.currentEventData['eventType'] == 'open'){
+        if (this.currentEventType == 'open'){
           this.score += environment.openPoints;
           this.toast.showScore("+ " + environment.openPoints + " intel");
-        } else if (this.currentEventData['eventType'] == 'quiz'){
+        } else if (this.currentEventType == 'quiz'){
           this.score += environment.quizPoints;
           this.toast.showScore("+ " + environment.quizPoints + " intel");
         }
@@ -481,10 +485,32 @@ export class SeqPage {
     this.endMessage = this.currentEventData['content'];
     this.endBanner = new BehaviorSubject(environment.imgLoc + this.currentEventData['banner']);
 
+    // Send score to the server
+    this.submitScore();
+
     // Set interface
     this.showPrimaryText = false;
     this.showEnding = true;
     this.showNextButton = true;
     this.backgroundContrast = true;
+  }
+
+  submitScore() {
+    let headers = new HttpHeaders();
+    headers = this.user.createAuthorizationHeader(headers);
+
+    let scoreSubmission = {
+      score: this.score,
+      scene: this.scene['id']
+    };
+
+    this.api.post('scores', scoreSubmission, headers).subscribe(
+      (response: object) => {
+        console.log("Score successfully submitted", response);
+      },
+      (error: object) => {
+        console.error("Error occurred during score submission", error);
+      }
+    );
   }
 }

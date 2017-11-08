@@ -39,9 +39,6 @@ export class StoriesPage {
   ionViewDidEnter() {
     this.stories.query();
     this.currentStories = this.stories.stories;
-
-    // TODO: TEMPORARY
-    this.totalIntel = {"1": 0, "2": 120, "3": 25};
   }
 
   /**

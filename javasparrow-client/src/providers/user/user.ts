@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
 
 import { Api } from '../api/api';
 import { ToastProvider } from "../toast/toast";
-import { NavController } from "ionic-angular";
-import { WelcomePage } from "../../pages/welcome/welcome";
 
 /**
  * Most apps have the concept of a User. This is a simple provider
@@ -31,14 +29,14 @@ export class User {
   _user: any;
   _token: string;
 
-  constructor(public api: Api, private toast: ToastProvider) { }
+  constructor(private api: Api, private toast: ToastProvider) { }
 
   /**
    * Send a POST request to our login endpoint with the data
    * the user entered on the form.
    */
   login(accountInfo: any) {
-    let seq = this.api.post('auth/login/', accountInfo).share();
+    let seq = this.api.post('auth/login', accountInfo).share();
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
@@ -67,7 +65,7 @@ export class User {
    * the user entered on the form.
    */
   signup(accountInfo: any) {
-    let seq = this.api.post('auth/registration/', accountInfo).share();
+    let seq = this.api.post('auth/registration', accountInfo).share();
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
@@ -84,7 +82,7 @@ export class User {
         try {
           document.getElementById(errorKeys[i]).innerHTML = jsonError[errorKeys[i]];
         }catch(err){}
-      };
+      }
     });
 
     return seq;
@@ -114,5 +112,17 @@ export class User {
     } else {
       return false;
     }
+  }
+
+  retrieveToken() {
+    this._token = JSON.parse(localStorage.getItem("token"));
+  }
+
+  createAuthorizationHeader(headers) {
+    if (!this._token) {
+      this.retrieveToken();
+    }
+
+    return headers.set('Authorization', 'JWT ' + this._token);
   }
 }
