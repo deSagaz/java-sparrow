@@ -23,7 +23,7 @@
         </ion-avatar>
         <h2>({{i}}) {{scene.name}}</h2>
         <div item-end *ngIf="totalIntel < scene.scoreReq" class="lock_icon" ></div>
-        <div item-end *ngIf="totalIntel >= scene.scoreReq" class="intel" >{{userIntel[0][scene.id]}}</div>
+        <div item-end *ngIf="totalIntel >= scene.scoreReq" class="intel" >{{scene.scoreUser}}</div>
         <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->
       </button>
 

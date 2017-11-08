@@ -18,7 +18,6 @@ import { Api } from "../../providers/api/api";
 })
 export class ScenesPage {
   currentScenes: BehaviorSubject<Scene[]>;
-  userIntel: Array<any>;
   totalIntel = 0;
   story = Story;
 
@@ -54,7 +53,6 @@ export class ScenesPage {
     this.currentScenes = this.scenes.scenes;
 
     // TODO: TEMPORARY
-    this.userIntel = [{"1": 0, "4": 0, "3": 0, "2": 0}];
     this.totalIntel = 5;
   }
 
