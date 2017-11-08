@@ -78,8 +78,7 @@ export class ScenesPage {
       let alert = this.alertCtrl.create({
         title: 'Uh oh!',
         subTitle: 'This scene is still locked. Play other levels to earn enough ' +
-        'Intel' + '. You will need ' + scene.scoreReq + ' points (' +
-        (scene.scoreReq - this.story['scoreUser']) + " to go).",
+        'Intel' + '. You have ' + (scene.scoreReq - this.story['scoreUser']) + " " + "Intel" + " to go!",
         buttons: ['OK']
       });
       alert.present();

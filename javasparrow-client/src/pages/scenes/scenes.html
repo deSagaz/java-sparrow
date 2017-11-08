@@ -22,8 +22,8 @@
           <img [src]="scene.image" />
         </ion-avatar>
         <h2>({{i}}) {{scene.name}}</h2>
-        <div item-end *ngIf="story.scoreUser < scene.scoreReq" class="lock_icon" ></div>
-        <div item-end *ngIf="story.scoreUser >= scene.scoreReq" class="intel" >{{scene.scoreUser}}</div>
+        <div item-end *ngIf="story.scoreUser < scene.scoreReq" class="lock_number">({{ scene.scoreReq }})</div><div item-end *ngIf="story.scoreUser < scene.scoreReq" class="lock_icon"></div>
+        <div item-end *ngIf="story.scoreUser >= scene.scoreReq" class="intel" >{{scene.scoreUser}} / {{ scene.scoreMax }}</div>
         <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->
       </button>
 
