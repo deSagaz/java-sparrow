@@ -1,25 +1,19 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ParseError
+# from django.utils import timezone
+# import logging
+# from rest_auth.serializers import UserModel
+# from django.contrib.auth.models import User
 
 from core.models import Story
 from core.models import Scene
-#from core.models import Sequence
-
-'''
-from core.models import Exercise
-from core.models import Video
-from core.models import AnimText
-from core.models import Question
-from core.models import Answer
-from core.models import MultChoice
-from core.models import FillBlank
-'''
+from core.models import Score
 
 
 class StorySerializer(serializers.HyperlinkedModelSerializer):
     """
     Generates list of all stories.
     """
-    #scenes = serializers.StringRelatedField(many=True)
     scenes = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -28,112 +22,93 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Story
-        fields = ('id', 'name', 'description', 'scenes')
+        fields = ('id', 'name', 'description', 'image', 'scenes')
+
 
 class SceneSerializer(serializers.HyperlinkedModelSerializer):
     """
     Generates list of all scenes.
     """
-    #sequences = serializers.StringRelatedField(many=True)
-    #sequences = serializers.HyperlinkedRelatedField(
-    #    many=True,
-    #    read_only=True,
-    #    view_name='sequence-detail'
-    #)
+
+    scores = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='score-detail'
+    )
 
     class Meta:
         model = Scene
-        fields = ('id', 'order', 'story', 'name', 'events')
+        fields = ('id', 'order', 'story', 'name', 'events', 'scores', 'image', 'scoreMax', 'scoreReq')
 
-'''
-class SequenceSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all sequences.
-    """
-    #questions = serializers.StringRelatedField(many=True)
-    #questions = serializers.HyperlinkedRelatedField(
-    #    many=True,
-    #    read_only=True,
-    #    view_name='question-detail'
-    #)
 
-    class Meta:
-        model = Sequence
-        fields = ('id', 'order', 'scene', 'name', 'events')
-'''
-'''
-# Obsolete, use specific types of questions now
-class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
+class ScoreSerializer(serializers.ModelSerializer):
     """
-    Generates list of all sequences.
+    Generates list of all scores.
+    On POST, checks if input is correct.
+    See View class for error code overview.
     """
-    questions = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='question-detail'
-    )
+    def create(self, validated_data):
 
-    class Meta:
-        model = Exercise
-        fields = ('id', 'image', 'description', 'questions')
+        # Check if given scene is valid
+        if not validated_data.get('scene', None):
+            raise ParseError(detail={"errorCode": 2, "message": "Invalid scene"}, code=400)
+        else:
+            scene = validated_data.get('scene', None)
 
-class QuestionSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all sequences.
-    """
-    answers = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='answer-detail'
-    )
+            # Check if scene.scoreMax is valid for a POST
+            if scene.scoreMax <= 0:
+                raise ParseError(detail={"errorCode": 5, "message": "Scene does not allow for submitting score (max score = 0)"}, code=400)
 
-    class Meta:
-        model = Question
-        fields = ('id', 'qdescription', 'answers')
+        # Check if given score is valid
+        if not validated_data.get('score', None):
+            raise ParseError(detail={"errorCode": 1, "message": "Invalid score"}, code=400)
+        else:
+            newscore = validated_data.get('score', None)
 
-class AnswerSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all sequences.
-    """
+            # Cut off score if more than max score (rather than throw error)
+            if newscore > scene.scoreMax:
+                newscore = scene.scoreMax
 
-    class Meta:
-        model = Answer
-        fields = ('id', 'answer')
+        # Get currently logged-in user
+        user = None
+        request = self.context.get("request")
 
-class VideoSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all sequences.
-    """
+        if request and hasattr(request, "user"):  # If user exists
+            user = request.user
 
-    class Meta:
-        model = Video
-        fields = ('id', 'url', 'vidfile')
+            # Set default score attributes from user input
+            defaults = {'scene': scene,
+                        'user': user,
+                        'score': newscore}
 
-class AnimTextSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all sequences.
-    """
+            try:
+                prevscore = Score.objects.filter(user=user).get(scene=scene) # If fine, Score exists
 
-    class Meta:
-        model = AnimText
-        fields = ('id', 'text', 'image')
+                # Check if prevscore is maxscore
+                if prevscore.score == scene.scoreMax:
+                    raise ParseError(detail={"errorCode": 4, "message": "Maximum score already reached"}, code=400)
 
-class MultChoiceSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all sequences.
-    """
+                # Check if score is higher than previous result
+                if prevscore.score < newscore:
+                    score = prevscore
+                    for key, value in defaults.items():
+                        setattr(score, key, value)
+                    score.save()
+                else:
+                    raise ParseError(detail={"errorCode": 3, "message": "No score improvement " + str(newscore) + " " + str(prevscore.score)}, code=400)
+
+            except Score.DoesNotExist:
+                # Check if score is valid
+                if 0 <= newscore:
+                    new_values = defaults
+                    score = Score(**new_values)
+                    score.save()
+                else:
+                    raise ParseError(detail={"errorCode": 1, "message": "Invalid score"}, code=400)
+        else:
+            raise ParseError(detail={"errorCode": 0, "message": "Authentication error"}, code=401)
+        return score
 
     class Meta:
-        model = MultChoice
-        #SequenceSerializer.Meta.fields.
-        fields = ('id', 'image', 'description', 'option1', 'option2', 'option3', 'option4', 'option5', 'option6', 'answer')
-
-class FillBlankSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all sequences.
-    """
-
-    class Meta:
-        model = FillBlank
-        fields = ('id', 'image', 'description', 'multiline', 'answer1', 'answer2', 'answer3')
-'''
+        model = Score
+        fields = ('scene', 'score')

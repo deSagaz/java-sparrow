@@ -47,7 +47,8 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
     'authentication.apps.AuthenticationConfig',
-    'usermodel.apps.UsermodelConfig',
+
+    'django_extensions',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -101,12 +102,12 @@ WSGI_APPLICATION = 'javasparrow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
-#}
+# }
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -121,7 +122,6 @@ DATABASES = {
         'PORT': '5433',
     }
 }
-
 
 
 # Password validation
@@ -203,6 +203,10 @@ STATICFILES_DIRS = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
 # Prevent mails to be sent
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
