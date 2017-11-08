@@ -103,4 +103,5 @@ class Score(models.Model):
         ordering = ['scene']
 
     def __str__(self):
-       return str(self.id) + " | " + str(self.user) + " | " + str(self.scene) + " of " + str(self.scene.story) + " | " + str(self.score)
+        return str(self.id) + " | " + str(self.user) + " | " +\
+            str(self.scene) + " of " + str(self.scene.story) + " | " + str(self.score)

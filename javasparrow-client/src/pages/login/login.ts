@@ -4,6 +4,7 @@ import { IonicPage, NavController, ToastController } from 'ionic-angular';
 
 import { User } from '../../providers/providers';
 import { MainPage } from '../pages';
+import { ToastProvider } from "../../providers/toast/toast";
 
 @IonicPage()
 @Component({
@@ -24,7 +25,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController,
     public user: User,
-    public toastCtrl: ToastController,
+    public toast: ToastProvider,
     public translateService: TranslateService) {
 
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
@@ -32,19 +33,25 @@ export class LoginPage {
     })
   }
 
+  /**
+   * Auth guard (reverse)
+   */
+  ionViewWillEnter() {
+    let isAuthenticated = this.user.authenticated();
+    if (isAuthenticated) {
+      this.toast.info("Already logged in");
+      this.navCtrl.setRoot(MainPage);
+      return;
+    }
+  }
+
   // Attempt to login in through our User service
   doLogin() {
     this.user.login(this.account).subscribe((resp) => {
       this.navCtrl.setRoot(MainPage);
     }, (err) => {
-      // this.navCtrl.push(MainPage);
       // Unable to log in
-      let toast = this.toastCtrl.create({
-        message: this.loginErrorString,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
+      let toast = this.toast.error(this.loginErrorString);
     });
   }
 }

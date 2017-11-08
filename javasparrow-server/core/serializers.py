@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 # from django.utils import timezone
@@ -10,35 +11,93 @@ from core.models import Scene
 from core.models import Score
 
 
-class StorySerializer(serializers.HyperlinkedModelSerializer):
+class SceneSerializer(serializers.ModelSerializer):
+    """
+    Generates list of all scenes.
+    """
+    scoreUser = serializers.SerializerMethodField()
+
+    def get_scoreUser(self, scene):
+        user = None
+        request = self.context.get("request")
+
+        if request and hasattr(request, "user"):  # If user exists
+            user = request.user
+            try:
+                score = Score.objects.get(user=user.id, scene=scene.id).score
+                return score
+            except Score.DoesNotExist:
+                return 0  # User has no score in this scene
+        else:
+            raise ParseError(detail={"errorCode": 0, "message": "Authentication error"}, code=400)
+
+    class Meta:
+        model = Scene
+        fields = ('id', 'name', 'story', 'image', 'events', 'scoreMax', 'scoreReq', 'scoreUser')
+
+
+class SceneSerializerMin(serializers.ModelSerializer):
+    """
+    Generates list of all scene IDs
+    """
+    scoreUser = serializers.SerializerMethodField()
+
+    def get_scoreUser(self, scene):
+        user = None
+        request = self.context.get("request")
+
+        if request and hasattr(request, "user"):  # If user exists
+            user = request.user
+            try:
+                score = Score.objects.get(user=user.id, scene=scene.id).score
+                return score
+            except Score.DoesNotExist:
+                return 0  # User has no score in this scene
+        else:
+            raise ParseError(detail={"errorCode": 0, "message": "Authentication error"}, code=400)
+
+    class Meta:
+        model = Scene
+        fields = ('id', 'name', 'image', 'scoreMax', 'scoreReq', 'scoreUser')
+
+
+class StoryListSerializer(serializers.ModelSerializer):
     """
     Generates list of all stories.
     """
-    scenes = serializers.HyperlinkedRelatedField(
+
+    scoreUser = serializers.SerializerMethodField()
+
+    def get_scoreUser(self, story):
+        user = None
+        request = self.context.get("request")
+
+        if request and hasattr(request, "user"):  # If user exists
+            user = request.user
+
+            return Score.objects.filter(user=user.id, scene__story=story.id)\
+                .aggregate(Sum('score')).get('score__sum', 0)
+        else:
+            return 0
+
+    class Meta:
+        model = Story
+        fields = ('id', 'name', 'description', 'image', 'scoreUser')
+
+
+class StoryDetailSerializer(serializers.ModelSerializer):
+    """
+    Generates list of all stories.
+    """
+
+    scenes = SceneSerializerMin(
         many=True,
-        read_only=True,
-        view_name='scene-detail'
+        read_only=True
     )
 
     class Meta:
         model = Story
         fields = ('id', 'name', 'description', 'image', 'scenes')
-
-
-class SceneSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Generates list of all scenes.
-    """
-
-    scores = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='score-detail'
-    )
-
-    class Meta:
-        model = Scene
-        fields = ('id', 'order', 'story', 'name', 'events', 'scores', 'image', 'scoreMax', 'scoreReq')
 
 
 class ScoreSerializer(serializers.ModelSerializer):
@@ -47,6 +106,7 @@ class ScoreSerializer(serializers.ModelSerializer):
     On POST, checks if input is correct.
     See View class for error code overview.
     """
+
     def create(self, validated_data):
 
         # Check if given scene is valid
@@ -57,7 +117,9 @@ class ScoreSerializer(serializers.ModelSerializer):
 
             # Check if scene.scoreMax is valid for a POST
             if scene.scoreMax <= 0:
-                raise ParseError(detail={"errorCode": 5, "message": "Scene does not allow for submitting score (max score = 0)"}, code=400)
+                raise ParseError(detail={"errorCode": 5,
+                                         "message": "Scene does not allow for submitting score (max score = 0)"},
+                                 code=400)
 
         # Check if given score is valid
         if not validated_data.get('score', None):
@@ -82,7 +144,7 @@ class ScoreSerializer(serializers.ModelSerializer):
                         'score': newscore}
 
             try:
-                prevscore = Score.objects.filter(user=user).get(scene=scene) # If fine, Score exists
+                prevscore = Score.objects.filter(user=user).get(scene=scene)  # If fine, Score exists
 
                 # Check if prevscore is maxscore
                 if prevscore.score == scene.scoreMax:
@@ -95,7 +157,10 @@ class ScoreSerializer(serializers.ModelSerializer):
                         setattr(score, key, value)
                     score.save()
                 else:
-                    raise ParseError(detail={"errorCode": 3, "message": "No score improvement " + str(newscore) + " " + str(prevscore.score)}, code=400)
+                    raise ParseError(detail={"errorCode": 3,
+                                             "message": "No score improvement " + str(newscore) + " " +
+                                                        str(prevscore.score)},
+                                     code=400)
 
             except Score.DoesNotExist:
                 # Check if score is valid
@@ -106,7 +171,7 @@ class ScoreSerializer(serializers.ModelSerializer):
                 else:
                     raise ParseError(detail={"errorCode": 1, "message": "Invalid score"}, code=400)
         else:
-            raise ParseError(detail={"errorCode": 0, "message": "Authentication error"}, code=401)
+            raise ParseError(detail={"errorCode": 0, "message": "Authentication error"}, code=400)
         return score
 
     class Meta:

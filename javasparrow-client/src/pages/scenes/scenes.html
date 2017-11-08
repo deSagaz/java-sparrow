@@ -15,22 +15,30 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of currentScenes">
-      <button ion-item (click)="onClick(item)" [ngClass]="{'locked' : !item.unlocked}">
-      <!-- <button ion-item (click)="openItem(item)"> -->
+    <ion-item-sliding *ngFor="let scene of currentScenes | async; let i = index">
+      <button ion-item (click)="onClick(scene)" [ngClass]="{'locked' : story.scoreUser < scene.scoreReq}">
+      <!-- <button ion-item (click)="openItem(scene)"> -->
         <ion-avatar item-start>
-          <img [src]="item.profilePic" />
+          <img [src]="scene.image" />
         </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
-        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+        <h2>({{i}}) {{scene.name}}</h2>
+        <div item-end *ngIf="story.scoreUser < scene.scoreReq" class="lock_number">({{ scene.scoreReq }})</div><div item-end *ngIf="story.scoreUser < scene.scoreReq" class="lock_icon"></div>
+        <div item-end *ngIf="story.scoreUser >= scene.scoreReq" class="intel" >{{scene.scoreUser}} / {{ scene.scoreMax }}</div>
+        <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->
       </button>
 
       <ion-item-options>
-        <!-- <button ion-button color="danger" (click)="deleteItem(item)">
+        <!-- <button ion-button color="danger" (click)="deleteItem(scene)">
           {{ 'DELETE_BUTTON' | translate }}
         </button> -->
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <ion-footer *ngIf="story.scoreUser > 0">
+    <ion-toolbar>
+      <ion-title>Intel: {{ story.scoreUser }}</ion-title>
+    </ion-toolbar>
+  </ion-footer>
+
 </ion-content>

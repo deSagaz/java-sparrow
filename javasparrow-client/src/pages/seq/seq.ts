@@ -8,6 +8,36 @@ import 'brace/ext/language_tools';
 import 'brace/mode/javascript';
 import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
+import { Scene } from "../../models/scene";
+import { Stories } from "../../providers/items/stories";
+import { FirstRunPage, MainPage } from "../pages";
+import { User } from "../../providers/user/user";
+import { Api } from "../../providers/api/api";
+import { HttpHeaders } from "@angular/common/http";
+
+
+/**
+ * Simple array shuffler
+ * Taken from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array?page=1&tab=votes#tab-top
+ */
+function shuffle(array) {
+  let currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
 
 /**
  * Generated class for the SeqPage page.
@@ -23,42 +53,87 @@ import { WebWorkerService } from 'angular2-web-worker';
 })
 export class SeqPage {
 
-  api: string = '{"events": [{"eventType":"backgroundChange","data":{"image":"tech4learn_corridor.jpg"}},{"eventType":"text","data":{"content":"My name is Agent Sparrow, well my code name, actually. My real name, doesn’t matter. I am Sparrow, I long ago gave up my identity for the Sky-high intelligence agency. Simply put, I am part of a secret spy agency in charge of keeping the people’s safety.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Sounds super cool, doesn’t it?","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Well it’s less cool when you suspect corruption in the ranks. Secretly I’ve been investigating into this, and I feel like I am getting close.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"But now... I feel a chill down my spine as I head towards my boss’s office for monthly testing.  This is the first time I’ve been asked to do a test with the big man himself, Agent Duck.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckAtDesk.jpg"}},{"eventType":"text","data":{"content":"Welcome Agent Sparrow, always an honour to have such a talented spy in my office."}},{"eventType":"text","data":{"content":"An honour to be invited up here, sir.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Feel free to take a seat. I will be asking you some oral questions, which you will have to answer."}},{"eventType":"text","data":{"content":"I can see a weird glint in his eye. This is more than just a test.  Act normal.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"I am ready","contentColor":"#1ee7e0"}},{"eventType":"quiz","data":{"question":"What is a JavaScript array?","answers":["A dedicated data type","An regular JavaScript object"],"correctAnswer":1,"correctAnswerResponse":"Hot damn I am good!","correctAnswerResponseColor":"#1ee7e0","correctAnswerResponseItalic":"true","wrongAnswerResponse":"I suck","wrongAnswerResponseColor":"#1ee7e0","wrongAnswerResponseItalic":"true"}},{"eventType":"text","data":{"content":"Well done Sparrow, good results as usual. I am impressed, it would be a shame to lose an agent such as you."}},{"eventType":"text","data":{"content":"Yes, it would.","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"I suggest, that your current private affairs are put to rest."}},{"eventType":"text","data":{"content":"My private affairs? Are you sending me on a suicide mission? *nervous chuckle*","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"You’ve set yourself on a suicide mission."}},{"eventType":"text","data":{"content":"Well that’s just great…","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"An agent always completes their mission, no matter the cost","contentColor":"#1ee7e0"}},{"eventType":"text","data":{"content":"Your Funeral, Sparrow!"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_duckButtonSlam.jpg"}},{"eventType":"text","data":{"content":"*alarm*","contentColor":"red"}},{"eventType":"animation","data":{"frames":["tech4learn_duckSlide_1.jpg","tech4learn_duckSlide_2.jpg","tech4learn_duckSlide_3.jpg","tech4learn_duckSlide_4.jpg","tech4learn_duckSlide_5.jpg"],"fps":2,"waitStart":1,"waitEnd":1}},{"eventType":"text","data":{"content":"Oh! he’s ducking away from the fight","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Okay, don’t panic.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"This is just another workday for me.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Criminals running away, alarms blaring.","contentColor":"#1ee7e0","contentItalic":"true"}},{"eventType":"text","data":{"content":"Right, the alarm I need to shut it off before it drives me insane.","contentColor":"#1ee7e0","contentItalic":"true"}},{"id":3,"eventType":"open","data":{"question":"Write number 4","correctAnswer":4,"wrongAnswerResponse": "No","correctAnswerResponse": "Yes","wrongAnswerResponseColor": "#1ee7e0","correctAnswerResponseColor": "#1ee7e0"}},{"eventType":"backgroundChange","data":{"image":"tech4learn_lazerHall.jpg"}},{"eventType":"codeChallenge","data":{"question":"Figure out the password to the alarm system.", "answer":6765,"disallowLoops":true, "correctAnswerResponse":"I\'ve cracked the password! Awesome. Self-high-five!", "correctAnswerResponseColor":"#1ee7e0", "correctAnswerResponseItalic":true, "initCode":"Ly8gVGhlIEZpYm9uYWNjaSBzZXF1ZW5jZToNCi8vIEV2ZXJ5IG51bWJlciBhZnRlciB0aGUgZmlyc3QgdHdvIGlzDQovLyB0aGUgc3VtIG9mIHRoZSB0d28gcHJlY2VkaW5nIG9uZXMuDQoNCi8vIFlvdXIgdGFzazogcmV0dXJuIG51bWJlciAyMCBpbiB0aGUNCi8vIHNlcXVlbmNlLCB3aGljaCBzdGFydHMgd2l0aCBbMCwxLDEsMiwuLl0uDQoNCi8vIE5vdGU6IHlvdSBhcmUgbm90IGFsbG93ZWQgdG8gdXNlIGxvb3BzLg0KDQpmdW5jdGlvbiBmaWJvbmFjY2kobikgew0KICAgaWYgKFtTQ1JBTUJMRURdKSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0gaWYgKFtTQ1JBTUJMRURdKSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0gZWxzZSB7DQogICAgIHJldHVybiBbU0NSQU1CTEVEXTsNCiAgIH0NCn0NCg0KcmV0dXJuIFtTQ1JBTUJMRURdOw=="}}]}';
-  sequence: object[];
-  currentEventIndex: number;
+  scene: Scene[];
+  sequence: object[]; // Stack of elements - approached from top to bottom
+  score: number;
+
+  currentEventData: object;
   currentEventType: string;
 
   @ViewChild('editor') editor;
-  text: string = "";
+  code: string = "";
 
   // primaryText is used for character dialogue and question texts
   primaryText: string;
   primaryTextColor: string;
   primaryTextItalic: boolean;
 
-  // Anwers are used for multiple choice
+  // Answers are used for multiple choice
   multipleChoiceAnswers: string[];
+
+  // Code for drag and drop and which lines of those are draggable
+  dragAndDropCode: Array<any> = [];
+  draggableCode: Array<any> = [];
+
+  // Banner and message for end page
+  endMessage: string;
+  endBanner: BehaviorSubject<string>;
 
   // Which components to show?
   showPrimaryText: boolean = true;
   showNextButton: boolean = true;
+  showHintButton: boolean = false;
   showMultipleChoice: boolean = false;
   showOpenEnded: boolean = false;
   showCodeWindow: boolean = false;
+  showCodeWindowSubmit: boolean = false;
+  showDragAndDrop: boolean = false;
+  showEnding: boolean = false;
 
   // Background
   backgroundImage: BehaviorSubject<string>;
   backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
-              private _webWorkerService: WebWorkerService) {
-    this.backgroundImage = new BehaviorSubject("");
-
-    this.init(JSON.parse(this.api));
-    this.next();
+              private _webWorkerService: WebWorkerService, private stories: Stories, private user: User,
+              private api: Api) {
   }
 
-  ngAfterViewInit() {
+  /**
+   * Auth guard
+   */
+  ionViewWillEnter() {
+    let isAuthenticated = this.user.authenticated();
+    if (!isAuthenticated) {
+      this.toast.error("Please log in");
+      this.navCtrl.setRoot(FirstRunPage);
+      return;
+    }
+  }
+
+  /**
+   * Initiate
+   */
+  ionViewDidEnter() {
+    this.backgroundImage = new BehaviorSubject("");
+    this.scene = this.navParams.get("scene");
+
+    // Check whether sequence was valid
+    if (!this.scene) {
+      this.toast.error("No scene passed. Returning to menu.");
+      this.navCtrl.setRoot(MainPage);
+      return;
+    } else if (!this.scene || Object.keys(this.scene['events']).length === 0) {
+      this.toast.error("Empty sequence. Returning to menu.");
+      this.navCtrl.setRoot(MainPage);
+      return;
+    }
+
+    // Avoid changing the referenced array by making a new one
+    this.sequence = [].concat(this.scene['events']).reverse();
+    this.score = 0;
+    this.next();
+
     // Initialize editor:
     // Must be initialised in the background on first view
     // and should not be removed after that.
@@ -71,63 +146,92 @@ export class SeqPage {
     });
   }
 
-  init(sequenceObject: object) {
-    this.sequence = sequenceObject['events'];
-    this.currentEventIndex = -1;
-  }
-
   next() {
-    if(this.currentEventIndex == this.sequence.length - 1) {
+    // Check if sequence is empty
+    if (this.sequence.length === 0) {
       console.log("SEQUENCE HAS ENDED"); // DEBUG
-      this.toast.info("Sequence has ended. Please wait. Developers will get you out of here eventually.");
-      // TODO: Return to chapter menu screen and check off level for user.
+      this.navCtrl.pop();
       return;
     } else {
-      console.log("NEXT EVENT TRIGGERED: #" + (this.currentEventIndex + 1)); // DEBUG
+      console.log("NEXT EVENT TRIGGERED"); // DEBUG
     }
 
     // reset styles to default
     this.resetStyle();
 
-    this.currentEventIndex++;
-    this.currentEventType = this.sequence[this.currentEventIndex]['eventType'];
+    // console.log(this.sequence); // DEBUG
+    let currentEvent = this.sequence.pop();
+    let currentEventType = currentEvent['eventType'];
+    this.currentEventType = currentEvent['eventType'];
+    this.currentEventData = currentEvent['data'];
 
-    // Now decide what to do with this event type
-    if (this.currentEventType == "text") {
-      this.doText();
-    } else if (this.currentEventType == "backgroundChange") {
-      this.doBackgroundChange();
-    } else if (this.currentEventType == "quiz") {
-      this.doQuiz();
-    } else if (this.currentEventType == "open") {
-      this.doOpenEnded();
-    } else if (this.currentEventType == "animation") {
-      this.doAnimation(this.sequence[this.currentEventIndex]['data']);
-    } else if (this.currentEventType == "codeChallenge") {
-      this.doCodeChallenge(this.sequence[this.currentEventIndex]['data']);
+    // Now decide what to do with this event type, and pass event data to function.
+    if (currentEventType == "text") {
+      this.doText(this.currentEventData);
+    } else if (currentEventType == "backgroundChange") {
+      this.doBackgroundChange(this.currentEventData);
+    } else if (currentEventType == "quiz") {
+      this.doQuiz(this.currentEventData);
+    } else if (currentEventType == "open") {
+      this.doOpenEnded(this.currentEventData);
+    } else if (currentEventType == "drag") {
+      this.doDragAndDrop(this.currentEventData);
+    } else if (currentEventType == "animation") {
+      this.doAnimation(this.currentEventData);
+    } else if (currentEventType == "codeChallenge") {
+      this.doCodeChallenge(this.currentEventData);
+    } else if (currentEventType == "end") {
+      this.ending();
     } else {
-      console.error("Event type unknown: ", this.currentEventType);
-      this.toast.error("Event type unknown. Contact a developer.");
-      this.currentEventIndex--; // Rewind event index
+      console.error("Event type unknown: ", currentEventType);
+      this.toast.error("Event type unknown. Please update your application to the latest version.");
+      // Skip this event
+      this.next();
+      return;
+    }
+    // If known event, check for generic event data.
+    this.doGeneric(this.currentEventData);
+  }
+
+  doGeneric(data: object) {
+    // Set styling
+    if (data['contentColor']) {
+      this.primaryTextColor = data['contentColor'];
+    }
+    if (data['contentItalic']) {
+      this.primaryTextItalic = data['contentItalic'];
+    }
+    // Show hint button, if available
+    if (data['hint']){
+      this.showHintButton = true;
     }
   }
 
+  showHint() {
+    this.toast.showHint(this.currentEventData['hint']);
+  }
+
+  /**
+   * Reset all component displays to be off and reset default styles.
+   */
   resetStyle() {
     this.primaryTextColor = "white";
     this.primaryTextItalic = false;
+    this.showHintButton = false; // When hint is found, it is turned on again.
+    this.showMultipleChoice = false;
+    this.showNextButton = false;
+    this.showPrimaryText = false;
+    this.backgroundContrast = false;
+    this.showOpenEnded = false;
+    this.showCodeWindow = false;
+    this.showCodeWindowSubmit = false;
+    this.showDragAndDrop = false;
+    this.showEnding = false;
   }
 
-  doText() {
+  doText(data: object) {
     // Load data
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['content'];
-
-    // Set styling
-    if (this.sequence[this.currentEventIndex]['data']['contentColor']) {
-      this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['contentColor'];
-    }
-    if (this.sequence[this.currentEventIndex]['data']['contentItalic']) {
-      this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['contentItalic'];
-    }
+    this.primaryText = data['content'];
 
     // Set interface
     this.showPrimaryText = true;
@@ -136,18 +240,18 @@ export class SeqPage {
     this.backgroundContrast = false;
   }
 
-  doBackgroundChange() {
+  doBackgroundChange(data: object) {
     // Change background
-    this.backgroundImage.next(environment.imgLoc + this.sequence[this.currentEventIndex]['data']['image']);
+    this.backgroundImage.next(environment.imgLoc + data['image']);
     // Immediately run next event
     this.next();
   }
 
-  doQuiz() {
+  doQuiz(data: object) {
     // Load data
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['question'];
+    this.primaryText = data['question'];
     // Go through each answer in the answer array
-    this.multipleChoiceAnswers = this.sequence[this.currentEventIndex]['data']['answers'];
+    this.multipleChoiceAnswers = data['answers'];
 
     // Set interface
     this.showPrimaryText = true;
@@ -156,33 +260,18 @@ export class SeqPage {
     this.backgroundContrast = true;
   }
 
-  checkMultipleChoiceAnswer(ans: number) {
-    if (ans == this.sequence[this.currentEventIndex]['data']['correctAnswer']) {
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
-
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
-      }
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
-      }
-    } else {
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
-
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor'];
-      }
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
-      }
-    }
-    this.showMultipleChoice = false;
-    this.showNextButton = true;
-  }
-
-  doOpenEnded(){
+  doOpenEnded(data: object){
     // Load question
-    this.primaryText = this.sequence[this.currentEventIndex]['data']['question'];
+    this.primaryText = data['question'];
+
+    // Load code, if available
+    if (data['code']) {
+      this.code = atob(data['code']); // Decrypt base64 encoded string;
+      this.editor.getEditor().setOptions({
+        readOnly: true
+      });
+      this.showCodeWindow = true;
+    }
 
     // Set interface
     this.showPrimaryText = true;
@@ -191,28 +280,50 @@ export class SeqPage {
     this.backgroundContrast = true;
   }
 
-  checkOpenEndedAnswer (ans: number) {
-    if (ans == this.sequence[this.currentEventIndex]['data']['correctAnswer']) {
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
+  doDragAndDrop(data: object){
+    //Question
+    this.primaryText = data['question'];
 
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
-      }
-      if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
-      }
-    } else{
-      this.primaryText = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponse'];
+    //Pass code and indices of code lines which are draggable
+    let code = data['code'];
+    let draggableIndices = data['draggable_indices'];
+    let extraCode = data['extra'];
 
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor']) {
-        this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseColor'];
-      }
-      if (this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic']) {
-        this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['wrongAnswerResponseItalic'];
+    let len = code.length;
+    for (let i = 0; i < len; i++) {
+      if(!draggableIndices.includes(i)) {
+        this.dragAndDropCode.push({
+          codeLine: code[i],
+          draggable: false
+        });
       }
     }
-    this.showOpenEnded = false;
-    this.showNextButton = true;
+
+    //This for loop creates an array for the draggable items.
+    len = draggableIndices.length;
+    for (let i = 0; i < len; i++) {
+      this.draggableCode.push({
+        codeLine: code[draggableIndices[i]],
+        draggable: true
+      });
+    }
+
+    len = extraCode.length;
+    for (let i = 0; i < len; i++) {
+      this.draggableCode.push({
+        codeLine: extraCode[i],
+        draggable: true
+      });
+    }
+
+    this.draggableCode = shuffle(this.draggableCode);
+    console.log(this.draggableCode);
+
+    // Set interface
+    this.showPrimaryText = true;
+    this.showDragAndDrop = true;
+    this.showNextButton = false;
+    this.backgroundContrast = true;
   }
 
   doAnimation(data: object) {
@@ -245,19 +356,82 @@ export class SeqPage {
 
   doCodeChallenge(data: object) {
     // Load interface container
+    this.showPrimaryText = true;
     this.showCodeWindow = true;
     this.showNextButton = false;
+    this.showCodeWindowSubmit = true;
 
     // Set challenge and initial code in editor
     this.primaryText = data['question'];
-    this.text = atob(data['initCode']);
+    this.code = atob(data['initCode']); // Decrypt base64 encoded string
+    this.editor.getEditor().setOptions({
+      readOnly: false
+    });
+  }
+
+  checkSimpleAnswer(ans: number) {
+    if (ans == this.currentEventData['correctAnswer']) {
+      if (this.currentEventData['points']){
+        this.score += this.currentEventData['points'];
+        this.toast.showScore("+ " + this.currentEventData['points'] + " intel");
+      } else{
+        if (this.currentEventType == 'open'){
+          this.score += environment.openPoints;
+          this.toast.showScore("+ " + environment.openPoints + " intel");
+        } else if (this.currentEventType == 'quiz'){
+          this.score += environment.quizPoints;
+          this.toast.showScore("+ " + environment.quizPoints + " intel");
+        }
+      }
+      this.correctAnswerResponse();
+    } else {
+      this.wrongAnswerResponse();
+    }
+  }
+
+  wrongAnswerResponse() {
+    // Check if answer response is given (as object). If not, go to next step in sequence.
+    if (this.currentEventData['wrongAnswerResponse'] !== null && typeof this.currentEventData['wrongAnswerResponse'] === 'object') {
+      this.sequence = this.sequence.concat([].concat(this.currentEventData['wrongAnswerResponse']).reverse());
+    }
+    this.next();
+  }
+  correctAnswerResponse() {
+    // Check if answer response is given. If not, go to next step in sequence.
+    if (this.currentEventData['correctAnswerResponse'] !== null && typeof this.currentEventData['correctAnswerResponse'] === 'object') {
+      this.sequence = this.sequence.concat([].concat(this.currentEventData['correctAnswerResponse']).reverse());
+    }
+    this.next();
+  }
+
+  //Checks if the correct answer list given by the server is the same as the list given by seq-drag-and-drop.
+  checkDragAndDrop(ans) {
+    let rightAnswer = this.currentEventData['code'];
+    if (ans.length != rightAnswer.length) {
+      this.wrongAnswerResponse();
+    } else {
+      for (let i = 0; i < ans.length; ++i) {
+        if (ans[i] !== rightAnswer[i]){
+          this.wrongAnswerResponse();
+          return;
+        }
+      }
+      if(this.currentEventData['points']){
+        this.score += this.currentEventData['points'];
+        this.toast.showScore("+ " + this.currentEventData['points'] + " intel")
+      } else {
+        this.score += environment.dragPoints;
+        this.toast.showScore("+ " + environment.dragPoints + " intel");
+      }
+      this.correctAnswerResponse();
+    }
   }
 
   checkCodeChallenge() {
     // Do preliminary check
-    if (this.sequence[this.currentEventIndex]['data']['disallowLoops']) {
+    if (this.currentEventData['disallowLoops']) {
       // Check if user used any references to while or for
-      if (this.text.includes("while") || this.text.includes("for")) {
+      if (this.code.includes("while") || this.code.includes("for")) {
         // Show error message
         this.toast.error("You used a loop. These are not allowed on this system. Try a recursive approach.");
         return;
@@ -265,37 +439,77 @@ export class SeqPage {
     }
 
     // Check for hardcoded answer
-    if (this.text.includes("return " + 6765)) {
+    if (this.code.includes("return " + 6765)) {
       // Show error message
       this.toast.error("You CHEATED. Game Over.");
       return;
     }
 
-
-    const promise = this._webWorkerService.run(new Function(this.text)).then(
+    // Use web worker to run code separate from DOM
+    const promise = this._webWorkerService.run(new Function(this.code)).then(
       (result) => {
         // Check if correct
-        if (this.sequence[this.currentEventIndex]['data']['answer'] == result) {
+        if (this.currentEventData['answer'] == result) {
           // If correct
-          this.primaryText = this.sequence[this.currentEventIndex]['data']['correctAnswerResponse'];
-
-          if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor']) {
-            this.primaryTextColor = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseColor'];
+          if(this.currentEventData['points']){
+            this.score += this.currentEventData['points'];
+            this.toast.showScore("+ " + this.currentEventData['points'] + " intel");
+          } else{
+            this.score += environment.codingPoints;
+            this.toast.showScore("+ " + environment.codingPoints + " intel");
           }
-          if (this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic']) {
-            this.primaryTextItalic = this.sequence[this.currentEventIndex]['data']['correctAnswerResponseItalic'];
+          this.primaryText = this.currentEventData['correctAnswerResponse'];
+
+          if (this.currentEventData['correctAnswerResponseColor']) {
+            this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
+          }
+          if (this.currentEventData['correctAnswerResponseItalic']) {
+            this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
           }
           this.showCodeWindow = false;
           this.showNextButton = true;
 
         } else {
           // Show error message
-          this.toast.error("You've made a mistake somewhere - this is not the right solution. Try again.");
+          this.toast.error("You returned '" + result + "'. This is not the right solution. Try again.");
         }
       },
       (error: ErrorEvent) => {
         // Show error message
         this.toast.error("ERROR: " + error.message);
+      }
+    );
+  }
+
+  ending(){
+    this.endMessage = this.currentEventData['content'];
+    this.endBanner = new BehaviorSubject(environment.imgLoc + this.currentEventData['banner']);
+
+    // Send score to the server
+    this.submitScore();
+
+    // Set interface
+    this.showPrimaryText = false;
+    this.showEnding = true;
+    this.showNextButton = true;
+    this.backgroundContrast = true;
+  }
+
+  submitScore() {
+    let headers = new HttpHeaders();
+    headers = this.user.createAuthorizationHeader(headers);
+
+    let scoreSubmission = {
+      score: this.score,
+      scene: this.scene['id']
+    };
+
+    this.api.post('scores', scoreSubmission, headers).subscribe(
+      (response: object) => {
+        console.log("Score successfully submitted", response);
+      },
+      (error: object) => {
+        console.error("Error occurred during score submission", error);
       }
     );
   }

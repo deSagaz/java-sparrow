@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { App, IonicPage, ModalController, NavController } from 'ionic-angular';
 
 import { Story } from '../../models/story';
 import { Stories } from '../../providers/providers';
+import { Observable } from "rxjs/Observable";
+import { User } from "../../providers/user/user";
+import { ToastProvider } from "../../providers/toast/toast";
+import { WelcomePage } from "../welcome/welcome";
+import { FirstRunPage } from "../pages";
+import { MyApp } from "../../app/app.component";
 
 @IonicPage()
 @Component({
@@ -10,38 +16,29 @@ import { Stories } from '../../providers/providers';
   templateUrl: 'stories.html'
 })
 export class StoriesPage {
-  currentStories: Story[];
 
-  constructor(public navCtrl: NavController, public stories: Stories, public modalCtrl: ModalController) {
+  currentStories: Observable<Story[]>;
+  totalIntel: object;
 
-    this.currentStories = this.stories.query();
-  }
-
-  /**
-   * The view loaded, let's query our stories for the list
-   */
-  ionViewDidLoad() {
-  }
+  constructor(public navCtrl: NavController, private app: MyApp, public stories: Stories, public user: User, private toast: ToastProvider) { }
 
   /**
-   * Prompt the user to add a new story. This shows our StoryCreatePage in a
-   * modal and then adds the new story to our data source if the user created one.
+   * Auth guard
    */
-  addStory() {
-    let addModal = this.modalCtrl.create('StoryCreatePage');
-    addModal.onDidDismiss(story => {
-      if (story) {
-        this.stories.add(story);
+  ionViewWillEnter() {
+      let isAuthenticated = this.user.authenticated();
+      if (!isAuthenticated) {
+        this.toast.error("Please log in");
+        this.navCtrl.setRoot(FirstRunPage);
       }
-    })
-    addModal.present();
   }
 
   /**
-   * Delete an story from the list of stories.
+   * Initiate
    */
-  deleteStory(story) {
-    this.stories.delete(story);
+  ionViewDidEnter() {
+    this.stories.query();
+    this.currentStories = this.stories.stories;
   }
 
   /**
@@ -53,9 +50,9 @@ export class StoriesPage {
     });
   }
 
-  onClick(story) {
-    if(story.unlocked){
-      this.openStory(story);
-    };
-  }
+  // onClick(story) {
+  //   if(story.unlocked){
+  //     this.openStory(story);
+  //   };
+  // }
 }

@@ -2,20 +2,31 @@ import { Injectable } from '@angular/core';
 
 import { Story } from '../../models/story';
 import { Api } from '../api/api';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { User } from "../user/user";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
-export class Storys {
+export class Stories {
 
-  constructor(public api: Api) { }
+  stories: BehaviorSubject<Story[]>;
 
-  query(params?: any) {
-    return this.api.get('/stories', params);
+  constructor(public api: Api, private user: User) {
+    this.stories = new BehaviorSubject([]);
   }
 
-  add(story: Story) {
+  query() {
+    let headers = new HttpHeaders();
+    headers = this.user.createAuthorizationHeader(headers);
+
+    this.api.get('stories', headers).subscribe(
+      (rawStories: Story[]) => {
+        this.stories.next(rawStories);
+      }
+    );
   }
 
-  delete(story: Story) {
+  getStory(id: number) {
+    return this.stories.getValue()[id];
   }
-
 }

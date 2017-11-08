@@ -4,30 +4,17 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Config, Nav, Platform } from 'ionic-angular';
 
-import { FirstRunPage } from '../pages/pages';
+import { FirstRunPage, MainPage } from '../pages/pages';
 import { Settings } from '../providers/providers';
+import { StoriesPage } from "../pages/stories/stories";
+import { ToastProvider } from "../providers/toast/toast";
+
 
 @Component({
-  template: `<!--<ion-menu [content]="content">-->
-    <!--<ion-header>-->
-      <!--<ion-toolbar>-->
-        <!--<ion-title>Pages</ion-title>-->
-      <!--</ion-toolbar>-->
-    <!--</ion-header>-->
-
-    <!--<ion-content>-->
-      <!--<ion-list>-->
-        <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">-->
-          <!--{{p.title}}-->
-        <!--</button>-->
-      <!--</ion-list>-->
-    <!--</ion-content>-->
-
-  <!--</ion-menu>-->
-  <ion-nav #content [root]="rootPage"></ion-nav>`
+  template: `<ion-nav #content [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage = FirstRunPage;
+  rootPage;
 
   @ViewChild(Nav) nav: Nav;
 
@@ -44,11 +31,21 @@ export class MyApp {
     { title: 'Menu', component: 'MenuPage' },
     { title: 'Settings', component: 'SettingsPage' },
     { title: 'Search', component: 'SearchPage' },
-    { title: 'Scenes', component: 'ScenesPage' }
-  ]
+    { title: 'Scenes', component: 'ScenesPage' },
+    { title: 'Sequence', component: 'SeqPage' }
+  ];
 
-  constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {
+  constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen,
+  private toast: ToastProvider) {
     this.initTranslate();
+    // First check if user is already logged in
+    if(localStorage.getItem("token")) {
+      // Forward to main page
+      this.rootPage = MainPage;
+      toast.info("Welcome back!");
+    } else {
+      this.rootPage = FirstRunPage;
+    }
   }
 
   ionViewDidLoad() {

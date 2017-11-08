@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { User } from '../../providers/providers';
 import { MainPage } from '../pages';
+import { ToastProvider } from "../../providers/toast/toast";
 
 @IonicPage()
 @Component({
@@ -26,12 +27,24 @@ export class SignupPage {
 
   constructor(public navCtrl: NavController,
     public user: User,
-    public toastCtrl: ToastController,
+    public toast: ToastProvider,
     public translateService: TranslateService) {
 
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
     })
+  }
+
+  /**
+   * Auth guard (reverse)
+   */
+  ionViewWillEnter() {
+    let isAuthenticated = this.user.authenticated();
+    if (isAuthenticated) {
+      this.toast.info("Already logged in");
+      this.navCtrl.setRoot(MainPage);
+      return;
+    }
   }
 
   doSignup() {
@@ -43,12 +56,7 @@ export class SignupPage {
       // this.navCtrl.push(MainPage);
 
       // Unable to sign up
-      let toast = this.toastCtrl.create({
-        message: this.signupErrorString,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
+      this.toast.error(this.signupErrorString);
     });
   }
 }

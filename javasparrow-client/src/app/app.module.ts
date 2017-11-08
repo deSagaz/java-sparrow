@@ -10,8 +10,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
-import { Stories } from '../mocks/providers/story';
-import { Scenes } from '../mocks/providers/scene';
+import { Stories } from '../providers/providers';
+import { Scenes } from '../providers/providers';
 import { Settings } from '../providers/providers';
 import { User } from '../providers/providers';
 import { Api } from '../providers/providers';
@@ -20,6 +20,8 @@ import { ComponentsModule } from "../components/components.module";
 import { ToastProvider } from '../providers/toast/toast';
 import { AceEditorModule } from "ng2-ace-editor";
 import { WebWorkerService } from 'angular2-web-worker';
+import { WelcomePage } from "../pages/welcome/welcome";
+
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -44,7 +46,7 @@ export function provideSettings(storage: Storage) {
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,7 @@ export function provideSettings(storage: Storage) {
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     ComponentsModule,
-    AceEditorModule
+    AceEditorModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

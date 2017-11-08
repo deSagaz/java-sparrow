@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+import { User } from "../../providers/user/user";
+import { MainPage } from "../pages";
+import { ToastProvider } from "../../providers/toast/toast";
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -14,7 +17,20 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController, private user: User,
+              private toast: ToastProvider) { }
+
+  /**
+   * Auth guard (reverse)
+   */
+  ionViewWillEnter() {
+    let isAuthenticated = this.user.authenticated();
+    if (isAuthenticated) {
+      this.toast.info("Already logged in");
+      this.navCtrl.setRoot(MainPage);
+      return;
+    }
+  }
 
   login() {
     this.navCtrl.push('LoginPage');

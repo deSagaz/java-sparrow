@@ -4,6 +4,11 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  apiUrl: "http://192.168.33.10:8000",
-  imgLoc: "assets/img/"
+  apiUrl: "https://javasparrow.herokuapp.com",
+  imgLoc: "assets/img/",
+
+  quizPoints: 5,
+  openPoints: 10,
+  dragPoints: 15,
+  codingPoints: 25
 };
