@@ -29,7 +29,19 @@ export class Api {
     return this.http.get(this.url + '/' + endpoint + "/", reqOpts);
   }
 
-  post(endpoint: string, body: any, reqOpts?: any) {
+  post(endpoint: string, body: any, headers?: HttpHeaders) {
+    let reqOpts: object;
+    if (headers) {
+      reqOpts = {
+        headers: headers
+
+      }
+    } else {
+      reqOpts = {
+        headers: new HttpHeaders()
+      };
+    }
+
     return this.http.post(this.url + '/' + endpoint + "/", body, reqOpts);
   }
 
