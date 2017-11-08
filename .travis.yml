@@ -1,0 +1,7 @@
+language: python
+python:
+  - "3.6.1"
+script:
+  - cd javasparrow-server/
+  - pip install flake8
+  - flake8 javasparrow-server/
