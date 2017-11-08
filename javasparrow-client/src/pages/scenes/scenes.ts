@@ -34,12 +34,7 @@ export class ScenesPage {
       this.toast.error("Please log in");
       this.navCtrl.setRoot(FirstRunPage);
     }
-  }
 
-  /**
-   * Initate view
-   */
-  ionViewDidEnter() {
     this.story = this.navParams.get("story");
 
     // Check if story was passed
@@ -47,6 +42,12 @@ export class ScenesPage {
       this.navCtrl.setRoot(MainPage);
       return;
     }
+  }
+
+  /**
+   * Initate view
+   */
+  ionViewDidEnter() {
     this.scenes.query(this.story['id']);
 
     this.currentScenes = this.scenes.scenes;
