@@ -18,7 +18,6 @@ import { Api } from "../../providers/api/api";
 })
 export class ScenesPage {
   currentScenes: BehaviorSubject<Scene[]>;
-  totalIntel = 0;
   story = Story;
 
   constructor(public navCtrl: NavController, public scenes: Scenes,
@@ -51,9 +50,6 @@ export class ScenesPage {
     this.scenes.query(this.story['id']);
 
     this.currentScenes = this.scenes.scenes;
-
-    // TODO: TEMPORARY
-    this.totalIntel = 5;
   }
 
   /**
@@ -61,7 +57,7 @@ export class ScenesPage {
    */
   openScene(scene: Scene, params?) {
     // Now download full scene (including events) via API
-    this.api.get('scenes/' + scene['id'] + '/', params).subscribe(
+    this.api.get('scenes/' + scene['id'], params).subscribe(
       (scene: Scene) => {
         this.navCtrl.push('SeqPage', {
           scene: scene
@@ -74,7 +70,7 @@ export class ScenesPage {
     if (5 != 5) {
       // Check if downloaded already. If not, download now.
       this.download(scene);
-    } else if (this.totalIntel >= scene.scoreReq){
+    } else if (this.story['scoreUser'] >= scene.scoreReq){
       // Check if unlocked
       this.openScene(scene);
     } else {
@@ -83,13 +79,11 @@ export class ScenesPage {
         title: 'Uh oh!',
         subTitle: 'This scene is still locked. Play other levels to earn enough ' +
         'Intel' + '. You will need ' + scene.scoreReq + ' points (' +
-        (scene.scoreReq - this.totalIntel) + " to go).",
+        (scene.scoreReq - this.story['scoreUser']) + " to go).",
         buttons: ['OK']
       });
       alert.present();
     }
-
-
   }
 
   download(scene) {
