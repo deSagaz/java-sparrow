@@ -485,10 +485,12 @@ export class SeqPage {
   ending(){
     this.endMessage = this.currentEventData['content'];
 
+    // Set custom ending banner (optional)
     if (this.currentEventData['banner']) {
       this.endBanner = new BehaviorSubject(environment.fileStorage + this.story['id'] + "/" + this.currentEventData['banner']);
     } else {
-      this.endBanner = new BehaviorSubject(environment.imgLoc + this.currentEventData['banner']);
+      // Use default banner if not specified
+      this.endBanner = new BehaviorSubject(environment.imgLoc + "endBanner.png");
     }
 
 
