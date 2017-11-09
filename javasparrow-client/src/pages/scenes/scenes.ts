@@ -9,6 +9,7 @@ import { User } from "../../providers/user/user";
 import { ToastProvider } from "../../providers/toast/toast";
 import { Story } from "../../models/story";
 import { Api } from "../../providers/api/api";
+import { Stories } from "../../providers/items/stories";
 
 @IonicPage()
 @Component({
@@ -18,12 +19,42 @@ import { Api } from "../../providers/api/api";
 })
 export class ScenesPage {
   currentScenes: BehaviorSubject<Scene[]>;
-  story = Story;
+  story: BehaviorSubject<Story>;
 
   constructor(public navCtrl: NavController, public scenes: Scenes,
               private user: User, private toast: ToastProvider,
               public navParams: NavParams, private api: Api,
-              public alertCtrl: AlertController) { }
+              public alertCtrl: AlertController,
+              private stories: Stories) {
+    this.story = new BehaviorSubject({});
+  }
+
+  /**
+   * Subscribe to stories service and check if valid request
+   * TODO: can be made more efficient by only querying single story
+   */
+  ionViewDidLoad() {
+    // Check if story was passed. If not, return to main menu.
+    let story = this.navParams.get("story");
+    if (!story) {
+      this.toast.error("No story passed. Returning to menu.");
+      this.navCtrl.setRoot(MainPage);
+      return;
+    } else {
+      this.story.next(this.navParams.get("story"));
+      this.currentScenes = this.scenes.scenes;
+    }
+
+    // Subscribe to stories service
+    this.stories.stories.subscribe(
+      (stories: Story[]) => {
+        let updatedStory = stories.filter((obj) => {
+          return obj['id'] == this.story.getValue()['id'];
+        });
+        this.story.next(updatedStory[0]);
+      }
+    );
+  }
 
   /**
    * Auth guard
@@ -34,23 +65,14 @@ export class ScenesPage {
       this.toast.error("Please log in");
       this.navCtrl.setRoot(FirstRunPage);
     }
-
-    this.story = this.navParams.get("story");
-
-    // Check if story was passed
-    if (!this.story) {
-      this.navCtrl.setRoot(MainPage);
-      return;
-    }
   }
 
   /**
-   * Initate view
+   * Initiate view
    */
   ionViewDidEnter() {
-    this.scenes.query(this.story['id']);
-
-    this.currentScenes = this.scenes.scenes;
+    this.stories.query();
+    this.scenes.query(this.story.getValue()['id']);
   }
 
   /**
@@ -62,7 +84,7 @@ export class ScenesPage {
       (scene: Scene) => {
         this.navCtrl.push('SeqPage', {
           scene: scene,
-          story: this.story
+          story: this.story.getValue()
         })
       }
     );
@@ -72,7 +94,7 @@ export class ScenesPage {
     if (5 != 5) {
       // Check if downloaded already. If not, download now.
       this.download(scene);
-    } else if (this.story['scoreUser'] >= scene.scoreReq){
+    } else if (this.story.getValue()['scoreUser'] >= scene.scoreReq){
       // Check if unlocked
       this.openScene(scene);
     } else {
@@ -80,7 +102,7 @@ export class ScenesPage {
       let alert = this.alertCtrl.create({
         title: 'Uh oh!',
         subTitle: 'This scene is still locked. Play other levels to earn enough ' +
-        'Intel' + '. You have ' + (scene.scoreReq - this.story['scoreUser']) + " " + "Intel" + " to go!",
+        'Intel' + '. You have ' + (scene.scoreReq - this.story.getValue()['scoreUser']) + " " + "Intel" + " to go!",
         buttons: ['OK']
       });
       alert.present();
