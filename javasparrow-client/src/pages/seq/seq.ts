@@ -208,6 +208,14 @@ export class SeqPage {
     if (data['hint']){
       this.showHintButton = true;
     }
+    // Load code, if available
+    if (data['code']) {
+      this.code = atob(data['code']); // Decrypt base64 encoded string;
+      this.editor.getEditor().setOptions({
+        readOnly: true // By default, make read-only (overwritable in events)
+      });
+      this.showCodeWindow = true;
+    }
   }
 
   showHint() {
@@ -266,15 +274,6 @@ export class SeqPage {
   doOpenEnded(data: object){
     // Load question
     this.primaryText = data['question'];
-
-    // Load code, if available
-    if (data['code']) {
-      this.code = atob(data['code']); // Decrypt base64 encoded string;
-      this.editor.getEditor().setOptions({
-        readOnly: true
-      });
-      this.showCodeWindow = true;
-    }
 
     // Set interface
     this.showPrimaryText = true;
@@ -364,9 +363,8 @@ export class SeqPage {
     this.showNextButton = false;
     this.showCodeWindowSubmit = true;
 
-    // Set challenge and initial code in editor
+    // Set challenge and make editor writeable
     this.primaryText = data['question'];
-    this.code = atob(data['initCode']); // Decrypt base64 encoded string
     this.editor.getEditor().setOptions({
       readOnly: false
     });
