@@ -91,6 +91,7 @@ export class SeqPage {
   showCodeWindowSubmit: boolean = false;
   showDragAndDrop: boolean = false;
   showEnding: boolean = false;
+  showReturnButton:boolean = true;
 
   // Background
   backgroundImage: BehaviorSubject<string>;
@@ -333,6 +334,7 @@ export class SeqPage {
     this.showPrimaryText = false;
     this.showMultipleChoice = false;
     this.showNextButton = false;
+    this.showReturnButton = false;
     this.backgroundContrast = false;
 
     // console.log("ANIMATION STARTED"); // DEBUG
@@ -504,6 +506,10 @@ export class SeqPage {
     this.showEnding = true;
     this.showNextButton = true;
     this.backgroundContrast = true;
+  }
+
+  returnToMenu(){
+    this.navCtrl.pop();
   }
 
   submitScore() {

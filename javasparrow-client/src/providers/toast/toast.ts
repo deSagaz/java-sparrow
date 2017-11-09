@@ -45,14 +45,14 @@ export class ToastProvider {
     toast.present();
   }
 
-  showHint(messageText: string) {
+  showHint(message: string) {
     let hint = this.toastCtrl.create({
-      message: messageText,
+      message: message,
       showCloseButton: true,
       closeButtonText: 'Ok',
+      dismissOnPageChange: true,
       position: "top"
     });
     hint.present();
   }
-
 }

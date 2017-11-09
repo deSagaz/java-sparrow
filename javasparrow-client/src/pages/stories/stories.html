@@ -2,12 +2,6 @@
 
   <ion-navbar>
     <ion-title>{{ 'STORIES_TITLE' | translate }}</ion-title>
-
-    <!-- <ion-buttons end>
-      <button ion-button icon-only (click)="addItem()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons> -->
   </ion-navbar>
 
 </ion-header>
@@ -24,12 +18,6 @@
         <p>{{story.description}}</p>
         <div item-end class="intel" >{{story.scoreUser}}</div>
       </button>
-
-      <ion-item-options>
-        <!-- <button ion-button color="danger" (click)="deleteItem(item)">
-          {{ 'DELETE_BUTTON' | translate }}
-        </button> -->
-      </ion-item-options>
     </ion-item-sliding>
   </ion-list>
 </ion-content>
