@@ -14,6 +14,7 @@ import { FirstRunPage, MainPage } from "../pages";
 import { User } from "../../providers/user/user";
 import { Api } from "../../providers/api/api";
 import { HttpHeaders } from "@angular/common/http";
+import { Story } from "../../models/story";
 
 
 /**
@@ -53,6 +54,7 @@ function shuffle(array) {
 })
 export class SeqPage {
 
+  story: Story;
   scene: Scene[];
   sequence: object[]; // Stack of elements - approached from top to bottom
   score: number;
@@ -117,13 +119,14 @@ export class SeqPage {
   ionViewDidEnter() {
     this.backgroundImage = new BehaviorSubject("");
     this.scene = this.navParams.get("scene");
+    this.story = this.navParams.get("story");
 
     // Check whether sequence was valid
-    if (!this.scene) {
-      this.toast.error("No scene passed. Returning to menu.");
+    if (!this.scene || !this.story) {
+      this.toast.error("No scene or story passed. Returning to menu.");
       this.navCtrl.setRoot(MainPage);
       return;
-    } else if (!this.scene || Object.keys(this.scene['events']).length === 0) {
+    } else if (Object.keys(this.scene['events']).length === 0) {
       this.toast.error("Empty sequence. Returning to menu.");
       this.navCtrl.setRoot(MainPage);
       return;
@@ -242,7 +245,7 @@ export class SeqPage {
 
   doBackgroundChange(data: object) {
     // Change background
-    this.backgroundImage.next(environment.imgLoc + data['image']);
+    this.backgroundImage.next(environment.fileStorage + this.story['id'] + "/" + data['image']);
     // Immediately run next event
     this.next();
   }
@@ -342,7 +345,7 @@ export class SeqPage {
       // console.log((data['waitStart'] * 1000)); // DEBUG
       frames.forEach((item, index) => {
         setTimeout(() => {
-          this.backgroundImage.next(environment.imgLoc + item);
+          this.backgroundImage.next(environment.fileStorage + this.story['id'] + "/" + item);
           // console.log((1000 / fps) * (index + 1)); // DEBUG
         }, (1000 / fps) * (index));
       })
@@ -483,7 +486,15 @@ export class SeqPage {
 
   ending(){
     this.endMessage = this.currentEventData['content'];
-    this.endBanner = new BehaviorSubject(environment.imgLoc + this.currentEventData['banner']);
+
+    if (this.currentEventData['banner']) {
+      this.endBanner = new BehaviorSubject(environment.fileStorage + this.story['id'] + "/" + this.currentEventData['banner']);
+    } else {
+      this.endBanner = new BehaviorSubject(environment.imgLoc + this.currentEventData['banner']);
+    }
+
+
+
 
     // Send score to the server
     this.submitScore();

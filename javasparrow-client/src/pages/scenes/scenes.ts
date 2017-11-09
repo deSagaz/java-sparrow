@@ -61,7 +61,8 @@ export class ScenesPage {
     this.api.get('scenes/' + scene['id'], params).subscribe(
       (scene: Scene) => {
         this.navCtrl.push('SeqPage', {
-          scene: scene
+          scene: scene,
+          story: this.story
         })
       }
     );
