@@ -9,7 +9,6 @@ import 'brace/mode/javascript';
 import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
-import { Stories } from "../../providers/items/stories";
 import { FirstRunPage, MainPage } from "../pages";
 import { User } from "../../providers/user/user";
 import { Api } from "../../providers/api/api";
@@ -99,7 +98,7 @@ export class SeqPage {
   backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
-              private _webWorkerService: WebWorkerService, private stories: Stories, private user: User,
+              private _webWorkerService: WebWorkerService, private user: User,
               private api: Api) {
   }
 
@@ -454,7 +453,7 @@ export class SeqPage {
     }
 
     // Use web worker to run code separate from DOM
-    const promise = this._webWorkerService.run(new Function(this.code)).then(
+    this._webWorkerService.run(new Function(this.code)).then(
       (result) => {
         // Check if correct
         if (this.currentEventData['answer'] == result) {

@@ -7,7 +7,7 @@ import { Observable } from "rxjs/Observable";
 import { User } from "../../providers/user/user";
 import { ToastProvider } from "../../providers/toast/toast";
 import { FirstRunPage } from "../pages";
-import { MyApp } from "../../app/app.component";
+
 
 @IonicPage()
 @Component({
@@ -18,7 +18,7 @@ export class StoriesPage {
 
   currentStories: Observable<Story[]>;
 
-  constructor(public navCtrl: NavController, private app: MyApp, public stories: Stories, public user: User, private toast: ToastProvider) { }
+  constructor(public navCtrl: NavController, public stories: Stories, public user: User, private toast: ToastProvider) { }
 
   /**
    * Auth guard

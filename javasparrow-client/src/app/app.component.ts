@@ -3,12 +3,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Config, Nav, Platform } from 'ionic-angular';
-
 import { FirstRunPage, MainPage } from '../pages/pages';
-import { Settings } from '../providers/providers';
-import { StoriesPage } from "../pages/stories/stories";
 import { ToastProvider } from "../providers/toast/toast";
 
+// import { Settings } from '../providers/providers';
 
 @Component({
   template: `<ion-nav #content [root]="rootPage"></ion-nav>`
@@ -18,25 +16,8 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  pages: any[] = [
-    { title: 'Tutorial', component: 'TutorialPage' },
-    { title: 'Welcome', component: 'WelcomePage' },
-    { title: 'Tabs', component: 'TabsPage' },
-    { title: 'Cards', component: 'CardsPage' },
-    { title: 'Content', component: 'ContentPage' },
-    { title: 'Login', component: 'LoginPage' },
-    { title: 'Signup', component: 'SignupPage' },
-    { title: 'Map', component: 'MapPage' },
-    { title: 'Stories list', component: 'StoriesPage' },
-    { title: 'Menu', component: 'MenuPage' },
-    { title: 'Settings', component: 'SettingsPage' },
-    { title: 'Search', component: 'SearchPage' },
-    { title: 'Scenes', component: 'ScenesPage' },
-    { title: 'Sequence', component: 'SeqPage' }
-  ];
-
-  constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen,
-  private toast: ToastProvider) {
+  constructor(private translate: TranslateService, private platform: Platform, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen,
+  toast: ToastProvider) {
     this.initTranslate();
     // First check if user is already logged in
     if(localStorage.getItem("token")) {

@@ -1,8 +1,8 @@
 {
   "name": "javasparrow",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "version": "1.0.0",
+  "author": "Irena Cirkovic, Ward Bannink, Kelly Griffioen, Ivar Troost",
+  "homepage": "https://js.utocopia.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -46,7 +46,7 @@
     "@ionic/app-scripts": "3.0.0",
     "typescript": "2.3.4"
   },
-  "description": "An Ionic project",
+  "description": "Assess your javascript knowledge with sparrow-swiftness.",
   "cordova": {
     "plugins": {
       "ionic-plugin-keyboard": {},
