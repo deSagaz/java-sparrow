@@ -339,7 +339,6 @@ export class SeqPage {
     this.showPrimaryText = false;
     this.showMultipleChoice = false;
     this.showNextButton = false;
-    this.showReturnButton = false;
     this.backgroundContrast = false;
 
     // console.log("ANIMATION STARTED"); // DEBUG
