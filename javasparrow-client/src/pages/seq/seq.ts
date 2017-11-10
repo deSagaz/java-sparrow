@@ -74,8 +74,8 @@ export class SeqPage {
   multipleChoiceAnswers: string[];
 
   // Code for drag and drop and which lines of those are draggable
-  dragAndDropCode: Array<any> = [];
-  draggableCode: Array<any> = [];
+  dragAndDropLines: Array<any> = [];
+  draggableLines: Array<any> = [];
 
   // Banner and message for end page
   endMessage: string;
@@ -210,7 +210,7 @@ export class SeqPage {
       this.showHintButton = true;
     }
     // Load code, if available
-    if (data['code']) {
+    if (data['code'] && this.currentEventType != "codeChallenge") {
       this.code = atob(data['code']); // Decrypt base64 encoded string;
       this.editor.getEditor().setOptions({
         readOnly: true // By default, make read-only (overwritable in events)
@@ -288,15 +288,15 @@ export class SeqPage {
     this.primaryText = data['question'];
 
     //Pass code and indices of code lines which are draggable
-    let code = data['code'];
-    let draggableIndices = data['draggable_indices'];
-    let extraCode = data['extra'];
+    let lines = data['lines'];
+    let draggableIndices = data['draggableIndices'];
+    let extraLines = data['extraLines'];
 
-    let len = code.length;
+    let len = lines.length;
     for (let i = 0; i < len; i++) {
       if(!draggableIndices.includes(i)) {
-        this.dragAndDropCode.push({
-          codeLine: code[i],
+        this.dragAndDropLines.push({
+          codeLine: lines[i],
           draggable: false
         });
       }
@@ -305,22 +305,22 @@ export class SeqPage {
     //This for loop creates an array for the draggable items.
     len = draggableIndices.length;
     for (let i = 0; i < len; i++) {
-      this.draggableCode.push({
-        codeLine: code[draggableIndices[i]],
+      this.draggableLines.push({
+        codeLine: lines[draggableIndices[i]],
         draggable: true
       });
     }
 
-    len = extraCode.length;
+    len = extraLines.length;
     for (let i = 0; i < len; i++) {
-      this.draggableCode.push({
-        codeLine: extraCode[i],
+      this.draggableLines.push({
+        codeLine: extraLines[i],
         draggable: true
       });
     }
 
-    this.draggableCode = shuffle(this.draggableCode);
-    console.log(this.draggableCode);
+    this.draggableLines = shuffle(this.draggableLines);
+    // console.log(this.draggableLines);
 
     // Set interface
     this.showPrimaryText = true;
@@ -409,7 +409,7 @@ export class SeqPage {
 
   //Checks if the correct answer list given by the server is the same as the list given by seq-drag-and-drop.
   checkDragAndDrop(ans) {
-    let rightAnswer = this.currentEventData['code'];
+    let rightAnswer = this.currentEventData['lines'];
     if (ans.length != rightAnswer.length) {
       this.wrongAnswerResponse();
     } else {

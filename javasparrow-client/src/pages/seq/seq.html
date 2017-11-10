@@ -12,8 +12,8 @@
     <seq-open-ended *ngIf="showOpenEnded"
                     (answerGiven)="checkSimpleAnswer($event)"></seq-open-ended>
     <seq-drag-and-drop *ngIf="showDragAndDrop"
-                        [staticCode]=dragAndDropCode
-                        [draggableCode]=draggableCode
+                        [staticCode]=dragAndDropLines
+                        [draggableCode]=draggableLines
                         (answer)="checkDragAndDrop($event)"></seq-drag-and-drop>
     <seq-end-page *ngIf="showEnding"
                   [score]=score
