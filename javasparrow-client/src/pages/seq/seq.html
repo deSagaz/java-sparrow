@@ -22,6 +22,9 @@
     <ion-fab class="nextButton" *ngIf="showNextButton" right bottom (click)="next()">
       <button ion-fab color="light">&gt;</button>
     </ion-fab>
+    <ion-fab class="nextButton" *ngIf="showEndButton" right bottom (click)="stopSequence()">
+      <button ion-fab color="light">&gt;</button>
+    </ion-fab>
     <ion-fab class="hintButton" *ngIf="showHintButton" right top (click)="showHint()">
       <button ion-fab color="light">?</button>
     </ion-fab>

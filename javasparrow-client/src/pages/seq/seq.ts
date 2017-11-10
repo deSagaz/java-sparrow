@@ -91,7 +91,8 @@ export class SeqPage {
   showCodeWindowSubmit: boolean = false;
   showDragAndDrop: boolean = false;
   showEnding: boolean = false;
-  showReturnButton:boolean = true;
+  showReturnButton: boolean = true;
+  showEndButton: boolean = false;
 
   // Background
   backgroundImage: BehaviorSubject<string>;
@@ -153,11 +154,11 @@ export class SeqPage {
   next() {
     // Check if sequence is empty
     if (this.sequence.length === 0) {
-      console.log("SEQUENCE HAS ENDED"); // DEBUG
-      this.navCtrl.pop();
+      // console.log("SEQUENCE RAN OUT"); // DEBUG
+      this.stopSequence();
       return;
     } else {
-      console.log("NEXT EVENT TRIGGERED"); // DEBUG
+      // console.log("NEXT EVENT TRIGGERED"); // DEBUG
     }
 
     // reset styles to default
@@ -195,6 +196,10 @@ export class SeqPage {
     }
     // If known event, check for generic event data.
     this.doGeneric(this.currentEventData);
+  }
+
+  stopSequence() {
+    this.navCtrl.pop();
   }
 
   doGeneric(data: object) {
@@ -504,12 +509,16 @@ export class SeqPage {
     // Set interface
     this.showPrimaryText = false;
     this.showEnding = true;
-    this.showNextButton = true;
+    this.showNextButton = false;
+    this.showEndButton = true;
     this.backgroundContrast = true;
   }
 
   returnToMenu(){
-    this.navCtrl.pop();
+    // TODO: Check if user really meant to do this
+
+    // If so
+    this.stopSequence();
   }
 
   submitScore() {
