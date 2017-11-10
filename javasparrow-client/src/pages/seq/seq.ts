@@ -372,6 +372,7 @@ export class SeqPage {
 
     // Set challenge and make editor writeable
     this.primaryText = data['question'];
+    this.code = atob(data['code']);
     this.editor.getEditor().setOptions({
       readOnly: false
     });
@@ -466,14 +467,7 @@ export class SeqPage {
             this.score += environment.codingPoints;
             this.toast.showScore("+ " + environment.codingPoints + " intel");
           }
-          this.primaryText = this.currentEventData['correctAnswerResponse'];
-
-          if (this.currentEventData['correctAnswerResponseColor']) {
-            this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
-          }
-          if (this.currentEventData['correctAnswerResponseItalic']) {
-            this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
-          }
+          this.correctAnswerResponse();
           this.showCodeWindow = false;
           this.showNextButton = true;
 
@@ -499,9 +493,6 @@ export class SeqPage {
       // Use default banner if not specified
       this.endBanner = new BehaviorSubject(environment.imgLoc + "endBanner.png");
     }
-
-
-
 
     // Send score to the server
     this.submitScore();
