@@ -514,10 +514,12 @@ export class SeqPage {
     this.backgroundContrast = true;
   }
 
-  returnToMenu(){
-    // TODO: Check if user really meant to do this
-
+  tapExit(event){
+    this.toast.error("If you want to abandon this scene, and lose your progress, hold the button");
     // If so
+    // this.stopSequence();
+  }
+  pressExit(event) {
     this.stopSequence();
   }
 

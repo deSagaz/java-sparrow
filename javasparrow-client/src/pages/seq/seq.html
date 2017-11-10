@@ -25,12 +25,12 @@
     <ion-fab class="nextButton" *ngIf="showEndButton" right bottom (click)="stopSequence()">
       <button ion-fab color="light">&gt;</button>
     </ion-fab>
-    <ion-fab class="hintButton" *ngIf="showHintButton" right top (click)="showHint()">
-      <button ion-fab color="light">?</button>
-    </ion-fab>
-    <ion-fab class="returnButton" *ngIf="showReturnButton" left top (click)="returnToMenu()">
-      <button ion-fab color="light">&lt;</button>
-    </ion-fab>
   </div>
+  <ion-fab class="hintButton" *ngIf="showHintButton" right top (click)="showHint()">
+    <button ion-fab color="light">?</button>
+  </ion-fab>
+  <ion-fab class="returnButton" *ngIf="showReturnButton" left top (tap)="tapExit($event)" (press)="pressExit($event)">
+    <button ion-fab color="light">&lt;</button>
+  </ion-fab>
 </ion-content>
 
