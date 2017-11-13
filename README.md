@@ -1,18 +1,21 @@
 #  Java Sparrow
 
-**Server Branch**: [![Build Status](https://travis-ci.org/deSagaz/java-sparrow.svg?branch=dev-server)](https://travis-ci.org/deSagaz/java-sparrow)
+**Production Server Branch**: [![Build Status](https://travis-ci.org/deSagaz/java-sparrow.svg?branch=prod-server)](https://travis-ci.org/deSagaz/java-sparrow)
 
 Assess your javascript knowledge with sparrow-swiftness!
 
-## Demo
+## Production server branch
 
-A demonstration application is available [here](https://js.utocopia.com/). *Please be patient - the Heroku backend needs some time to wake up on first visit.*
+This repository contains a Heroku / Amazon S3 version of the server software, which is suitable for production.
 
-## Running it yourself
+### Deployment
+First login to Heroku and create an application according to Heroku's documentation. You can fork our repository if you would like to make custom adjustments, or you can directly link to our production version (which you will need to manually push as well if changes occur).
 
-Instructions to run your own Java-Sparrow instance can be found in the [server](https://github.com/deSagaz/java-sparrow/tree/master/javasparrow-server) and [client](https://github.com/deSagaz/java-sparrow/tree/master/javasparrow-client) subdirectories.
+To deploy to Heroku, run the following command in the main folder: `git subtree push --prefix javasparrow-server/ heroku master`. This ensures that only the server is uploaded to Heroku; the client should be hosted elsewhere.
 
-You can also use the [server-prod branch](https://github.com/deSagaz/java-sparrow/tree/prod-server/javasparrow-server) if you wish to use Amazon S3 for file storage.
+Make sure to set the Environment variables in Heroku that are indicated in the `settings.py` file.
+
+If you run into any trouble, feel free to contact us!
 
 ## Documentation
 
