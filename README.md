@@ -1,6 +1,6 @@
 #  Java Sparrow
 
-**Server Branch**: [![Build Status](https://travis-ci.org/deSagaz/java-sparrow.svg?branch=dev-server)](https://travis-ci.org/deSagaz/java-sparrow)
+[![Build Status](https://travis-ci.org/deSagaz/java-sparrow.svg?branch=master)](https://travis-ci.org/deSagaz/java-sparrow)
 
 Assess your javascript knowledge with sparrow-swiftness!
 
@@ -12,7 +12,7 @@ A demonstration application is available [here](https://js.utocopia.com/). *Plea
 
 Instructions to run your own Java-Sparrow instance can be found in the [server](https://github.com/deSagaz/java-sparrow/tree/master/javasparrow-server) and [client](https://github.com/deSagaz/java-sparrow/tree/master/javasparrow-client) subdirectories.
 
-You can also use the [server-prod branch](https://github.com/deSagaz/java-sparrow/tree/prod-server/javasparrow-server) if you wish to use Amazon S3 for file storage.
+You can also use the [server-prod branch](https://github.com/deSagaz/java-sparrow/tree/prod-server) if you wish to use Amazon S3 for file storage.
 
 ## Documentation
 
