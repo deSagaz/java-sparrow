@@ -13,7 +13,7 @@ First login to Heroku and create an application according to Heroku's documentat
 
 To deploy to Heroku, run the following command in the main folder: `git subtree push --prefix javasparrow-server/ heroku master`. This ensures that only the server is uploaded to Heroku; the client should be hosted elsewhere.
 
-Make sure to set the Environment variables in Heroku that are indicated in the `settings.py` file.
+To set up Amazon S3, you can follow [these instructions](https://www.caktusgroup.com/blog/2014/11/10/Using-Amazon-S3-to-store-your-Django-sites-static-and-media-files/). Make sure to set the Environment variables in Heroku that are indicated in the `settings.py` file (such as your own secret key, and Amazon storage location).
 
 If you run into any trouble, feel free to contact us!
 
