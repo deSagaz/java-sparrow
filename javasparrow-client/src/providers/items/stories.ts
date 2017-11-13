@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-
 import { Story } from '../../models/story';
 import { Api } from '../api/api';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { User } from "../user/user";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+
 
 @Injectable()
 export class Stories {

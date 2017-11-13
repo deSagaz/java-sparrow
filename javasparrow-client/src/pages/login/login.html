@@ -12,15 +12,9 @@
     <ion-list>
       <div id="non_field_errors" class="topMessage"></div>
 
-      <!--<ion-item>-->
-        <!--<ion-label fixed>{{ 'USERNAME' | translate }}</ion-label>-->
-        <!--<ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>-->
-      <!--</ion-item>-->
-      <!--<div id="username" class="messages"></div>-->
-
       <ion-item>
         <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        <ion-input type="email" [(ngModel)]="account.email" name="email" [placeholder]="'sparrow@example.com'"></ion-input>
       </ion-item>
       <div id="email" class="messages"></div>
 

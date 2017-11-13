@@ -9,11 +9,11 @@ import 'brace/mode/javascript';
 import 'ace-builds/src-min-noconflict/snippets/javascript';
 import { WebWorkerService } from 'angular2-web-worker';
 import { Scene } from "../../models/scene";
-import { Stories } from "../../providers/items/stories";
 import { FirstRunPage, MainPage } from "../pages";
 import { User } from "../../providers/user/user";
 import { Api } from "../../providers/api/api";
 import { HttpHeaders } from "@angular/common/http";
+import { Story } from "../../models/story";
 
 
 /**
@@ -53,6 +53,7 @@ function shuffle(array) {
 })
 export class SeqPage {
 
+  story: Story;
   scene: Scene[];
   sequence: object[]; // Stack of elements - approached from top to bottom
   score: number;
@@ -72,8 +73,8 @@ export class SeqPage {
   multipleChoiceAnswers: string[];
 
   // Code for drag and drop and which lines of those are draggable
-  dragAndDropCode: Array<any> = [];
-  draggableCode: Array<any> = [];
+  dragAndDropLines: Array<any> = [];
+  draggableLines: Array<any> = [];
 
   // Banner and message for end page
   endMessage: string;
@@ -89,13 +90,15 @@ export class SeqPage {
   showCodeWindowSubmit: boolean = false;
   showDragAndDrop: boolean = false;
   showEnding: boolean = false;
+  showReturnButton: boolean = true;
+  showEndButton: boolean = false;
 
   // Background
   backgroundImage: BehaviorSubject<string>;
   backgroundContrast: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastProvider,
-              private _webWorkerService: WebWorkerService, private stories: Stories, private user: User,
+              private _webWorkerService: WebWorkerService, private user: User,
               private api: Api) {
   }
 
@@ -117,13 +120,14 @@ export class SeqPage {
   ionViewDidEnter() {
     this.backgroundImage = new BehaviorSubject("");
     this.scene = this.navParams.get("scene");
+    this.story = this.navParams.get("story");
 
     // Check whether sequence was valid
-    if (!this.scene) {
-      this.toast.error("No scene passed. Returning to menu.");
+    if (!this.scene || !this.story) {
+      this.toast.error("No scene or story passed. Returning to menu.");
       this.navCtrl.setRoot(MainPage);
       return;
-    } else if (!this.scene || Object.keys(this.scene['events']).length === 0) {
+    } else if (Object.keys(this.scene['events']).length === 0) {
       this.toast.error("Empty sequence. Returning to menu.");
       this.navCtrl.setRoot(MainPage);
       return;
@@ -149,11 +153,11 @@ export class SeqPage {
   next() {
     // Check if sequence is empty
     if (this.sequence.length === 0) {
-      console.log("SEQUENCE HAS ENDED"); // DEBUG
-      this.navCtrl.pop();
+      // console.log("SEQUENCE RAN OUT"); // DEBUG
+      this.stopSequence();
       return;
     } else {
-      console.log("NEXT EVENT TRIGGERED"); // DEBUG
+      // console.log("NEXT EVENT TRIGGERED"); // DEBUG
     }
 
     // reset styles to default
@@ -193,6 +197,10 @@ export class SeqPage {
     this.doGeneric(this.currentEventData);
   }
 
+  stopSequence() {
+    this.navCtrl.pop();
+  }
+
   doGeneric(data: object) {
     // Set styling
     if (data['contentColor']) {
@@ -204,6 +212,14 @@ export class SeqPage {
     // Show hint button, if available
     if (data['hint']){
       this.showHintButton = true;
+    }
+    // Load code, if available
+    if (data['code'] && this.currentEventType != "codeChallenge") {
+      this.code = atob(data['code']); // Decrypt base64 encoded string;
+      this.editor.getEditor().setOptions({
+        readOnly: true // By default, make read-only (overwritable in events)
+      });
+      this.showCodeWindow = true;
     }
   }
 
@@ -242,7 +258,7 @@ export class SeqPage {
 
   doBackgroundChange(data: object) {
     // Change background
-    this.backgroundImage.next(environment.imgLoc + data['image']);
+    this.backgroundImage.next(environment.fileStorage + this.story['id'] + "/" + data['image']);
     // Immediately run next event
     this.next();
   }
@@ -264,15 +280,6 @@ export class SeqPage {
     // Load question
     this.primaryText = data['question'];
 
-    // Load code, if available
-    if (data['code']) {
-      this.code = atob(data['code']); // Decrypt base64 encoded string;
-      this.editor.getEditor().setOptions({
-        readOnly: true
-      });
-      this.showCodeWindow = true;
-    }
-
     // Set interface
     this.showPrimaryText = true;
     this.showOpenEnded = true;
@@ -285,15 +292,15 @@ export class SeqPage {
     this.primaryText = data['question'];
 
     //Pass code and indices of code lines which are draggable
-    let code = data['code'];
-    let draggableIndices = data['draggable_indices'];
-    let extraCode = data['extra'];
+    let lines = data['lines'];
+    let draggableIndices = data['draggableIndices'];
+    let extraLines = data['extraLines'];
 
-    let len = code.length;
+    let len = lines.length;
     for (let i = 0; i < len; i++) {
       if(!draggableIndices.includes(i)) {
-        this.dragAndDropCode.push({
-          codeLine: code[i],
+        this.dragAndDropLines.push({
+          codeLine: lines[i],
           draggable: false
         });
       }
@@ -302,22 +309,22 @@ export class SeqPage {
     //This for loop creates an array for the draggable items.
     len = draggableIndices.length;
     for (let i = 0; i < len; i++) {
-      this.draggableCode.push({
-        codeLine: code[draggableIndices[i]],
+      this.draggableLines.push({
+        codeLine: lines[draggableIndices[i]],
         draggable: true
       });
     }
 
-    len = extraCode.length;
+    len = extraLines.length;
     for (let i = 0; i < len; i++) {
-      this.draggableCode.push({
-        codeLine: extraCode[i],
+      this.draggableLines.push({
+        codeLine: extraLines[i],
         draggable: true
       });
     }
 
-    this.draggableCode = shuffle(this.draggableCode);
-    console.log(this.draggableCode);
+    this.draggableLines = shuffle(this.draggableLines);
+    // console.log(this.draggableLines);
 
     // Set interface
     this.showPrimaryText = true;
@@ -342,7 +349,7 @@ export class SeqPage {
       // console.log((data['waitStart'] * 1000)); // DEBUG
       frames.forEach((item, index) => {
         setTimeout(() => {
-          this.backgroundImage.next(environment.imgLoc + item);
+          this.backgroundImage.next(environment.fileStorage + this.story['id'] + "/" + item);
           // console.log((1000 / fps) * (index + 1)); // DEBUG
         }, (1000 / fps) * (index));
       })
@@ -361,9 +368,9 @@ export class SeqPage {
     this.showNextButton = false;
     this.showCodeWindowSubmit = true;
 
-    // Set challenge and initial code in editor
+    // Set challenge and make editor writeable
     this.primaryText = data['question'];
-    this.code = atob(data['initCode']); // Decrypt base64 encoded string
+    this.code = atob(data['code']);
     this.editor.getEditor().setOptions({
       readOnly: false
     });
@@ -406,7 +413,7 @@ export class SeqPage {
 
   //Checks if the correct answer list given by the server is the same as the list given by seq-drag-and-drop.
   checkDragAndDrop(ans) {
-    let rightAnswer = this.currentEventData['code'];
+    let rightAnswer = this.currentEventData['lines'];
     if (ans.length != rightAnswer.length) {
       this.wrongAnswerResponse();
     } else {
@@ -446,7 +453,7 @@ export class SeqPage {
     }
 
     // Use web worker to run code separate from DOM
-    const promise = this._webWorkerService.run(new Function(this.code)).then(
+    this._webWorkerService.run(new Function(this.code)).then(
       (result) => {
         // Check if correct
         if (this.currentEventData['answer'] == result) {
@@ -458,14 +465,7 @@ export class SeqPage {
             this.score += environment.codingPoints;
             this.toast.showScore("+ " + environment.codingPoints + " intel");
           }
-          this.primaryText = this.currentEventData['correctAnswerResponse'];
-
-          if (this.currentEventData['correctAnswerResponseColor']) {
-            this.primaryTextColor = this.currentEventData['correctAnswerResponseColor'];
-          }
-          if (this.currentEventData['correctAnswerResponseItalic']) {
-            this.primaryTextItalic = this.currentEventData['correctAnswerResponseItalic'];
-          }
+          this.correctAnswerResponse();
           this.showCodeWindow = false;
           this.showNextButton = true;
 
@@ -483,7 +483,14 @@ export class SeqPage {
 
   ending(){
     this.endMessage = this.currentEventData['content'];
-    this.endBanner = new BehaviorSubject(environment.imgLoc + this.currentEventData['banner']);
+
+    // Set custom ending banner (optional)
+    if (this.currentEventData['banner']) {
+      this.endBanner = new BehaviorSubject(environment.fileStorage + this.story['id'] + "/" + this.currentEventData['banner']);
+    } else {
+      // Use default banner if not specified
+      this.endBanner = new BehaviorSubject(environment.imgLoc + "endBanner.png");
+    }
 
     // Send score to the server
     this.submitScore();
@@ -491,8 +498,18 @@ export class SeqPage {
     // Set interface
     this.showPrimaryText = false;
     this.showEnding = true;
-    this.showNextButton = true;
+    this.showNextButton = false;
+    this.showEndButton = true;
     this.backgroundContrast = true;
+  }
+
+  tapExit(event){
+    this.toast.error("If you want to abandon this scene, and lose your progress, hold the button");
+    // If so
+    // this.stopSequence();
+  }
+  pressExit(event) {
+    this.stopSequence();
   }
 
   submitScore() {

@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from "ionic-angular";
 
-/*
-  Generated class for the ToastProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class ToastProvider {
 
@@ -45,14 +40,14 @@ export class ToastProvider {
     toast.present();
   }
 
-  showHint(messageText: string) {
+  showHint(message: string) {
     let hint = this.toastCtrl.create({
-      message: messageText,
+      message: message,
       showCloseButton: true,
       closeButtonText: 'Ok',
+      dismissOnPageChange: true,
       position: "top"
     });
     hint.present();
   }
-
 }

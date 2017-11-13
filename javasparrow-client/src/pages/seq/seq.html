@@ -12,8 +12,8 @@
     <seq-open-ended *ngIf="showOpenEnded"
                     (answerGiven)="checkSimpleAnswer($event)"></seq-open-ended>
     <seq-drag-and-drop *ngIf="showDragAndDrop"
-                        [staticCode]=dragAndDropCode
-                        [draggableCode]=draggableCode
+                        [staticCode]=dragAndDropLines
+                        [draggableCode]=draggableLines
                         (answer)="checkDragAndDrop($event)"></seq-drag-and-drop>
     <seq-end-page *ngIf="showEnding"
                   [score]=score
@@ -22,9 +22,15 @@
     <ion-fab class="nextButton" *ngIf="showNextButton" right bottom (click)="next()">
       <button ion-fab color="light">&gt;</button>
     </ion-fab>
-    <ion-fab class="hintButton" *ngIf="showHintButton" right top (click)="showHint()">
-      <button ion-fab color="light">?</button>
+    <ion-fab class="nextButton" *ngIf="showEndButton" right bottom (click)="stopSequence()">
+      <button ion-fab color="light">&gt;</button>
     </ion-fab>
   </div>
+  <ion-fab class="hintButton" *ngIf="showHintButton" right top (click)="showHint()">
+    <button ion-fab color="light">?</button>
+  </ion-fab>
+  <ion-fab class="returnButton" *ngIf="showReturnButton" left top (tap)="tapExit($event)" (press)="pressExit($event)">
+    <button ion-fab color="light">&lt;</button>
+  </ion-fab>
 </ion-content>
 

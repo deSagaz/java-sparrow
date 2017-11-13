@@ -1,7 +1,0 @@
-signup.html form with items, calls "doSignup()"
--> signup.ts has "doSignup()", tries to login through user.ts (src/providers/user)
-->user.ts has "signup()" in which post needs to be filled in
-
-post is in scr/providers/api/api.ts 
-
-how our api works: https://javasparrow.herokuapp.com/

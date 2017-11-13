@@ -18,29 +18,14 @@ export class SeqDragAndDropComponent{
 
   @Output() answer = new EventEmitter();
 
-  constructor(private dragulaService: DragulaService) {
+  constructor(dragulaService: DragulaService) {
     //We need two lists, one with the static code and one with the draggable code. This for loop adds all static
     //items to a new array and adds the draggable which is needed for Dragula and excludes the draggable items which
     //indices are in draggableindices.
 
-    dragulaService.dropModel.subscribe((value) => {
-      this.onDropModel(value.slice(1));
-    });
-    dragulaService.removeModel.subscribe((value) => {
-      this.onRemoveModel(value.slice(1));
-    });
-
     dragulaService.setOptions('drag-drop', {
       moves: (el, source, handle, sibling) => !el.classList.contains('no-drag')
     });
-  }
-
-  private onDropModel(args) {
-    let [el, target, source] = args;
-  }
-
-  private onRemoveModel(args) {
-    let [el, source] = args;
   }
 
   //The static code is an array with a codeLine and draggable key. To compare the answer we only need the values of

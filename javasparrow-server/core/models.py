@@ -3,59 +3,48 @@ from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import User
 
-# import logging
 
-
+'''
+The 'Story' model, which functions as the basic building block to build content for the program.
+Stories consist of multiple Scene and present a story/game to the player in a unique setting.
+Each Story should focus on a specific theme for the player to work on,
+so that the player can selectively choose according to his/her needs.
+'''
 class Story(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified
     name        A CharField that indicates the name of the Story
     description A CharField offering a short description of the Story
-    totalScore  Total score acquired by the user
-    totScorMax  Max score achievable for this story
     """
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=512)
     image = models.ImageField(null=True, blank=True)
-    # totalScoreMax = calcTotalScoreMax()
-    # totalScoreMax = models.IntegerField(default=0)
 
-    '''
-    def __init__(self):
-        #self.super.__init__(self)
-        self.totalScoreMax = self.calcTotalScoreMax()
-    '''
 
     def __str__(self):
         return self.name + " (" + str(self.id) + ")"
 
-    '''
-    def calcTotalScoreMax(self):
-        number = Story.totalScoreMax
-        <ul>
-        {% for scene in self.scenes %}
-            #{{ forloop.counter0 }}
-
-            {number = (number + (scene.scoreMax))}
-        {% endfor %}
-        </ul>
-        return number
-    '''
 
     def calcTotalScoreMax(self):
-        # number = Story.totalScoreMax
         number = 0
         for scene in self.scenes:
             # {{ forloop.counter0 }}
 
             number = (number + scene.scoreMax)
-        # self.totalScoreMax = number
         return number
 
     class Meta:
         verbose_name_plural = "Stories"
 
 
+'''
+The Scene class objects are the units that together create a Story.
+A Scene can consist of many a thing; text used to tell a part of the story or provide explanation,
+an exercise in the form of one of the types of questions, and more.
+This flexibility is due to the 'events' JSONField, which is used to store various data in.
+A Scene also has a Score attribute (see below) that is used to indicate, for the current user,
+the maximum achievable score, the current score, and the score required to unlock this Scene.
+'''
 class Scene(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified
@@ -88,6 +77,10 @@ class Scene(models.Model):
         ordering = ['order']
 
 
+'''
+The Score model is used within a Scene instance.
+It is used to keep track of the current user along with his/her achieved scores for all the Scenes.
+'''
 class Score(models.Model):
     """
     id          An IntegerField that holds the id with which it can be identified

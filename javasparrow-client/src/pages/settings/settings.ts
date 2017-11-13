@@ -9,6 +9,8 @@ import { Settings } from '../../providers/providers';
  * The Settings page is a simple form that syncs with a Settings provider
  * to enable the user to customize settings for the app.
  *
+ * CURRENTLY NOT IN ACTIVE USE
+ *
  */
 @IonicPage()
 @Component({

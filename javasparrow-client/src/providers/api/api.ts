@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment";
 import { Observable } from "rxjs/Observable";
 
-/**
- * Api is a generic REST Api handler. Set your API url first.
- */
+
 @Injectable()
 export class Api {
   url: string = environment.apiUrl;

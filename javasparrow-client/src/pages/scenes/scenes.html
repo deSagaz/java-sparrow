@@ -2,12 +2,6 @@
 
   <ion-navbar>
     <ion-title>{{ 'SCENES_TITLE' | translate }}</ion-title>
-
-    <!-- <ion-buttons end>
-      <button ion-button icon-only (click)="addItem()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons> -->
   </ion-navbar>
 
 </ion-header>
@@ -16,28 +10,23 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let scene of currentScenes | async; let i = index">
-      <button ion-item (click)="onClick(scene)" [ngClass]="{'locked' : story.scoreUser < scene.scoreReq}">
-      <!-- <button ion-item (click)="openItem(scene)"> -->
+      <button ion-item (click)="onClick(scene)" [ngClass]="{'locked' : (story| async).scoreUser < scene.scoreReq}">
         <ion-avatar item-start>
           <img [src]="scene.image" />
         </ion-avatar>
         <h2>({{i}}) {{scene.name}}</h2>
-        <div item-end *ngIf="story.scoreUser < scene.scoreReq" class="lock_number">({{ scene.scoreReq }})</div><div item-end *ngIf="story.scoreUser < scene.scoreReq" class="lock_icon"></div>
-        <div item-end *ngIf="story.scoreUser >= scene.scoreReq" class="intel" >{{scene.scoreUser}} / {{ scene.scoreMax }}</div>
-        <!--<ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>-->
+        <div item-end *ngIf="(story | async).scoreUser < scene.scoreReq" class="lock_number">({{ scene.scoreReq }})</div><div item-end *ngIf="(story | async).scoreUser < scene.scoreReq" class="lock_icon"></div>
+        <div item-end *ngIf="(story | async).scoreUser >= scene.scoreReq" class="intel" >{{scene.scoreUser}} / {{ scene.scoreMax }}</div>
       </button>
 
       <ion-item-options>
-        <!-- <button ion-button color="danger" (click)="deleteItem(scene)">
-          {{ 'DELETE_BUTTON' | translate }}
-        </button> -->
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
 
-  <ion-footer *ngIf="story.scoreUser > 0">
+  <ion-footer *ngIf="(story | async).scoreUser > 0">
     <ion-toolbar>
-      <ion-title>Intel: {{ story.scoreUser }}</ion-title>
+      <ion-title>Intel: {{ (story | async).scoreUser }}</ion-title>
     </ion-toolbar>
   </ion-footer>
 
